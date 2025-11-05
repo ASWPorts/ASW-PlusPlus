@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -11,11 +11,11 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-IMPLEMENT_CLIENTCLASS_DT( C_HLMachineGun, DT_HLMachineGun, CHLMachineGun )
+IMPLEMENT_CLIENTCLASS_DT(C_HLMachineGun, DT_HLMachineGun, CHLMachineGun)
 END_RECV_TABLE()
 
-IMPLEMENT_CLIENTCLASS_DT( C_HLSelectFireMachineGun, DT_HLSelectFireMachineGun, CHLSelectFireMachineGun )
+IMPLEMENT_CLIENTCLASS_DT(C_HLSelectFireMachineGun, DT_HLSelectFireMachineGun, CHLSelectFireMachineGun)
 END_RECV_TABLE()
 
-IMPLEMENT_CLIENTCLASS_DT( C_BaseHLBludgeonWeapon, DT_BaseHLBludgeonWeapon, CBaseHLBludgeonWeapon )
+IMPLEMENT_CLIENTCLASS_DT(C_BaseHLBludgeonWeapon, DT_BaseHLBludgeonWeapon, CBaseHLBludgeonWeapon)
 END_RECV_TABLE()
