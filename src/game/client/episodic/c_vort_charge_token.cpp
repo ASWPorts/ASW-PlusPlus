@@ -478,7 +478,7 @@ void DispelCallback( const CEffectData &data )
 	}
 }
 
-DECLARE_CLIENT_EFFECT( "VortDispel", DispelCallback );
+DECLARE_CLIENT_EFFECT( VortDispel, DispelCallback );
 
 //-----------------------------------------------------------------------------
 // Purpose: Used for emissive lightning layer on vort

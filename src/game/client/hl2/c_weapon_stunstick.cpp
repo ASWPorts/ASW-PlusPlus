@@ -26,6 +26,8 @@ public:
 	DECLARE_CLIENTCLASS();
 	DECLARE_PREDICTABLE();
 
+	RenderableInstance_t instance;
+
 	int DrawModel( int flags )
 	{
 		//FIXME: This sucks, but I can't easily create temp ents...
@@ -56,7 +58,7 @@ public:
 			DrawHalo( pMaterial, vEnd, random->RandomFloat( 2.0f, 3.0f ), color );
 		}
 
-		return BaseClass::DrawModel( flags );
+		return BaseClass::DrawModel( flags, instance );
 	}
 
 	// Do part of our effect
@@ -145,7 +147,7 @@ public:
 	//-----------------------------------------------------------------------------
 	RenderGroup_t GetRenderGroup( void )
 	{
-		return RENDER_GROUP_TRANSLUCENT_ENTITY;
+		return RENDER_GROUP_TRANSLUCENT;
 	}
 
 private:

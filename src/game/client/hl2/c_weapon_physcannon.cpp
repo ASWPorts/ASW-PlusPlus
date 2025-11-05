@@ -25,7 +25,8 @@ public:
 	virtual int DrawModel( int flags );
 	virtual void ClientThink( void );
 
-	virtual bool ShouldUseLargeViewModelVROverride() OVERRIDE { return true; }
+	// [guest] (11/5/2025):this doesn't override any classes 
+	virtual bool ShouldUseLargeViewModelVROverride() /*OVERRIDE*/ { return true; }
 
 private:
 
@@ -210,12 +211,13 @@ void ComputeRenderInfo( mstudiobbox_t *pHitBox, const matrix3x4_t &hitboxToWorld
 //-----------------------------------------------------------------------------
 int C_WeaponPhysCannon::DrawModel( int flags )
 {
+	RenderableInstance_t instance;
 	// If we're not ugrading, don't do anything special
 	if ( m_bIsCurrentlyUpgrading == false && m_bWasUpgraded == false )
-		return BaseClass::DrawModel( flags );
+		return BaseClass::DrawModel( flags, instance);
 
 	if ( gpGlobals->frametime == 0 )
-		return BaseClass::DrawModel( flags );
+		return BaseClass::DrawModel( flags, instance );
 
 	if ( !m_bReadyToDraw )
 		return 0;
@@ -399,7 +401,7 @@ int C_WeaponPhysCannon::DrawModel( int flags )
 		}
 	}
 
-	return BaseClass::DrawModel( flags );
+	return BaseClass::DrawModel( flags, instance );
 }
 
 //---------------------------------------------------------

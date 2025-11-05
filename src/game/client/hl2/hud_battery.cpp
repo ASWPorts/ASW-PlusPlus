@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -30,48 +30,48 @@
 //-----------------------------------------------------------------------------
 class CHudBattery : public CHudNumericDisplay, public CHudElement
 {
-	DECLARE_CLASS_SIMPLE( CHudBattery, CHudNumericDisplay );
+	DECLARE_CLASS_SIMPLE(CHudBattery, CHudNumericDisplay);
 
 public:
-	CHudBattery( const char *pElementName );
-	void Init( void );
-	void Reset( void );
-	void VidInit( void );
-	void OnThink( void );
-	void MsgFunc_Battery(bf_read &msg );
+	CHudBattery(const char* pElementName);
+	void Init(void);
+	void Reset(void);
+	void VidInit(void);
+	void OnThink(void);
+	void MsgFunc_Battery(bf_read& msg);
 	bool ShouldDraw();
-	
+
 private:
-	int		m_iBat;	
+	int		m_iBat;
 	int		m_iNewBat;
 };
 
-DECLARE_HUDELEMENT( CHudBattery );
-DECLARE_HUD_MESSAGE( CHudBattery, Battery );
+DECLARE_HUDELEMENT(CHudBattery);
+DECLARE_HUD_MESSAGE(CHudBattery, Battery);
 
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
-CHudBattery::CHudBattery( const char *pElementName ) : BaseClass(NULL, "HudSuit"), CHudElement( pElementName )
+CHudBattery::CHudBattery(const char* pElementName) : BaseClass(NULL, "HudSuit"), CHudElement(pElementName)
 {
-	SetHiddenBits( HIDEHUD_HEALTH | HIDEHUD_NEEDSUIT );
+	SetHiddenBits(HIDEHUD_HEALTH | HIDEHUD_NEEDSUIT);
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudBattery::Init( void )
+void CHudBattery::Init(void)
 {
-	HOOK_HUD_MESSAGE( CHudBattery, Battery);
+	HOOK_HUD_MESSAGE(CHudBattery, Battery);
 	Reset();
-	m_iBat		= INIT_BAT;
-	m_iNewBat   = 0;
+	m_iBat = INIT_BAT;
+	m_iNewBat = 0;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudBattery::Reset( void )
+void CHudBattery::Reset(void)
 {
 	SetLabelText(g_pVGuiLocalize->Find("#Valve_Hud_SUIT"));
 	SetDisplayValue(m_iBat);
@@ -80,7 +80,7 @@ void CHudBattery::Reset( void )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudBattery::VidInit( void )
+void CHudBattery::VidInit(void)
 {
 	Reset();
 }
@@ -90,46 +90,46 @@ void CHudBattery::VidInit( void )
 // costly traversal.  Called per frame, return true if thinking and 
 // painting need to occur.
 //-----------------------------------------------------------------------------
-bool CHudBattery::ShouldDraw( void )
+bool CHudBattery::ShouldDraw(void)
 {
-	bool bNeedsDraw = ( m_iBat != m_iNewBat ) || ( GetAlpha() > 0 );
+	bool bNeedsDraw = (m_iBat != m_iNewBat) || (GetAlpha() > 0);
 
-	return ( bNeedsDraw && CHudElement::ShouldDraw() );
+	return (bNeedsDraw && CHudElement::ShouldDraw());
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudBattery::OnThink( void )
+void CHudBattery::OnThink(void)
 {
-	if ( m_iBat == m_iNewBat )
+	if (m_iBat == m_iNewBat)
 		return;
 
-	if ( !m_iNewBat )
+	if (!m_iNewBat)
 	{
-	 	g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitPowerZero");
+		GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("SuitPowerZero");
 	}
-	else if ( m_iNewBat < m_iBat )
+	else if (m_iNewBat < m_iBat)
 	{
 		// battery power has decreased, so play the damaged animation
-		g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitDamageTaken");
+		GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("SuitDamageTaken");
 
 		// play an extra animation if we're super low
-		if ( m_iNewBat < 20 )
+		if (m_iNewBat < 20)
 		{
-			g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitArmorLow");
+			GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("SuitArmorLow");
 		}
 	}
 	else
 	{
 		// battery power has increased (if we had no previous armor, or if we just loaded the game, don't use alert state)
-		if ( m_iBat == INIT_BAT || m_iBat == 0 || m_iNewBat >= 20)
+		if (m_iBat == INIT_BAT || m_iBat == 0 || m_iNewBat >= 20)
 		{
-			g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitPowerIncreasedAbove20");
+			GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("SuitPowerIncreasedAbove20");
 		}
 		else
 		{
-			g_pClientMode->GetViewportAnimationController()->StartAnimationSequence("SuitPowerIncreasedBelow20");
+			GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("SuitPowerIncreasedBelow20");
 		}
 	}
 
@@ -141,7 +141,7 @@ void CHudBattery::OnThink( void )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudBattery::MsgFunc_Battery( bf_read &msg )
+void CHudBattery::MsgFunc_Battery(bf_read& msg)
 {
 	m_iNewBat = msg.ReadShort();
 }

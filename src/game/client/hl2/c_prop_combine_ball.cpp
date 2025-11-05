@@ -66,7 +66,7 @@ void C_PropCombineBall::OnDataChanged( DataUpdateType_t updateType )
 //-----------------------------------------------------------------------------
 RenderGroup_t C_PropCombineBall::GetRenderGroup( void )
 {
-	return RENDER_GROUP_TRANSLUCENT_ENTITY;
+	return RENDER_GROUP_TRANSLUCENT;
 }
 
 //-----------------------------------------------------------------------------
@@ -259,7 +259,7 @@ int C_PropCombineBall::DrawModel( int flags )
 		// Always orient towards the camera!
 		SetAbsAngles( angles );
 
-		BaseClass::DrawModel( flags );
+		BaseClass::DrawModel( flags, instance );
 	}
 	else
 	{
@@ -323,7 +323,7 @@ void CombineBallImpactCallback( const CEffectData &data )
 	FX_ElectricSpark( data.m_vOrigin, 2, 1, &data.m_vNormal );
 }
 
-DECLARE_CLIENT_EFFECT( "cball_bounce", CombineBallImpactCallback );
+DECLARE_CLIENT_EFFECT( cball_bounce, CombineBallImpactCallback );
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -337,4 +337,4 @@ void CombineBallExplosionCallback( const CEffectData &data )
 	FX_ElectricSpark( data.m_vOrigin, 4, 1, &normal );
 }
 
-DECLARE_CLIENT_EFFECT( "cball_explode", CombineBallExplosionCallback );
+DECLARE_CLIENT_EFFECT( cball_explode, CombineBallExplosionCallback );

@@ -23,6 +23,7 @@ public:
 
 	virtual void	OnDataChanged( DataUpdateType_t updateType );
 	virtual int		DrawModel( int flags );
+	RenderableInstance_t instance;
 
 protected:
 

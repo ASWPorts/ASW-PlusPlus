@@ -161,7 +161,9 @@ int C_BaseHLPlayer::DrawModel( int flags )
 
 	SetLocalAngles( useAngles );
 
-	int iret = BaseClass::DrawModel( flags );
+	RenderableInstance_t instance;
+
+	int iret = BaseClass::DrawModel( flags, instance );
 
 	SetLocalAngles( saveAngles );
 
@@ -644,6 +646,5 @@ bool C_BaseHLPlayer::CreateMove( float flInputSampleTime, CUserCmd *pCmd )
 void C_BaseHLPlayer::BuildTransformations( CStudioHdr *hdr, Vector *pos, Quaternion q[], const matrix3x4_t& cameraTransform, int boneMask, CBoneBitList &boneComputed )
 {
 	BaseClass::BuildTransformations( hdr, pos, q, cameraTransform, boneMask, boneComputed );
-	BuildFirstPersonMeathookTransformations( hdr, pos, q, cameraTransform, boneMask, boneComputed, "ValveBiped.Bip01_Head1" );
 }
 

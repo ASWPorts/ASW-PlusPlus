@@ -30,13 +30,20 @@ public:
 	virtual RenderGroup_t GetRenderGroup( void )
 	{
 		// We want to draw translucent bits as well as our main model
+#if 0
+		// TODO: Find a replacement???
 		return RENDER_GROUP_TWOPASS;
+#else
+		return RENDER_GROUP_OPAQUE;
+#endif
 	}
 
 	virtual void	ClientThink( void );
 
 	virtual void	OnDataChanged( DataUpdateType_t updateType );
 	virtual int		DrawModel( int flags );
+
+	RenderableInstance_t instance;
 
 private:
 
@@ -125,7 +132,7 @@ int C_CrossbowBolt::DrawModel( int flags )
 	}
 
 	// Draw the normal portion
-	return BaseClass::DrawModel( flags );
+	return BaseClass::DrawModel( flags, instance );
 }
 
 //-----------------------------------------------------------------------------
@@ -156,4 +163,4 @@ void CrosshairLoadCallback( const CEffectData &data )
 	}
 }
 
-DECLARE_CLIENT_EFFECT( "CrossbowLoad", CrosshairLoadCallback );
+DECLARE_CLIENT_EFFECT( CrossbowLoad, CrosshairLoadCallback );

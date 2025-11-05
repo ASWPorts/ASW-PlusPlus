@@ -92,6 +92,8 @@ $Project
 		$File	"convarproxy.cpp"
 		$File	"cycleproxy.cpp"
 		$File	"foundryhelpers_client.cpp"
+		$File	"ClientEffectPrecacheSystem.cpp" [!$SWARM]
+		$File	"ClientEffectPrecacheSystem.h"	 [!$SWARM]
 		$File	"foundryhelpers_client.h"
 		$File	"$SRCDIR\game\shared\game_timescale_shared.cpp"
 		$File	"$SRCDIR\game\shared\game_timescale_shared.h"

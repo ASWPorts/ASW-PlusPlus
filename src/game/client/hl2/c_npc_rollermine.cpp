@@ -10,7 +10,6 @@
 #include "beam_shared.h"
 #include "materialsystem/imaterial.h"
 #include "model_types.h"
-#include "clienteffectprecachesystem.h"
 #include "beamdraw.h"
 
 class C_RollerMine : public C_AI_BaseNPC
@@ -26,9 +25,9 @@ public:
 	RenderGroup_t GetRenderGroup( void ) 
 	{	
 		if ( m_bIsOpen )
-			return RENDER_GROUP_TRANSLUCENT_ENTITY;	
+			return RENDER_GROUP_TRANSLUCENT;	
 		else
-			return RENDER_GROUP_OPAQUE_ENTITY;
+			return RENDER_GROUP_OPAQUE;
 	}
 
 private:
@@ -170,5 +169,7 @@ int C_RollerMine::DrawModel( int flags )
 		}
 	}
 
-	return BaseClass::DrawModel( flags );
+	RenderableInstance_t instance;
+
+	return BaseClass::DrawModel( flags, instance );
 }
