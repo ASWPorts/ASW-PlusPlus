@@ -1,11 +1,13 @@
 $Project "client"
 {
 	"game\client\client_swarm.vpc"	[$SWARM]
+	"game\client\client_hl2.vpc"	[$HL2]
 }
 
 $Project "server"
 {
 	"game\server\server_swarm.vpc"	[$SWARM]
+	"game\server\server_hl2.vpc"	[$HL2]
 }
 
 $Project "missionchooser"

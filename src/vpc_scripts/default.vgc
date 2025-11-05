@@ -1,6 +1,7 @@
 $Games
 {
 	"SWARM"
+	"HL2"
 }
 
 $Conditional	"SOURCESDK" "1"
