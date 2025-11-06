@@ -73,5 +73,3 @@ void CHLModeManager::LevelShutdown( void )
 
 
 static CHLModeManager g_HLModeManager;
-IVModeManager *modemanager = &g_HLModeManager;
-
