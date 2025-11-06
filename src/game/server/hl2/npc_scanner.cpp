@@ -485,7 +485,7 @@ Activity CNPC_CScanner::NPC_TranslateActivity( Activity eNewActivity )
 //-----------------------------------------------------------------------------
 void CNPC_CScanner::HandleAnimEvent( animevent_t *pEvent )
 {
-	if( pEvent->event == AE_SCANNER_CLOSED )
+	if( pEvent->Event() == AE_SCANNER_CLOSED)
 	{
 		m_bIsOpen = false;
 		SetActivity( ACT_IDLE );
@@ -1829,17 +1829,17 @@ void CNPC_CScanner::SpotlightUpdate(void)
 	// Fade out spotlight end if past max length.  
 	if (m_flSpotlightCurLength > 2*m_flSpotlightMaxLength)
 	{
-		m_hSpotlightTarget->SetRenderColorA( 0 );
+		m_hSpotlightTarget->SetRenderColor( 0, 0, 0 );
 		m_hSpotlight->SetFadeLength(m_flSpotlightMaxLength);
 	}
 	else if (m_flSpotlightCurLength > m_flSpotlightMaxLength)		
 	{
-		m_hSpotlightTarget->SetRenderColorA( (1-((m_flSpotlightCurLength-m_flSpotlightMaxLength)/m_flSpotlightMaxLength)) );
+		m_hSpotlightTarget->SetRenderColor( (1-((m_flSpotlightCurLength-m_flSpotlightMaxLength)/m_flSpotlightMaxLength)), 0, 0 );
 		m_hSpotlight->SetFadeLength(m_flSpotlightMaxLength);
 	}
 	else
 	{
-		m_hSpotlightTarget->SetRenderColorA( 1.0 );
+		m_hSpotlightTarget->SetRenderColor( 1.0, 0, 0 );
 		m_hSpotlight->SetFadeLength(m_flSpotlightCurLength);
 	}
 

@@ -347,7 +347,7 @@ Vector CNPC_Monk::GetActualShootTrajectory( const Vector &shootOrigin )
 //-----------------------------------------------------------------------------
 void CNPC_Monk::HandleAnimEvent( animevent_t *pEvent )
 {
-	switch( pEvent->event )
+	switch( pEvent->Event() )
 	{
 		case NPC_EVENT_LEFTFOOT:
 			{
@@ -679,7 +679,7 @@ bool CNPC_Monk::IsJumpLegal( const Vector &startPos, const Vector &apex, const V
 {
 	if ( startPos.z - endPos.z < 0 )
 		return false;
-	return BaseClass::IsJumpLegal( startPos, apex, endPos );
+	return BaseClass::IsJumpLegal( startPos, apex, endPos, 0.0f, 0.0f, 0.0f );
 }
 
 //-----------------------------------------------------------------------------

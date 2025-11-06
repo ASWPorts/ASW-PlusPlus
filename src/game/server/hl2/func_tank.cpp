@@ -38,7 +38,7 @@
 #include "rumble_shared.h"
 #include "particle_parse.h"
 // NVNT turret recoil
-#include "haptics/haptic_utils.h"
+//#include "haptics/haptic_utils.h"
 
 #ifdef HL2_DLL
 #include "hl2_player.h"
@@ -1172,7 +1172,7 @@ void CFuncTank::ControllerPostFrame( void )
 	
 	Fire( bulletCount, WorldBarrelPosition(), forward, pPlayer, false );
  
-#if defined( WIN32 ) && !defined( _X360 ) 
+#if defined(HAPTICS_ENABLED_ASW)
 	// NVNT apply a punch on the player each time fired
 	HapticPunch(pPlayer,0,0,hap_turret_mag.GetFloat());
 #endif	
@@ -2455,7 +2455,7 @@ void CFuncTankGun::Fire( int bulletCount, const Vector &barrelEnd, const Vector 
 	info.m_flDistance = MAX_TRACE_LENGTH;
 	info.m_iTracerFreq = 1;
 	info.m_flDamage = m_iBulletDamage;
-	info.m_iPlayerDamage = m_iBulletDamageVsPlayer;
+	info.m_flPlayerDamage = m_iBulletDamageVsPlayer;
 	info.m_pAttacker = pAttacker;
 	info.m_pAdditionalIgnoreEnt = GetParent();
 

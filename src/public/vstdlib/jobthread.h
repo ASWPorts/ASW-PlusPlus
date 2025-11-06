@@ -81,10 +81,10 @@ typedef int JobStatus_t;
 
 enum JobFlags_t
 {
-	JF_IO				= ( 1 << 0 ),	// The job primarily blocks on IO or hardware
-	JF_BOOST_THREAD		= ( 1 << 1 ),	// Up the thread priority to max allowed while processing task
-	JF_SERIAL			= ( 1 << 2 ),	// Job cannot be executed out of order relative to other "strict" jobs
-	JF_QUEUE			= ( 1 << 3 ),	// Queue it, even if not an IO job
+	JF_IO = (1 << 0),	// The job primarily blocks on IO or hardware
+	JF_BOOST_THREAD = (1 << 1),	// Up the thread priority to max allowed while processing task
+	JF_SERIAL = (1 << 2),	// Job cannot be executed out of order relative to other "strict" jobs
+	JF_QUEUE = (1 << 3),	// Queue it, even if not an IO job
 };
 
 enum JobPriority_t
@@ -97,15 +97,15 @@ enum JobPriority_t
 #define TP_MAX_POOL_THREADS	64
 struct ThreadPoolStartParams_t
 {
-	ThreadPoolStartParams_t( bool bIOThreads = false, unsigned nThreads = -1, int *pAffinities = NULL, ThreeState_t fDistribute = TRS_NONE, unsigned nStackSize = -1, int iThreadPriority = SHRT_MIN )
-		: bIOThreads( bIOThreads ), nThreads( nThreads ), fDistribute( fDistribute ), nStackSize( nStackSize ), iThreadPriority( iThreadPriority )
+	ThreadPoolStartParams_t(bool bIOThreads = false, unsigned nThreads = -1, int* pAffinities = NULL, ThreeState_t fDistribute = TRS_NONE, unsigned nStackSize = -1, int iThreadPriority = SHRT_MIN)
+		: bIOThreads(bIOThreads), nThreads(nThreads), fDistribute(fDistribute), nStackSize(nStackSize), iThreadPriority(iThreadPriority)
 	{
-		bUseAffinityTable = ( pAffinities != NULL ) && ( fDistribute == TRS_TRUE ) && ( nThreads != -1 );
-		if ( bUseAffinityTable )
+		bUseAffinityTable = (pAffinities != NULL) && (fDistribute == TRS_TRUE) && (nThreads != -1);
+		if (bUseAffinityTable)
 		{
 			// user supplied an optional 1:1 affinity mapping to override normal distribute behavior
-			nThreads = MIN( TP_MAX_POOL_THREADS, nThreads );
-			for ( unsigned int i = 0; i < nThreads; i++ )
+			nThreads = MIN(TP_MAX_POOL_THREADS, nThreads);
+			for (unsigned int i = 0; i < nThreads; i++)
 			{
 				iAffinityTable[i] = pAffinities[i];
 			}
@@ -128,7 +128,7 @@ struct ThreadPoolStartParams_t
 //
 //-----------------------------------------------------------------------------
 
-typedef bool (*JobFilter_t)( CJob * );
+typedef bool (*JobFilter_t)(CJob*);
 
 //---------------------------------------------------------
 // Messages supported through the CallWorker() method
@@ -153,8 +153,8 @@ public:
 	//-----------------------------------------------------
 	// Thread functions
 	//-----------------------------------------------------
-	virtual bool Start( const ThreadPoolStartParams_t &startParams = ThreadPoolStartParams_t() ) = 0;
-	virtual bool Stop( int timeout = TT_INFINITE ) = 0;
+	virtual bool Start(const ThreadPoolStartParams_t& startParams = ThreadPoolStartParams_t()) = 0;
+	virtual bool Stop(int timeout = TT_INFINITE) = 0;
 
 	//-----------------------------------------------------
 	// Functions for any thread
@@ -172,42 +172,42 @@ public:
 	//-----------------------------------------------------
 	// Offer the current thread to the pool
 	//-----------------------------------------------------
-	virtual int YieldWait( CThreadEvent **pEvents, int nEvents, bool bWaitAll = true, unsigned timeout = TT_INFINITE ) = 0;
-	virtual int YieldWait( CJob **, int nJobs, bool bWaitAll = true, unsigned timeout = TT_INFINITE ) = 0;
-	virtual void Yield( unsigned timeout ) = 0;
+	virtual int YieldWait(CThreadEvent** pEvents, int nEvents, bool bWaitAll = true, unsigned timeout = TT_INFINITE) = 0;
+	virtual int YieldWait(CJob**, int nJobs, bool bWaitAll = true, unsigned timeout = TT_INFINITE) = 0;
+	virtual void Yield(unsigned timeout) = 0;
 
-	bool YieldWait( CThreadEvent &event, unsigned timeout = TT_INFINITE );
-	bool YieldWait( CJob *, unsigned timeout = TT_INFINITE );
+	bool YieldWait(CThreadEvent& event, unsigned timeout = TT_INFINITE);
+	bool YieldWait(CJob*, unsigned timeout = TT_INFINITE);
 
 	//-----------------------------------------------------
 	// Add a native job to the queue (master thread)
 	// See AddPerFrameJob below if you want to add a job that
 	// wants to be run before the end of the frame
 	//-----------------------------------------------------
-	virtual void AddJob( CJob * ) = 0;
+	virtual void AddJob(CJob*) = 0;
 
 	//-----------------------------------------------------
 	// Add an function object to the queue (master thread)
 	//-----------------------------------------------------
-	virtual void AddFunctor( CFunctor *pFunctor, CJob **ppJob = NULL, const char *pszDescription = NULL, unsigned flags = 0 ) { AddFunctorInternal( RetAddRef( pFunctor ), ppJob, pszDescription, flags ); }
+	virtual void AddFunctor(CFunctor* pFunctor, CJob** ppJob = NULL, const char* pszDescription = NULL, unsigned flags = 0) { AddFunctorInternal(RetAddRef(pFunctor), ppJob, pszDescription, flags); }
 
 	//-----------------------------------------------------
 	// Change the priority of an active job
 	//-----------------------------------------------------
-	virtual void ChangePriority( CJob *p, JobPriority_t priority ) = 0;
+	virtual void ChangePriority(CJob* p, JobPriority_t priority) = 0;
 
 	//-----------------------------------------------------
 	// Bulk job manipulation (blocking)
 	//-----------------------------------------------------
-	int ExecuteAll( JobFilter_t pfnFilter = NULL )	{ return ExecuteToPriority( JP_LOW, pfnFilter ); }
-	virtual int ExecuteToPriority( JobPriority_t toPriority, JobFilter_t pfnFilter = NULL  ) = 0;
+	int ExecuteAll(JobFilter_t pfnFilter = NULL) { return ExecuteToPriority(JP_LOW, pfnFilter); }
+	virtual int ExecuteToPriority(JobPriority_t toPriority, JobFilter_t pfnFilter = NULL) = 0;
 	virtual int AbortAll() = 0;
 
 	//-----------------------------------------------------
 	// Add a native job to the queue (master thread)
 	// Call YieldWaitPerFrameJobs() to wait only until all per-frame jobs are done
 	//-----------------------------------------------------
-	virtual void AddPerFrameJob( CJob * ) = 0;
+	virtual void AddPerFrameJob(CJob*) = 0;
 
 	//-----------------------------------------------------
 	// Add an arbitrary call to the queue (master thread) 
@@ -375,16 +375,16 @@ public:
 			return pJob; \
 		}
 
-	FUNC_GENERATE_ALL( DEFINE_NONMEMBER_ADD_CALL );
-	FUNC_GENERATE_ALL( DEFINE_MEMBER_ADD_CALL );
-	FUNC_GENERATE_ALL( DEFINE_CONST_MEMBER_ADD_CALL );
-	FUNC_GENERATE_ALL( DEFINE_REF_COUNTING_MEMBER_ADD_CALL );
-	FUNC_GENERATE_ALL( DEFINE_REF_COUNTING_CONST_MEMBER_ADD_CALL );
-	FUNC_GENERATE_ALL( DEFINE_NONMEMBER_QUEUE_CALL );
-	FUNC_GENERATE_ALL( DEFINE_MEMBER_QUEUE_CALL );
-	FUNC_GENERATE_ALL( DEFINE_CONST_MEMBER_QUEUE_CALL );
-	FUNC_GENERATE_ALL( DEFINE_REF_COUNTING_MEMBER_QUEUE_CALL );
-	FUNC_GENERATE_ALL( DEFINE_REF_COUNTING_CONST_MEMBER_QUEUE_CALL );
+	FUNC_GENERATE_ALL(DEFINE_NONMEMBER_ADD_CALL);
+	FUNC_GENERATE_ALL(DEFINE_MEMBER_ADD_CALL);
+	FUNC_GENERATE_ALL(DEFINE_CONST_MEMBER_ADD_CALL);
+	FUNC_GENERATE_ALL(DEFINE_REF_COUNTING_MEMBER_ADD_CALL);
+	FUNC_GENERATE_ALL(DEFINE_REF_COUNTING_CONST_MEMBER_ADD_CALL);
+	FUNC_GENERATE_ALL(DEFINE_NONMEMBER_QUEUE_CALL);
+	FUNC_GENERATE_ALL(DEFINE_MEMBER_QUEUE_CALL);
+	FUNC_GENERATE_ALL(DEFINE_CONST_MEMBER_QUEUE_CALL);
+	FUNC_GENERATE_ALL(DEFINE_REF_COUNTING_MEMBER_QUEUE_CALL);
+	FUNC_GENERATE_ALL(DEFINE_REF_COUNTING_CONST_MEMBER_QUEUE_CALL);
 
 	#undef DEFINE_NONMEMBER_ADD_CALL
 	#undef DEFINE_MEMBER_ADD_CALL
@@ -398,27 +398,27 @@ public:
 	#undef DEFINE_REF_COUNTING_CONST_MEMBER_QUEUE_CALL
 
 private:
-	virtual void AddFunctorInternal( CFunctor *, CJob ** = NULL, const char *pszDescription = NULL, unsigned flags = 0 ) = 0;
+	virtual void AddFunctorInternal(CFunctor*, CJob** = NULL, const char* pszDescription = NULL, unsigned flags = 0) = 0;
 
 	//-----------------------------------------------------
 	// Services for internal use by job instances
 	//-----------------------------------------------------
 	friend class CJob;
 
-	virtual CJob *GetDummyJob() = 0;
+	virtual CJob* GetDummyJob() = 0;
 
 public:
-	virtual void Distribute( bool bDistribute = true, int *pAffinityTable = NULL ) = 0;
+	virtual void Distribute(bool bDistribute = true, int* pAffinityTable = NULL) = 0;
 
-	virtual bool Start( const ThreadPoolStartParams_t &startParams, const char *pszNameOverride ) = 0;
+	virtual bool Start(const ThreadPoolStartParams_t& startParams, const char* pszNameOverride) = 0;
 
-	virtual int YieldWaitPerFrameJobs( ) = 0;
+	virtual int YieldWaitPerFrameJobs() = 0;
 };
 
 //-----------------------------------------------------------------------------
 
-JOB_INTERFACE IThreadPool *CreateNewThreadPool();
-JOB_INTERFACE void DestroyThreadPool( IThreadPool *pPool );
+JOB_INTERFACE IThreadPool* CreateNewThreadPool();
+JOB_INTERFACE void DestroyThreadPool(IThreadPool* pPool);
 
 //-------------------------------------
 
@@ -426,85 +426,85 @@ JOB_INTERFACE void RunThreadPoolTests();
 
 //-----------------------------------------------------------------------------
 
-JOB_INTERFACE IThreadPool *g_pThreadPool;
+JOB_INTERFACE IThreadPool* g_pThreadPool;
 #ifdef _X360
-JOB_INTERFACE IThreadPool *g_pAlternateThreadPool;
+JOB_INTERFACE IThreadPool* g_pAlternateThreadPool;
 #endif
 
 //-----------------------------------------------------------------------------
 // Class to combine the metadata for an operation and the ability to perform
 // the operation. Meant for inheritance. All functions inline, defers to executor
 //-----------------------------------------------------------------------------
-DECLARE_POINTER_HANDLE( ThreadPoolData_t );
+DECLARE_POINTER_HANDLE(ThreadPoolData_t);
 #define JOB_NO_DATA ((ThreadPoolData_t)-1)
 
 class CJob : public CRefCounted1<IRefCounted, CRefCountServiceMT>
 {
 public:
-	CJob( JobPriority_t priority = JP_NORMAL )
-	  : m_status( JOB_STATUS_UNSERVICED ),
-		m_ThreadPoolData( JOB_NO_DATA ),
-		m_priority( priority ),
-		m_flags( 0 ),
-		m_pThreadPool( NULL ),
-		m_CompleteEvent( true ),
-		m_iServicingThread( -1 )
+	CJob(JobPriority_t priority = JP_NORMAL)
+		: m_status(JOB_STATUS_UNSERVICED),
+		m_ThreadPoolData(JOB_NO_DATA),
+		m_priority(priority),
+		m_flags(0),
+		m_pThreadPool(NULL),
+		m_CompleteEvent(true),
+		m_iServicingThread(-1)
 	{
 	}
 
 	//-----------------------------------------------------
 	// Priority (not thread safe)
 	//-----------------------------------------------------
-	void SetPriority( JobPriority_t priority )		{ m_priority = priority; }
-	JobPriority_t GetPriority() const				{ return m_priority; }
+	void SetPriority(JobPriority_t priority) { m_priority = priority; }
+	JobPriority_t GetPriority() const { return m_priority; }
 
 	//-----------------------------------------------------
 
-	void SetFlags( unsigned flags )					{ m_flags = flags; }
-	unsigned GetFlags() const						{ return m_flags; }
+	void SetFlags(unsigned flags) { m_flags = flags; }
+	unsigned GetFlags() const { return m_flags; }
 
 	//-----------------------------------------------------
 
-	void SetServiceThread( int iServicingThread )	{ m_iServicingThread = (char)iServicingThread; }
-	int GetServiceThread() const					{ return m_iServicingThread; }
-	void ClearServiceThread()						{ m_iServicingThread = -1; }
+	void SetServiceThread(int iServicingThread) { m_iServicingThread = (char)iServicingThread; }
+	int GetServiceThread() const { return m_iServicingThread; }
+	void ClearServiceThread() { m_iServicingThread = -1; }
 
 	//-----------------------------------------------------
 	// Fast queries
 	//-----------------------------------------------------
-	bool Executed() const							{ return ( m_status == JOB_OK );	}
-	bool CanExecute() const							{ return ( m_status == JOB_STATUS_PENDING || m_status == JOB_STATUS_UNSERVICED ); }
-	bool IsFinished() const							{ return ( m_status != JOB_STATUS_PENDING && m_status != JOB_STATUS_INPROGRESS && m_status != JOB_STATUS_UNSERVICED ); }
-	JobStatus_t GetStatus() const					{ return m_status; }
-	
+	bool Executed() const { return (m_status == JOB_OK); }
+	bool CanExecute() const { return (m_status == JOB_STATUS_PENDING || m_status == JOB_STATUS_UNSERVICED); }
+	bool IsFinished() const { return (m_status != JOB_STATUS_PENDING && m_status != JOB_STATUS_INPROGRESS && m_status != JOB_STATUS_UNSERVICED); }
+	JobStatus_t GetStatus() const { return m_status; }
+
 	//-----------------------------------------------------
 	// Try to acquire ownership (to satisfy). If you take the lock, you must either execute or abort.
 	//-----------------------------------------------------
-	bool TryLock() volatile							{ return m_mutex.TryLock(); }
-	void Lock() volatile 								{ m_mutex.Lock(); }
-	void Unlock() volatile								{ m_mutex.Unlock(); }
+	bool TryLock() volatile { return m_mutex.TryLock(); }
+	void Lock() volatile { m_mutex.Lock(); }
+	void Unlock() volatile { m_mutex.Unlock(); }
 
 	//-----------------------------------------------------
 	// Thread event support (safe for NULL this to simplify code )
 	//-----------------------------------------------------
-	bool WaitForFinish( uint32 dwTimeout = TT_INFINITE ) { if (!this) return true; return ( !IsFinished() ) ? g_pThreadPool->YieldWait( this, dwTimeout ) : true; }
-	bool WaitForFinishAndRelease( uint32 dwTimeout = TT_INFINITE ) { if (!this) return true; bool bResult = WaitForFinish( dwTimeout); Release(); return bResult; }
-	CThreadEvent *AccessEvent()						{ return &m_CompleteEvent; }
+	bool WaitForFinish(uint32 dwTimeout = TT_INFINITE) { if (!this) return true; return (!IsFinished()) ? g_pThreadPool->YieldWait(this, dwTimeout) : true; }
+	bool WaitForFinishAndRelease(uint32 dwTimeout = TT_INFINITE) { if (!this) return true; bool bResult = WaitForFinish(dwTimeout); Release(); return bResult; }
+	CThreadEvent* AccessEvent() { return &m_CompleteEvent; }
 
 	//-----------------------------------------------------
 	// Perform the job
 	//-----------------------------------------------------
 	JobStatus_t Execute();
 	JobStatus_t TryExecute();
-	JobStatus_t ExecuteAndRelease()					{ JobStatus_t status = Execute(); Release(); return status;	}
-	JobStatus_t TryExecuteAndRelease()				{ JobStatus_t status = TryExecute(); Release(); return status;	}
+	JobStatus_t ExecuteAndRelease() { JobStatus_t status = Execute(); Release(); return status; }
+	JobStatus_t TryExecuteAndRelease() { JobStatus_t status = TryExecute(); Release(); return status; }
 
 	//-----------------------------------------------------
 	// Terminate the job, discard if partially or wholly fulfilled
 	//-----------------------------------------------------
-	JobStatus_t Abort( bool bDiscard = true );
+	JobStatus_t Abort(bool bDiscard = true);
 
-	virtual char const *Describe()					{ return "Job"; }
+	virtual char const* Describe() { return "Job"; }
 
 private:
 	//-----------------------------------------------------
@@ -517,16 +517,16 @@ private:
 	char				m_iServicingThread;
 	short				m_reserved;
 	ThreadPoolData_t	m_ThreadPoolData;
-	IThreadPool *		m_pThreadPool;
+	IThreadPool* m_pThreadPool;
 	CThreadEvent		m_CompleteEvent;
 
 private:
 	//-----------------------------------------------------
-	CJob( const CJob &fromRequest );
-	void operator=(const CJob &fromRequest );
+	CJob(const CJob& fromRequest);
+	void operator=(const CJob& fromRequest);
 
 	virtual JobStatus_t DoExecute() = 0;
-	virtual JobStatus_t DoAbort( bool bDiscard ) { return JOB_STATUS_ABORTED; }
+	virtual JobStatus_t DoAbort(bool bDiscard) { return JOB_STATUS_ABORTED; }
 	virtual void DoCleanup() {}
 };
 
@@ -535,12 +535,12 @@ private:
 class CFunctorJob : public CJob
 {
 public:
-	CFunctorJob( CFunctor *pFunctor, const char *pszDescription = NULL )
-		: m_pFunctor( pFunctor )
+	CFunctorJob(CFunctor* pFunctor, const char* pszDescription = NULL)
+		: m_pFunctor(pFunctor)
 	{
-		if ( pszDescription )
+		if (pszDescription)
 		{
-			Q_strncpy( m_szDescription, pszDescription, sizeof(m_szDescription) );
+			Q_strncpy(m_szDescription, pszDescription, sizeof(m_szDescription));
 		}
 		else
 		{
@@ -554,7 +554,7 @@ public:
 		return JOB_OK;
 	}
 
-	const char *Describe()
+	const char* Describe()
 	{
 		return m_szDescription;
 	}
@@ -571,98 +571,98 @@ private:
 class CJobSet
 {
 public:
-	CJobSet( CJob *pJob = NULL )
+	CJobSet(CJob* pJob = NULL)
 	{
-		if ( pJob )
+		if (pJob)
 		{
-			m_jobs.AddToTail( pJob );
+			m_jobs.AddToTail(pJob);
 		}
 	}
 
-	CJobSet( CJob **ppJobs, int nJobs )
+	CJobSet(CJob** ppJobs, int nJobs)
 	{
-		if ( ppJobs )
+		if (ppJobs)
 		{
-			m_jobs.AddMultipleToTail( nJobs, ppJobs );
+			m_jobs.AddMultipleToTail(nJobs, ppJobs);
 		}
 	}
 
 	~CJobSet()
 	{
-		for ( int i = 0; i < m_jobs.Count(); i++ )
+		for (int i = 0; i < m_jobs.Count(); i++)
 		{
 			m_jobs[i]->Release();
 		}
 	}
 
-	void operator+=( CJob *pJob )
+	void operator+=(CJob* pJob)
 	{
-		m_jobs.AddToTail( pJob );
+		m_jobs.AddToTail(pJob);
 	}
 
-	void operator-=( CJob *pJob )
+	void operator-=(CJob* pJob)
 	{
-		m_jobs.FindAndRemove( pJob );
+		m_jobs.FindAndRemove(pJob);
 	}
 
-	void Execute( bool bRelease = true )
+	void Execute(bool bRelease = true)
 	{
-		for ( int i = 0; i < m_jobs.Count(); i++ )
+		for (int i = 0; i < m_jobs.Count(); i++)
 		{
 			m_jobs[i]->Execute();
-			if ( bRelease )
+			if (bRelease)
 			{
 				m_jobs[i]->Release();
 			}
 		}
 
-		if ( bRelease )
+		if (bRelease)
 		{
 			m_jobs.RemoveAll();
 		}
 	}
 
-	void Abort( bool bRelease = true )
+	void Abort(bool bRelease = true)
 	{
-		for ( int i = 0; i < m_jobs.Count(); i++ )
+		for (int i = 0; i < m_jobs.Count(); i++)
 		{
 			m_jobs[i]->Abort();
-			if ( bRelease )
+			if (bRelease)
 			{
 				m_jobs[i]->Release();
 			}
 		}
 
-		if ( bRelease )
+		if (bRelease)
 		{
 			m_jobs.RemoveAll();
 		}
 	}
 
-	void WaitForFinish( bool bRelease = true )
+	void WaitForFinish(bool bRelease = true)
 	{
-		for ( int i = 0; i < m_jobs.Count(); i++ )
+		for (int i = 0; i < m_jobs.Count(); i++)
 		{
 			m_jobs[i]->WaitForFinish();
-			if ( bRelease )
+			if (bRelease)
 			{
 				m_jobs[i]->Release();
 			}
 		}
 
-		if ( bRelease )
+		if (bRelease)
 		{
 			m_jobs.RemoveAll();
 		}
 	}
 
-	void WaitForFinish( IThreadPool *pPool, bool bRelease = true )
+	void WaitForFinish(IThreadPool* pPool, bool bRelease = true)
 	{
-		pPool->YieldWait( m_jobs.Base(), m_jobs.Count() );
+		pPool->YieldWait(m_jobs.Base(), m_jobs.Count());
 
-		if ( bRelease )
+		if (bRelease)
 		{
-			for ( int i = 0; i < m_jobs.Count(); i++ )
+			for (int i = 0; i < m_jobs.Count(); i++)
 			{
 				m_jobs[i]->Release();
 			}
@@ -672,7 +672,7 @@ public:
 	}
 
 private:
-	CUtlVectorFixed<CJob *, 16> m_jobs;
+	CUtlVectorFixed<CJob*, 16> m_jobs;
 };
 
 //-----------------------------------------------------------------------------
@@ -731,7 +731,7 @@ private:
 		\
 	}
 
-FUNC_GENERATE_ALL( DEFINE_NON_MEMBER_ITER_RANGE_PARALLEL );
+FUNC_GENERATE_ALL(DEFINE_NON_MEMBER_ITER_RANGE_PARALLEL);
 
 #define DEFINE_MEMBER_ITER_RANGE_PARALLEL(N) \
 	template <typename OBJECT_TYPE, typename FUNCTION_CLASS, typename FUNCTION_RETTYPE FUNC_TEMPLATE_FUNC_PARAMS_##N FUNC_TEMPLATE_ARG_PARAMS_##N, typename ITERTYPE1, typename ITERTYPE2> \
@@ -766,7 +766,7 @@ FUNC_GENERATE_ALL( DEFINE_NON_MEMBER_ITER_RANGE_PARALLEL );
 		\
 	}
 
-FUNC_GENERATE_ALL( DEFINE_MEMBER_ITER_RANGE_PARALLEL );
+FUNC_GENERATE_ALL(DEFINE_MEMBER_ITER_RANGE_PARALLEL);
 
 
 //-----------------------------------------------------------------------------
@@ -787,7 +787,7 @@ template <typename T>
 class CFuncJobItemProcessor : public CJobItemProcessor<T>
 {
 public:
-	void Init(void (*pfnProcess)( T & ), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL )
+	void Init(void (*pfnProcess)(T&), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL)
 	{
 		m_pfnProcess = pfnProcess;
 		m_pfnBegin = pfnBegin;
@@ -795,12 +795,12 @@ public:
 	}
 
 	//CFuncJobItemProcessor(OBJECT_TYPE_PTR pObject, void (FUNCTION_CLASS::*pfnProcess)( ITEM_TYPE & ), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL );
-	void Begin()						{ if ( m_pfnBegin ) (*m_pfnBegin)(); }
-	void Process( T &item )	{ (*m_pfnProcess)( item ); }
-	void End()							{ if ( m_pfnEnd ) (*m_pfnEnd)(); }
+	void Begin() { if (m_pfnBegin) (*m_pfnBegin)(); }
+	void Process(T& item) { (*m_pfnProcess)(item); }
+	void End() { if (m_pfnEnd) (*m_pfnEnd)(); }
 
 protected:
-	void (*m_pfnProcess)( T & );
+	void (*m_pfnProcess)(T&);
 	void (*m_pfnBegin)();
 	void (*m_pfnEnd)();
 };
@@ -809,7 +809,7 @@ template <typename T, class OBJECT_TYPE, class FUNCTION_CLASS = OBJECT_TYPE >
 class CMemberFuncJobItemProcessor : public CJobItemProcessor<T>
 {
 public:
-	void Init( OBJECT_TYPE *pObject, void (FUNCTION_CLASS::*pfnProcess)( T & ), void (FUNCTION_CLASS::*pfnBegin)() = NULL, void (FUNCTION_CLASS::*pfnEnd)() = NULL )
+	void Init(OBJECT_TYPE* pObject, void (FUNCTION_CLASS::* pfnProcess)(T&), void (FUNCTION_CLASS::* pfnBegin)() = NULL, void (FUNCTION_CLASS::* pfnEnd)() = NULL)
 	{
 		m_pObject = pObject;
 		m_pfnProcess = pfnProcess;
@@ -817,35 +817,35 @@ public:
 		m_pfnEnd = pfnEnd;
 	}
 
-	void Begin()						{ if ( m_pfnBegin ) ((*m_pObject).*m_pfnBegin)(); }
-	void Process( T &item )	            { ((*m_pObject).*m_pfnProcess)( item ); }
-	void End()							{ if ( m_pfnEnd ) ((*m_pObject).*m_pfnEnd)(); }
+	void Begin() { if (m_pfnBegin) ((*m_pObject).*m_pfnBegin)(); }
+	void Process(T& item) { ((*m_pObject).*m_pfnProcess)(item); }
+	void End() { if (m_pfnEnd) ((*m_pObject).*m_pfnEnd)(); }
 
 protected:
-	OBJECT_TYPE *m_pObject;
+	OBJECT_TYPE* m_pObject;
 
-	void (FUNCTION_CLASS::*m_pfnProcess)( T & );
-	void (FUNCTION_CLASS::*m_pfnBegin)();
-	void (FUNCTION_CLASS::*m_pfnEnd)();
+	void (FUNCTION_CLASS::* m_pfnProcess)(T&);
+	void (FUNCTION_CLASS::* m_pfnBegin)();
+	void (FUNCTION_CLASS::* m_pfnEnd)();
 };
 
 template <typename T>
 class CLoopFuncJobItemProcessor : public CJobItemProcessor<T>
 {
 public:
-	void Init(void (*pfnProcess)( T*, int, int ), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL )
+	void Init(void (*pfnProcess)(T*, int, int), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL)
 	{
 		m_pfnProcess = pfnProcess;
 		m_pfnBegin = pfnBegin;
 		m_pfnEnd = pfnEnd;
 	}
 
-	void Begin()									{ if ( m_pfnBegin ) (*m_pfnBegin)(); }
-	void Process( T* pContext, int nFirst, int nCount )	{ (*m_pfnProcess)( pContext, nFirst, nCount ); }
-	void End()										{ if ( m_pfnEnd ) (*m_pfnEnd)(); }
+	void Begin() { if (m_pfnBegin) (*m_pfnBegin)(); }
+	void Process(T* pContext, int nFirst, int nCount) { (*m_pfnProcess)(pContext, nFirst, nCount); }
+	void End() { if (m_pfnEnd) (*m_pfnEnd)(); }
 
 protected:
-	void (*m_pfnProcess)( T*, int, int );
+	void (*m_pfnProcess)(T*, int, int);
 	void (*m_pfnBegin)();
 	void (*m_pfnEnd)();
 };
@@ -854,7 +854,7 @@ template <typename T, class OBJECT_TYPE, class FUNCTION_CLASS = OBJECT_TYPE >
 class CLoopMemberFuncJobItemProcessor : public CJobItemProcessor<T>
 {
 public:
-	void Init( OBJECT_TYPE *pObject, void (FUNCTION_CLASS::*pfnProcess)( T*, int, int ), void (FUNCTION_CLASS::*pfnBegin)() = NULL, void (FUNCTION_CLASS::*pfnEnd)() = NULL )
+	void Init(OBJECT_TYPE* pObject, void (FUNCTION_CLASS::* pfnProcess)(T*, int, int), void (FUNCTION_CLASS::* pfnBegin)() = NULL, void (FUNCTION_CLASS::* pfnEnd)() = NULL)
 	{
 		m_pObject = pObject;
 		m_pfnProcess = pfnProcess;
@@ -862,16 +862,16 @@ public:
 		m_pfnEnd = pfnEnd;
 	}
 
-	void Begin()									{ if ( m_pfnBegin ) ((*m_pObject).*m_pfnBegin)(); }
-	void Process( T *item, int nFirst, int nCount )	{ ((*m_pObject).*m_pfnProcess)( item, nFirst, nCount ); }
-	void End()										{ if ( m_pfnEnd ) ((*m_pObject).*m_pfnEnd)(); }
+	void Begin() { if (m_pfnBegin) ((*m_pObject).*m_pfnBegin)(); }
+	void Process(T* item, int nFirst, int nCount) { ((*m_pObject).*m_pfnProcess)(item, nFirst, nCount); }
+	void End() { if (m_pfnEnd) ((*m_pObject).*m_pfnEnd)(); }
 
 protected:
-	OBJECT_TYPE *m_pObject;
+	OBJECT_TYPE* m_pObject;
 
-	void (FUNCTION_CLASS::*m_pfnProcess)( T*, int, int );
-	void (FUNCTION_CLASS::*m_pfnBegin)();
-	void (FUNCTION_CLASS::*m_pfnEnd)();
+	void (FUNCTION_CLASS::* m_pfnProcess)(T*, int, int);
+	void (FUNCTION_CLASS::* m_pfnBegin)();
+	void (FUNCTION_CLASS::* m_pfnEnd)();
 };
 
 
@@ -884,12 +884,12 @@ class CParallelProcessor
 public:
 	CParallelProcessor()
 	{
-		m_pItems = m_pLimit= 0;
+		m_pItems = m_pLimit = 0;
 	}
 
-	void Run( ITEM_TYPE *pItems, unsigned nItems, int nChunkSize = 1, int nMaxParallel = INT_MAX, IThreadPool *pThreadPool = NULL )
+	void Run(ITEM_TYPE* pItems, unsigned nItems, int nChunkSize = 1, int nMaxParallel = INT_MAX, IThreadPool* pThreadPool = NULL)
 	{
-		if ( nItems == 0 )
+		if (nItems == 0)
 			return;
 
 #if defined(_X360)
@@ -897,7 +897,7 @@ public:
 #endif
 
 		m_nChunkSize = nChunkSize;
-		if ( !pThreadPool )
+		if (!pThreadPool)
 		{
 			pThreadPool = g_pThreadPool;
 		}
@@ -907,36 +907,36 @@ public:
 
 		int nJobs = nItems - 1;
 
-		if ( nJobs > nMaxParallel )
+		if (nJobs > nMaxParallel)
 		{
 			nJobs = nMaxParallel;
 		}
 
-		if (! pThreadPool )									// only possible on linux
+		if (!pThreadPool)									// only possible on linux
 		{
-			DoExecute( );
+			DoExecute();
 			return;
 		}
 
 		int nThreads = pThreadPool->NumThreads();
-		if ( nJobs > nThreads )
+		if (nJobs > nThreads)
 		{
 			nJobs = nThreads;
 		}
 
-		if ( nJobs > 0 )
+		if (nJobs > 0)
 		{
-			CJob **jobs = (CJob **)stackalloc( nJobs * sizeof(CJob **) );
+			CJob** jobs = (CJob**)stackalloc(nJobs * sizeof(CJob**));
 			int i = nJobs;
 
-			while( i-- )
+			while (i--)
 			{
-				jobs[i] = pThreadPool->QueueCall( this, &CParallelProcessor<ITEM_TYPE, ITEM_PROCESSOR_TYPE, ID_TO_PREVENT_COMDATS_IN_PROFILES>::DoExecute );
+				jobs[i] = pThreadPool->QueueCall(this, &CParallelProcessor<ITEM_TYPE, ITEM_PROCESSOR_TYPE, ID_TO_PREVENT_COMDATS_IN_PROFILES>::DoExecute);
 			}
 
 			DoExecute();
 
-			for ( i = 0; i < nJobs; i++ )
+			for (i = 0; i < nJobs; i++)
 			{
 				jobs[i]->Abort(); // will either abort ones that never got a thread, or noop on ones that did
 				jobs[i]->Release();
@@ -953,26 +953,26 @@ public:
 private:
 	void DoExecute()
 	{
-		if ( m_pItems < m_pLimit )
+		if (m_pItems < m_pLimit)
 		{
 #if defined(_X360)
 			volatile int ignored = ID_TO_PREVENT_COMDATS_IN_PROFILES;
 #endif
 			m_ItemProcessor.Begin();
 
-			ITEM_TYPE *pLimit = m_pLimit;
+			ITEM_TYPE* pLimit = m_pLimit;
 
 			int nChunkSize = m_nChunkSize;
 			for (;;)
 			{
-				ITEM_TYPE *pCurrent = m_pItems.AtomicAdd( nChunkSize );
-				ITEM_TYPE *pLast = MIN( pLimit, pCurrent + nChunkSize );
-				while( pCurrent < pLast )
+				ITEM_TYPE* pCurrent = m_pItems.AtomicAdd(nChunkSize);
+				ITEM_TYPE* pLast = MIN(pLimit, pCurrent + nChunkSize);
+				while (pCurrent < pLast)
 				{
-					m_ItemProcessor.Process( *pCurrent );
+					m_ItemProcessor.Process(*pCurrent);
 					pCurrent++;
 				}
-				if ( pCurrent >= pLimit )
+				if (pCurrent >= pLimit)
 				{
 					break;
 				}
@@ -981,71 +981,71 @@ private:
 		}
 	}
 	CInterlockedPtr<ITEM_TYPE>	m_pItems;
-	ITEM_TYPE *					m_pLimit;
+	ITEM_TYPE* m_pLimit;
 	int m_nChunkSize;
 
 };
 
 #pragma warning(pop)
 
-template <typename ITEM_TYPE> 
-inline void ParallelProcess( ITEM_TYPE *pItems, unsigned nItems, void (*pfnProcess)( ITEM_TYPE & ), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL, int nMaxParallel = INT_MAX )
+template <typename ITEM_TYPE>
+inline void ParallelProcess(ITEM_TYPE* pItems, unsigned nItems, void (*pfnProcess)(ITEM_TYPE&), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL, int nMaxParallel = INT_MAX)
 {
 	CParallelProcessor<ITEM_TYPE, CFuncJobItemProcessor<ITEM_TYPE> > processor;
-	processor.m_ItemProcessor.Init( pfnProcess, pfnBegin, pfnEnd );
-	processor.Run( pItems, nItems, 1, nMaxParallel );
+	processor.m_ItemProcessor.Init(pfnProcess, pfnBegin, pfnEnd);
+	processor.Run(pItems, nItems, 1, nMaxParallel);
 }
 
-template <typename ITEM_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS > 
-inline void ParallelProcess( ITEM_TYPE *pItems, unsigned nItems, OBJECT_TYPE *pObject, void (FUNCTION_CLASS::*pfnProcess)( ITEM_TYPE & ), void (FUNCTION_CLASS::*pfnBegin)() = NULL, void (FUNCTION_CLASS::*pfnEnd)() = NULL, int nMaxParallel = INT_MAX )
+template <typename ITEM_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS >
+inline void ParallelProcess(ITEM_TYPE* pItems, unsigned nItems, OBJECT_TYPE* pObject, void (FUNCTION_CLASS::* pfnProcess)(ITEM_TYPE&), void (FUNCTION_CLASS::* pfnBegin)() = NULL, void (FUNCTION_CLASS::* pfnEnd)() = NULL, int nMaxParallel = INT_MAX)
 {
 	CParallelProcessor<ITEM_TYPE, CMemberFuncJobItemProcessor<ITEM_TYPE, OBJECT_TYPE, FUNCTION_CLASS> > processor;
-	processor.m_ItemProcessor.Init( pObject, pfnProcess, pfnBegin, pfnEnd );
-	processor.Run( pItems, nItems, 1, nMaxParallel );
+	processor.m_ItemProcessor.Init(pObject, pfnProcess, pfnBegin, pfnEnd);
+	processor.Run(pItems, nItems, 1, nMaxParallel);
 }
 
 // Parallel Process that lets you specify threadpool
-template <typename ITEM_TYPE> 
-inline void ParallelProcess( IThreadPool *pPool, ITEM_TYPE *pItems, unsigned nItems, void (*pfnProcess)( ITEM_TYPE & ), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL, int nMaxParallel = INT_MAX )
+template <typename ITEM_TYPE>
+inline void ParallelProcess(IThreadPool* pPool, ITEM_TYPE* pItems, unsigned nItems, void (*pfnProcess)(ITEM_TYPE&), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL, int nMaxParallel = INT_MAX)
 {
 	CParallelProcessor<ITEM_TYPE, CFuncJobItemProcessor<ITEM_TYPE> > processor;
-	processor.m_ItemProcessor.Init( pfnProcess, pfnBegin, pfnEnd );
-	processor.Run( pItems, nItems, 1, nMaxParallel, pPool );
+	processor.m_ItemProcessor.Init(pfnProcess, pfnBegin, pfnEnd);
+	processor.Run(pItems, nItems, 1, nMaxParallel, pPool);
 }
 
-template <typename ITEM_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS > 
-inline void ParallelProcess( IThreadPool *pPool, ITEM_TYPE *pItems, unsigned nItems, OBJECT_TYPE *pObject, void (FUNCTION_CLASS::*pfnProcess)( ITEM_TYPE & ), void (FUNCTION_CLASS::*pfnBegin)() = NULL, void (FUNCTION_CLASS::*pfnEnd)() = NULL, int nMaxParallel = INT_MAX )
+template <typename ITEM_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS >
+inline void ParallelProcess(IThreadPool* pPool, ITEM_TYPE* pItems, unsigned nItems, OBJECT_TYPE* pObject, void (FUNCTION_CLASS::* pfnProcess)(ITEM_TYPE&), void (FUNCTION_CLASS::* pfnBegin)() = NULL, void (FUNCTION_CLASS::* pfnEnd)() = NULL, int nMaxParallel = INT_MAX)
 {
 	CParallelProcessor<ITEM_TYPE, CMemberFuncJobItemProcessor<ITEM_TYPE, OBJECT_TYPE, FUNCTION_CLASS> > processor;
-	processor.m_ItemProcessor.Init( pObject, pfnProcess, pfnBegin, pfnEnd );
-	processor.Run( pItems, nItems, 1, nMaxParallel, pPool );
+	processor.m_ItemProcessor.Init(pObject, pfnProcess, pfnBegin, pfnEnd);
+	processor.Run(pItems, nItems, 1, nMaxParallel, pPool);
 }
 
 // ParallelProcessChunks lets you specify a minimum # of items to process per job. Use this when
 // you may have a large set of work items which only take a small amount of time per item, and so
 // need to reduce dispatch overhead.
-template <typename ITEM_TYPE> 
-inline void ParallelProcessChunks( ITEM_TYPE *pItems, unsigned nItems, void (*pfnProcess)( ITEM_TYPE & ), int nChunkSize, int nMaxParallel = INT_MAX )
+template <typename ITEM_TYPE>
+inline void ParallelProcessChunks(ITEM_TYPE* pItems, unsigned nItems, void (*pfnProcess)(ITEM_TYPE&), int nChunkSize, int nMaxParallel = INT_MAX)
 {
 	CParallelProcessor<ITEM_TYPE, CFuncJobItemProcessor<ITEM_TYPE> > processor;
-	processor.m_ItemProcessor.Init( pfnProcess, NULL, NULL );
-	processor.Run( pItems, nItems, nChunkSize, nMaxParallel );
+	processor.m_ItemProcessor.Init(pfnProcess, NULL, NULL);
+	processor.Run(pItems, nItems, nChunkSize, nMaxParallel);
 }
 
-template <typename ITEM_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS > 
-inline void ParallelProcessChunks( ITEM_TYPE *pItems, unsigned nItems, OBJECT_TYPE *pObject, void (FUNCTION_CLASS::*pfnProcess)( ITEM_TYPE & ), int nChunkSize, int nMaxParallel = INT_MAX )
+template <typename ITEM_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS >
+inline void ParallelProcessChunks(ITEM_TYPE* pItems, unsigned nItems, OBJECT_TYPE* pObject, void (FUNCTION_CLASS::* pfnProcess)(ITEM_TYPE&), int nChunkSize, int nMaxParallel = INT_MAX)
 {
 	CParallelProcessor<ITEM_TYPE, CMemberFuncJobItemProcessor<ITEM_TYPE, OBJECT_TYPE, FUNCTION_CLASS> > processor;
-	processor.m_ItemProcessor.Init( pObject, pfnProcess, NULL, NULL );
-	processor.Run( pItems, nItems, nChunkSize, nMaxParallel );
+	processor.m_ItemProcessor.Init(pObject, pfnProcess, NULL, NULL);
+	processor.Run(pItems, nItems, nChunkSize, nMaxParallel);
 }
 
-template <typename ITEM_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS > 
-inline void ParallelProcessChunks( IThreadPool *pPool, ITEM_TYPE *pItems, unsigned nItems, OBJECT_TYPE *pObject, void (FUNCTION_CLASS::*pfnProcess)( ITEM_TYPE & ), int nChunkSize, int nMaxParallel = INT_MAX )
+template <typename ITEM_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS >
+inline void ParallelProcessChunks(IThreadPool* pPool, ITEM_TYPE* pItems, unsigned nItems, OBJECT_TYPE* pObject, void (FUNCTION_CLASS::* pfnProcess)(ITEM_TYPE&), int nChunkSize, int nMaxParallel = INT_MAX)
 {
 	CParallelProcessor<ITEM_TYPE, CMemberFuncJobItemProcessor<ITEM_TYPE, OBJECT_TYPE, FUNCTION_CLASS> > processor;
-	processor.m_ItemProcessor.Init( pObject, pfnProcess, NULL, NULL );
-	processor.Run( pItems, nItems, nChunkSize, nMaxParallel, pPool );
+	processor.m_ItemProcessor.Init(pObject, pfnProcess, NULL, NULL);
+	processor.Run(pItems, nItems, nChunkSize, nMaxParallel, pPool);
 }
 
 
@@ -1060,12 +1060,12 @@ public:
 		m_nActive = 0;
 	}
 
-	void Run( CONTEXT_TYPE *pContext, int nBegin, int nItems, int nChunkCount, int nMaxParallel = INT_MAX, IThreadPool *pThreadPool = NULL )
+	void Run(CONTEXT_TYPE* pContext, int nBegin, int nItems, int nChunkCount, int nMaxParallel = INT_MAX, IThreadPool* pThreadPool = NULL)
 	{
-		if ( !nItems )
+		if (!nItems)
 			return;
 
-		if ( !pThreadPool )
+		if (!pThreadPool)
 		{
 			pThreadPool = g_pThreadPool;
 		}
@@ -1073,39 +1073,39 @@ public:
 		m_pContext = pContext;
 		m_nIndex = nBegin;
 		m_nLimit = nBegin + nItems;
-		nChunkCount = MAX( MIN( nItems, nChunkCount ), 1 );
-		m_nChunkCount = ( nItems + nChunkCount - 1 ) / nChunkCount;
-		int nJobs = ( nItems + m_nChunkCount - 1 ) / m_nChunkCount;
-		if ( nJobs > nMaxParallel )
+		nChunkCount = MAX(MIN(nItems, nChunkCount), 1);
+		m_nChunkCount = (nItems + nChunkCount - 1) / nChunkCount;
+		int nJobs = (nItems + m_nChunkCount - 1) / m_nChunkCount;
+		if (nJobs > nMaxParallel)
 		{
 			nJobs = nMaxParallel;
 		}
 
-		if ( !pThreadPool )									// only possible on linux
+		if (!pThreadPool)									// only possible on linux
 		{
-			DoExecute( );
+			DoExecute();
 			return;
 		}
 
 		int nThreads = pThreadPool->NumThreads();
-		if ( nJobs > nThreads )
+		if (nJobs > nThreads)
 		{
 			nJobs = nThreads;
 		}
 
-		if ( nJobs > 0 )
+		if (nJobs > 0)
 		{
-			CJob **jobs = (CJob **)stackalloc( nJobs * sizeof(CJob **) );
+			CJob** jobs = (CJob**)stackalloc(nJobs * sizeof(CJob**));
 			int i = nJobs;
 
-			while( i-- )
+			while (i--)
 			{
-				jobs[i] = pThreadPool->QueueCall( this, &CParallelLoopProcessor<CONTEXT_TYPE, ITEM_PROCESSOR_TYPE>::DoExecute );
+				jobs[i] = pThreadPool->QueueCall(this, &CParallelLoopProcessor<CONTEXT_TYPE, ITEM_PROCESSOR_TYPE>::DoExecute);
 			}
 
 			DoExecute();
 
-			for ( i = 0; i < nJobs; i++ )
+			for (i = 0; i < nJobs; i++)
 			{
 				jobs[i]->Abort(); // will either abort ones that never got a thread, or noop on ones that did
 				jobs[i]->Release();
@@ -1125,11 +1125,11 @@ private:
 		m_ItemProcessor.Begin();
 		for (;;)
 		{
-			int nIndex = m_nIndex.AtomicAdd( m_nChunkCount );
-			if ( nIndex < m_nLimit )
+			int nIndex = m_nIndex.AtomicAdd(m_nChunkCount);
+			if (nIndex < m_nLimit)
 			{
-				int nCount = MIN( m_nChunkCount, m_nLimit - nIndex );
-				m_ItemProcessor.Process( m_pContext, nIndex, nCount );
+				int nCount = MIN(m_nChunkCount, m_nLimit - nIndex);
+				m_ItemProcessor.Process(m_pContext, nIndex, nCount);
 			}
 			else
 			{
@@ -1140,43 +1140,43 @@ private:
 		--m_nActive;
 	}
 
-	CONTEXT_TYPE				*m_pContext;
+	CONTEXT_TYPE* m_pContext;
 	CInterlockedInt				m_nIndex;
 	int							m_nLimit;
 	int							m_nChunkCount;
 	CInterlockedInt				m_nActive;
 };
 
-template < typename CONTEXT_TYPE > 
-inline void ParallelLoopProcess( IThreadPool *pPool, CONTEXT_TYPE *pContext, int nStart, int nCount, void (*pfnProcess)( CONTEXT_TYPE*, int, int ), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL, int nMaxParallel = INT_MAX )
+template < typename CONTEXT_TYPE >
+inline void ParallelLoopProcess(IThreadPool* pPool, CONTEXT_TYPE* pContext, int nStart, int nCount, void (*pfnProcess)(CONTEXT_TYPE*, int, int), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL, int nMaxParallel = INT_MAX)
 {
 	CParallelLoopProcessor< CONTEXT_TYPE, CLoopFuncJobItemProcessor< CONTEXT_TYPE > > processor;
-	processor.m_ItemProcessor.Init( pfnProcess, pfnBegin, pfnEnd );
-	processor.Run( pContext, nStart, nCount, 1, nMaxParallel, pPool );
+	processor.m_ItemProcessor.Init(pfnProcess, pfnBegin, pfnEnd);
+	processor.Run(pContext, nStart, nCount, 1, nMaxParallel, pPool);
 }
 
-template < typename CONTEXT_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS > 
-inline void ParallelLoopProcess( IThreadPool *pPool, CONTEXT_TYPE *pContext, int nStart, int nCount, OBJECT_TYPE *pObject, void (FUNCTION_CLASS::*pfnProcess)( CONTEXT_TYPE*, int, int ), void (FUNCTION_CLASS::*pfnBegin)() = NULL, void (FUNCTION_CLASS::*pfnEnd)() = NULL, int nMaxParallel = INT_MAX )
+template < typename CONTEXT_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS >
+inline void ParallelLoopProcess(IThreadPool* pPool, CONTEXT_TYPE* pContext, int nStart, int nCount, OBJECT_TYPE* pObject, void (FUNCTION_CLASS::* pfnProcess)(CONTEXT_TYPE*, int, int), void (FUNCTION_CLASS::* pfnBegin)() = NULL, void (FUNCTION_CLASS::* pfnEnd)() = NULL, int nMaxParallel = INT_MAX)
 {
 	CParallelLoopProcessor< CONTEXT_TYPE, CLoopMemberFuncJobItemProcessor<CONTEXT_TYPE, OBJECT_TYPE, FUNCTION_CLASS> > processor;
-	processor.m_ItemProcessor.Init( pObject, pfnProcess, pfnBegin, pfnEnd );
-	processor.Run( pContext, nStart, nCount, 1, nMaxParallel, pPool );
+	processor.m_ItemProcessor.Init(pObject, pfnProcess, pfnBegin, pfnEnd);
+	processor.Run(pContext, nStart, nCount, 1, nMaxParallel, pPool);
 }
 
-template < typename CONTEXT_TYPE > 
-inline void ParallelLoopProcessChunks( IThreadPool *pPool, CONTEXT_TYPE *pContext, int nStart, int nCount, int nChunkSize, void (*pfnProcess)( CONTEXT_TYPE*, int, int ), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL, int nMaxParallel = INT_MAX )
+template < typename CONTEXT_TYPE >
+inline void ParallelLoopProcessChunks(IThreadPool* pPool, CONTEXT_TYPE* pContext, int nStart, int nCount, int nChunkSize, void (*pfnProcess)(CONTEXT_TYPE*, int, int), void (*pfnBegin)() = NULL, void (*pfnEnd)() = NULL, int nMaxParallel = INT_MAX)
 {
 	CParallelLoopProcessor< CONTEXT_TYPE, CLoopFuncJobItemProcessor< CONTEXT_TYPE > > processor;
-	processor.m_ItemProcessor.Init( pfnProcess, pfnBegin, pfnEnd );
-	processor.Run( pContext, nStart, nCount, nChunkSize, nMaxParallel, pPool );
+	processor.m_ItemProcessor.Init(pfnProcess, pfnBegin, pfnEnd);
+	processor.Run(pContext, nStart, nCount, nChunkSize, nMaxParallel, pPool);
 }
 
-template < typename CONTEXT_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS > 
-inline void ParallelLoopProcessChunks( IThreadPool *pPool, CONTEXT_TYPE *pContext, int nStart, int nCount, int nChunkSize, OBJECT_TYPE *pObject, void (FUNCTION_CLASS::*pfnProcess)( CONTEXT_TYPE*, int, int ), void (FUNCTION_CLASS::*pfnBegin)() = NULL, void (FUNCTION_CLASS::*pfnEnd)() = NULL, int nMaxParallel = INT_MAX )
+template < typename CONTEXT_TYPE, typename OBJECT_TYPE, typename FUNCTION_CLASS >
+inline void ParallelLoopProcessChunks(IThreadPool* pPool, CONTEXT_TYPE* pContext, int nStart, int nCount, int nChunkSize, OBJECT_TYPE* pObject, void (FUNCTION_CLASS::* pfnProcess)(CONTEXT_TYPE*, int, int), void (FUNCTION_CLASS::* pfnBegin)() = NULL, void (FUNCTION_CLASS::* pfnEnd)() = NULL, int nMaxParallel = INT_MAX)
 {
 	CParallelLoopProcessor< CONTEXT_TYPE, CLoopMemberFuncJobItemProcessor<CONTEXT_TYPE, OBJECT_TYPE, FUNCTION_CLASS> > processor;
-	processor.m_ItemProcessor.Init( pObject, pfnProcess, pfnBegin, pfnEnd );
-	processor.Run( pContext, nStart, nCount, nChunkSize, nMaxParallel, pPool );
+	processor.m_ItemProcessor.Init(pObject, pfnProcess, pfnBegin, pfnEnd);
+	processor.Run(pContext, nStart, nCount, nChunkSize, nMaxParallel, pPool);
 }
 
 template <class Derived>
@@ -1193,31 +1193,31 @@ public:
 	}
 
 protected:
-	void Run( int nMaxParallel = INT_MAX, int threadOverride = -1 )
+	void Run(int nMaxParallel = INT_MAX, int threadOverride = -1)
 	{
 		int i = g_pThreadPool->NumIdleThreads();
 
-		if ( nMaxParallel < i)
+		if (nMaxParallel < i)
 		{
 			i = nMaxParallel;
 		}
 
-		while( i -- > 0 )
+		while (i-- > 0)
 		{
-			if (  threadOverride == -1 || i == threadOverride - 1 )
+			if (threadOverride == -1 || i == threadOverride - 1)
 			{
-				++ m_nActive;
-				ThreadExecute( this, &ThisParallelProcessorBase_t::DoExecute )->Release();
+				++m_nActive;
+				ThreadExecute(this, &ThisParallelProcessorBase_t::DoExecute)->Release();
 			}
 		}
 
-		if (  threadOverride == -1 || threadOverride == 0 )
+		if (threadOverride == -1 || threadOverride == 0)
 		{
-			++ m_nActive;
+			++m_nActive;
 			DoExecute();
 		}
 
-		while ( m_nActive )
+		while (m_nActive)
 		{
 			ThreadPause();
 		}
@@ -1231,14 +1231,14 @@ protected:
 private:
 	void DoExecute()
 	{
-		static_cast<Derived *>( this )->OnBegin();
+		static_cast<Derived*>(this)->OnBegin();
 
-		while ( static_cast<Derived *>( this )->OnProcess() )
+		while (static_cast<Derived*>(this)->OnProcess())
 			continue;
 
-		static_cast<Derived *>(this)->OnEnd();
+		static_cast<Derived*>(this)->OnEnd();
 
-		-- m_nActive;
+		--m_nActive;
 	}
 
 	CInterlockedInt				m_nActive;
@@ -1251,111 +1251,111 @@ private:
 // Raw thread launching
 //-----------------------------------------------------------------------------
 
-inline unsigned FunctorExecuteThread( void *pParam )
+inline unsigned FunctorExecuteThread(void* pParam)
 {
-	CFunctor *pFunctor = (CFunctor *)pParam;
+	CFunctor* pFunctor = (CFunctor*)pParam;
 	(*pFunctor)();
 	pFunctor->Release();
 	return 0;
 }
 
-inline ThreadHandle_t ThreadExecuteSoloImpl( CFunctor *pFunctor, const char *pszName = NULL )
+inline ThreadHandle_t ThreadExecuteSoloImpl(CFunctor* pFunctor, const char* pszName = NULL)
 {
 	ThreadHandle_t hThread;
-	hThread = CreateSimpleThread( FunctorExecuteThread, pFunctor );
-	if ( pszName )
+	hThread = CreateSimpleThread(FunctorExecuteThread, pFunctor);
+	if (pszName)
 	{
-		ThreadSetDebugName( hThread, pszName );
+		ThreadSetDebugName(hThread, pszName);
 	}
 	return hThread;
 }
 
-inline ThreadHandle_t ThreadExecuteSolo( CJob *pJob ) { return ThreadExecuteSoloImpl( CreateFunctor( pJob, &CJob::Execute ), pJob->Describe()  ); }
+inline ThreadHandle_t ThreadExecuteSolo(CJob* pJob) { return ThreadExecuteSoloImpl(CreateFunctor(pJob, &CJob::Execute), pJob->Describe()); }
 
-template <typename T1> 																								
-inline ThreadHandle_t ThreadExecuteSolo( const char *pszName, T1 a1 ) { return ThreadExecuteSoloImpl( CreateFunctor( a1 ), pszName  ); }
+template <typename T1>
+inline ThreadHandle_t ThreadExecuteSolo(const char* pszName, T1 a1) { return ThreadExecuteSoloImpl(CreateFunctor(a1), pszName); }
 
-template <typename T1, typename T2> 																				
-inline ThreadHandle_t ThreadExecuteSolo( const char *pszName, T1 a1, T2 a2 ) { return ThreadExecuteSoloImpl( CreateFunctor( a1, a2 ), pszName  ); }
+template <typename T1, typename T2>
+inline ThreadHandle_t ThreadExecuteSolo(const char* pszName, T1 a1, T2 a2) { return ThreadExecuteSoloImpl(CreateFunctor(a1, a2), pszName); }
 
-template <typename T1, typename T2, typename T3> 																	
-inline ThreadHandle_t ThreadExecuteSolo( const char *pszName, T1 a1, T2 a2, T3 a3 ) { return ThreadExecuteSoloImpl( CreateFunctor( a1, a2, a3 ), pszName  ); }
+template <typename T1, typename T2, typename T3>
+inline ThreadHandle_t ThreadExecuteSolo(const char* pszName, T1 a1, T2 a2, T3 a3) { return ThreadExecuteSoloImpl(CreateFunctor(a1, a2, a3), pszName); }
 
-template <typename T1, typename T2, typename T3, typename T4> 														
-inline ThreadHandle_t ThreadExecuteSolo( const char *pszName, T1 a1, T2 a2, T3 a3, T4 a4 ) { return ThreadExecuteSoloImpl( CreateFunctor( a1, a2, a3, a4 ), pszName  ); }
+template <typename T1, typename T2, typename T3, typename T4>
+inline ThreadHandle_t ThreadExecuteSolo(const char* pszName, T1 a1, T2 a2, T3 a3, T4 a4) { return ThreadExecuteSoloImpl(CreateFunctor(a1, a2, a3, a4), pszName); }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5> 											
-inline ThreadHandle_t ThreadExecuteSolo( const char *pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5 ) { return ThreadExecuteSoloImpl( CreateFunctor( a1, a2, a3, a4, a5 ), pszName  ); }
+template <typename T1, typename T2, typename T3, typename T4, typename T5>
+inline ThreadHandle_t ThreadExecuteSolo(const char* pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5) { return ThreadExecuteSoloImpl(CreateFunctor(a1, a2, a3, a4, a5), pszName); }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6> 							
-inline ThreadHandle_t ThreadExecuteSolo( const char *pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6 ) { return ThreadExecuteSoloImpl( CreateFunctor( a1, a2, a3, a4, a5, a6 ), pszName  ); }
+template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+inline ThreadHandle_t ThreadExecuteSolo(const char* pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6) { return ThreadExecuteSoloImpl(CreateFunctor(a1, a2, a3, a4, a5, a6), pszName); }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7> 				
-inline ThreadHandle_t ThreadExecuteSolo( const char *pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7 ) { return ThreadExecuteSoloImpl( CreateFunctor( a1, a2, a3, a4, a5, a6, a7 ), pszName  ); }
+template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+inline ThreadHandle_t ThreadExecuteSolo(const char* pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7) { return ThreadExecuteSoloImpl(CreateFunctor(a1, a2, a3, a4, a5, a6, a7), pszName); }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8> 	
-inline ThreadHandle_t ThreadExecuteSolo( const char *pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7, T8 a8 ) { return ThreadExecuteSoloImpl( CreateFunctor( a1, a2, a3, a4, a5, a6, a7, a8 ), pszName  ); }
+template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+inline ThreadHandle_t ThreadExecuteSolo(const char* pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7, T8 a8) { return ThreadExecuteSoloImpl(CreateFunctor(a1, a2, a3, a4, a5, a6, a7, a8), pszName); }
 
-template <typename T1, typename T2> 																				
-inline ThreadHandle_t ThreadExecuteSoloRef( const char *pszName, T1 a1, T2 a2 ) { return ThreadExecuteSoloImpl( CreateRefCountingFunctor(a1, a2 ), pszName  ); }
+template <typename T1, typename T2>
+inline ThreadHandle_t ThreadExecuteSoloRef(const char* pszName, T1 a1, T2 a2) { return ThreadExecuteSoloImpl(CreateRefCountingFunctor(a1, a2), pszName); }
 
-template <typename T1, typename T2, typename T3> 																	
-inline ThreadHandle_t ThreadExecuteSoloRef( const char *pszName, T1 a1, T2 a2, T3 a3 ) { return ThreadExecuteSoloImpl( CreateRefCountingFunctor(a1, a2, a3 ), pszName  ); }
+template <typename T1, typename T2, typename T3>
+inline ThreadHandle_t ThreadExecuteSoloRef(const char* pszName, T1 a1, T2 a2, T3 a3) { return ThreadExecuteSoloImpl(CreateRefCountingFunctor(a1, a2, a3), pszName); }
 
-template <typename T1, typename T2, typename T3, typename T4> 														
-inline ThreadHandle_t ThreadExecuteSoloRef( const char *pszName, T1 a1, T2 a2, T3 a3, T4 a4 ) { return ThreadExecuteSoloImpl( CreateRefCountingFunctor(a1, a2, a3, a4 ), pszName  ); }
+template <typename T1, typename T2, typename T3, typename T4>
+inline ThreadHandle_t ThreadExecuteSoloRef(const char* pszName, T1 a1, T2 a2, T3 a3, T4 a4) { return ThreadExecuteSoloImpl(CreateRefCountingFunctor(a1, a2, a3, a4), pszName); }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5> 											
-inline ThreadHandle_t ThreadExecuteSoloRef( const char *pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5 ) { return ThreadExecuteSoloImpl( CreateRefCountingFunctor(a1, a2, a3, a4, a5 ), pszName  ); }
+template <typename T1, typename T2, typename T3, typename T4, typename T5>
+inline ThreadHandle_t ThreadExecuteSoloRef(const char* pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5) { return ThreadExecuteSoloImpl(CreateRefCountingFunctor(a1, a2, a3, a4, a5), pszName); }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6> 							
-inline ThreadHandle_t ThreadExecuteSoloRef( const char *pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6 ) { return ThreadExecuteSoloImpl( CreateRefCountingFunctor(a1, a2, a3, a4, a5, a6 ), pszName  ); }
+template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+inline ThreadHandle_t ThreadExecuteSoloRef(const char* pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6) { return ThreadExecuteSoloImpl(CreateRefCountingFunctor(a1, a2, a3, a4, a5, a6), pszName); }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7> 				
-inline ThreadHandle_t ThreadExecuteSoloRef( const char *pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7 ) { return ThreadExecuteSoloImpl( CreateRefCountingFunctor(a1, a2, a3, a4, a5, a6, a7 ), pszName  ); }
+template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+inline ThreadHandle_t ThreadExecuteSoloRef(const char* pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7) { return ThreadExecuteSoloImpl(CreateRefCountingFunctor(a1, a2, a3, a4, a5, a6, a7), pszName); }
 
-template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8> 	
-inline ThreadHandle_t ThreadExecuteSoloRef( const char *pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7, T8 a8 ) { return ThreadExecuteSoloImpl( CreateRefCountingFunctor(a1, a2, a3, a4, a5, a6, a7, a8 ), pszName  ); }
+template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+inline ThreadHandle_t ThreadExecuteSoloRef(const char* pszName, T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7, T8 a8) { return ThreadExecuteSoloImpl(CreateRefCountingFunctor(a1, a2, a3, a4, a5, a6, a7, a8), pszName); }
 
 //-----------------------------------------------------------------------------
 
-inline bool IThreadPool::YieldWait( CThreadEvent &theEvent, unsigned timeout )
+inline bool IThreadPool::YieldWait(CThreadEvent& theEvent, unsigned timeout)
 {
-	CThreadEvent *pEvent = &theEvent;
-	return ( YieldWait( &pEvent, 1, true, timeout ) != TW_TIMEOUT );
+	CThreadEvent* pEvent = &theEvent;
+	return (YieldWait(&pEvent, 1, true, timeout) != TW_TIMEOUT);
 }
 
-inline bool IThreadPool::YieldWait( CJob *pJob, unsigned timeout )
+inline bool IThreadPool::YieldWait(CJob* pJob, unsigned timeout)
 {
-	return ( YieldWait( &pJob, 1, true, timeout ) != TW_TIMEOUT );
+	return (YieldWait(&pJob, 1, true, timeout) != TW_TIMEOUT);
 }
 
 //-----------------------------------------------------------------------------
 
 inline JobStatus_t CJob::Execute()
 {
-	if ( IsFinished() )
+	if (IsFinished())
 	{
 		return m_status;
 	}
 
-	AUTO_LOCK( m_mutex );
+	AUTO_LOCK(m_mutex);
 	AddRef();
 
 	JobStatus_t result;
 
-	switch ( m_status )
+	switch (m_status)
 	{
 	case JOB_STATUS_UNSERVICED:
 	case JOB_STATUS_PENDING:
-		{
-			// Service it
-			m_status = JOB_STATUS_INPROGRESS;
-			result = m_status = DoExecute();
-			DoCleanup();
-			m_CompleteEvent.Set();
-			break;
-		}
+	{
+		// Service it
+		m_status = JOB_STATUS_INPROGRESS;
+		result = m_status = DoExecute();
+		DoCleanup();
+		m_CompleteEvent.Set();
+		break;
+	}
 
 	case JOB_STATUS_INPROGRESS:
 		AssertMsg(0, "Mutex Should have protected use while processing");
@@ -1367,7 +1367,7 @@ inline JobStatus_t CJob::Execute()
 		break;
 
 	default:
-		AssertMsg( m_status < JOB_OK, "Unknown job state");
+		AssertMsg(m_status < JOB_OK, "Unknown job state");
 		result = m_status;
 	}
 
@@ -1383,7 +1383,7 @@ inline JobStatus_t CJob::TryExecute()
 {
 	// TryLock() would only fail if another thread has entered
 	// Execute() or Abort()
-	if ( !IsFinished() && TryLock() )
+	if (!IsFinished() && TryLock())
 	{
 		// ...service the request
 		Execute();
@@ -1394,29 +1394,29 @@ inline JobStatus_t CJob::TryExecute()
 
 //---------------------------------------------------------
 
-inline JobStatus_t CJob::Abort( bool bDiscard )
+inline JobStatus_t CJob::Abort(bool bDiscard)
 {
-	if ( IsFinished() )
+	if (IsFinished())
 	{
 		return m_status;
 	}
 
-	AUTO_LOCK( m_mutex );
+	AUTO_LOCK(m_mutex);
 	AddRef();
 
 	JobStatus_t result;
 
-	switch ( m_status )
+	switch (m_status)
 	{
 	case JOB_STATUS_UNSERVICED:
 	case JOB_STATUS_PENDING:
-		{
-			result = m_status = DoAbort( bDiscard );
-			if ( bDiscard )
-				DoCleanup();
-			m_CompleteEvent.Set();
-		}
-		break;
+	{
+		result = m_status = DoAbort(bDiscard);
+		if (bDiscard)
+			DoCleanup();
+		m_CompleteEvent.Set();
+	}
+	break;
 
 	case JOB_STATUS_ABORTED:
 	case JOB_STATUS_INPROGRESS:
@@ -1425,7 +1425,7 @@ inline JobStatus_t CJob::Abort( bool bDiscard )
 		break;
 
 	default:
-		AssertMsg( m_status < JOB_OK, "Unknown job state");
+		AssertMsg(m_status < JOB_OK, "Unknown job state");
 		result = m_status;
 	}
 

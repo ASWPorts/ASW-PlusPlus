@@ -231,17 +231,17 @@ void CNPC_Barnacle::ComputeWorldSpaceSurroundingBox( Vector *pVecWorldMins, Vect
 //=========================================================
 void CNPC_Barnacle::HandleAnimEvent( animevent_t *pEvent )
 {
-	if ( pEvent->event== AE_BARNACLE_PUKEGIB )
+	if ( pEvent->Event() == AE_BARNACLE_PUKEGIB)
 	{
 		CGib::SpawnSpecificGibs( this, 1, 50, 1, "models/gibs/hgibs_rib.mdl");
 		return;
 	}
-	if ( pEvent->event == AE_BARNACLE_BITE )
+	if ( pEvent->Event() == AE_BARNACLE_BITE)
 	{
 		BitePrey();
 		return;
 	}
-	if ( pEvent->event == AE_BARNACLE_SPIT )
+	if ( pEvent->Event() == AE_BARNACLE_SPIT)
 	{
 		SpitPrey();
 		return;
@@ -1099,7 +1099,7 @@ void CNPC_Barnacle::LiftRagdoll( float flBiteZOffset )
 			*/
 
 			// Get the current bone matrix
-			matrix3x4_t pBoneToWorld[MAXSTUDIOBONES];
+			matrix3x4a_t pBoneToWorld[MAXSTUDIOBONES];
 			pAnimating->SetupBones( pBoneToWorld, BONE_USED_BY_ANYTHING );
 
 			// Apply the forces to the ragdoll

@@ -242,7 +242,7 @@ public:
 	}
 
 	int		OnTakeDamage( const CTakeDamageInfo &info );
-	void	TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr, CDmgAccumulator *pAccumulator );
+	void	TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr );
 
 	Class_T	Classify() 
 	{ 
@@ -2524,7 +2524,7 @@ void CNPC_RollerMine::Explode( void )
 	}
 
 	// Underwater explosion?
-	if ( UTIL_PointContents( GetAbsOrigin() ) & MASK_WATER )
+	if ( UTIL_PointContents( GetAbsOrigin(), 0 ) & MASK_WATER )
 	{
 		CEffectData	data;
 		data.m_vOrigin = WorldSpaceCenter();
@@ -2596,11 +2596,11 @@ void CNPC_RollerMine::EmbedOnGroundImpact()
 void CNPC_RollerMine::PrescheduleThink()
 {
 	// Are we underwater?
-	if ( UTIL_PointContents( GetAbsOrigin() ) & MASK_WATER )
+	if ( UTIL_PointContents( GetAbsOrigin(), 0 ) & MASK_WATER )
 	{
 		// As soon as we're far enough underwater, detonate
 		Vector vecAboveMe = GetAbsOrigin() + Vector(0,0,64);
-		if ( UTIL_PointContents( vecAboveMe ) & MASK_WATER )
+		if ( UTIL_PointContents( vecAboveMe, 0 ) & MASK_WATER )
 		{
 			Explode();
 			return;
@@ -2814,7 +2814,7 @@ float CNPC_RollerMine::VehicleHeading( CBaseEntity *pVehicle )
 //			&vecDir - 
 //			*ptr - 
 //-----------------------------------------------------------------------------
-void CNPC_RollerMine::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr, CDmgAccumulator *pAccumulator )
+void CNPC_RollerMine::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr )
 {
 	if ( info.GetDamageType() & (DMG_BULLET | DMG_CLUB) )
 	{
@@ -2830,11 +2830,11 @@ void CNPC_RollerMine::TraceAttack( const CTakeDamageInfo &info, const Vector &ve
 			newInfo.SetDamageForce( info.GetDamageForce() * 20 );
 		}
 
-		BaseClass::TraceAttack( newInfo, vecDir, ptr, pAccumulator );
+		BaseClass::TraceAttack( newInfo, vecDir, ptr );
 		return;
 	}
 
-	BaseClass::TraceAttack( info, vecDir, ptr, pAccumulator );
+	BaseClass::TraceAttack( info, vecDir, ptr );
 }
 
 //-----------------------------------------------------------------------------

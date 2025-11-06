@@ -323,7 +323,7 @@ void CNPC_Manhack::PrescheduleThink( void )
 // Input  :
 // Output :
 //-----------------------------------------------------------------------------
-void CNPC_Manhack::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr, CDmgAccumulator *pAccumulator )
+void CNPC_Manhack::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr )
 {
 	g_vecAttackDir = vecDir;
 
@@ -339,7 +339,7 @@ void CNPC_Manhack::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDi
 		g_pEffects->Sparks( ptr->endpos, 1, 1, &ptr->plane.normal );
 	}
 
-	BaseClass::TraceAttack( info, vecDir, ptr, pAccumulator );
+	BaseClass::TraceAttack( info, vecDir, ptr );
 }
 
 //-----------------------------------------------------------------------------
@@ -891,7 +891,7 @@ void CNPC_Manhack::OnStateChange( NPC_STATE OldState, NPC_STATE NewState )
 void CNPC_Manhack::HandleAnimEvent( animevent_t *pEvent )
 {
 	Vector vecNewVelocity;
-	switch( pEvent->event )
+	switch( pEvent->Event() )
 	{
 	case MANHACK_AE_START_ENGINE:
 		StartEye();
@@ -1939,7 +1939,7 @@ void CNPC_Manhack::MoveExecute_Alive(float flInterval)
 
 	if( m_flWaterSuspendTime > gpGlobals->curtime )
 	{ 
-		if( UTIL_PointContents( GetAbsOrigin() ) & (CONTENTS_WATER|CONTENTS_SLIME) )
+		if( UTIL_PointContents( GetAbsOrigin(), 0 ) & (CONTENTS_WATER|CONTENTS_SLIME) )
 		{
 			// Ooops, we're submerged somehow. Move upwards until our origin is out of the water.
 			m_vCurrentVelocity.z = 20.0;
@@ -2129,7 +2129,7 @@ void CNPC_Manhack::MoveExecute_Dead(float flInterval)
 	newVelocity = newVelocity + (newVelocity * 1.5 * flInterval );
 
 	// Lose lift
-	newVelocity.z -= 0.02*flInterval*(GetCurrentGravity());
+	newVelocity.z -= 0.02*flInterval*(sv_gravity.GetFloat());
 
 	// ----------------------------------------------------------------------------------------
 	// Add in any forced velocity

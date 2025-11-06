@@ -260,7 +260,7 @@ void CBaseHeadcrab::Spawn( void )
 	{
 		m_bHidden = true;
 		AddSolidFlags( FSOLID_NOT_SOLID );
-		SetRenderColorA( 0 );
+		SetRenderColor( 0, 0, 0 );
 		m_nRenderMode = kRenderTransTexture;
 		AddEffects( EF_NODRAW );
 	}
@@ -518,7 +518,7 @@ void CBaseHeadcrab::JumpAttack( bool bRandomJump, const Vector &vecPos, bool bTh
 	Vector vecJumpVel;
 	if ( !bRandomJump )
 	{
-		float gravity = GetCurrentGravity();
+		float gravity = sv_gravity.GetFloat();
 		if ( gravity <= 1 )
 		{
 			gravity = 1;
@@ -599,7 +599,7 @@ void CBaseHeadcrab::JumpAttack( bool bRandomJump, const Vector &vecPos, bool bTh
 //-----------------------------------------------------------------------------
 void CBaseHeadcrab::HandleAnimEvent( animevent_t *pEvent )
 {
-	if ( pEvent->event == AE_HEADCRAB_JUMPATTACK )
+	if ( pEvent->Event() == AE_HEADCRAB_JUMPATTACK)
 	{
 		// Ignore if we're in mid air
 		if ( m_bMidJump )
@@ -631,7 +631,7 @@ void CBaseHeadcrab::HandleAnimEvent( animevent_t *pEvent )
 		return;
 	}
 	
-	if ( pEvent->event == AE_HEADCRAB_CEILING_DETACH )
+	if ( pEvent->Event() == AE_HEADCRAB_CEILING_DETACH )
 	{
 		SetMoveType( MOVETYPE_STEP );
 		RemoveFlag( FL_ONGROUND );
@@ -640,7 +640,7 @@ void CBaseHeadcrab::HandleAnimEvent( animevent_t *pEvent )
 		SetAbsVelocity( Vector ( 0, 0, -128 ) );
 		return;
 	}
-	if ( pEvent->event == AE_HEADCRAB_JUMP_TELEGRAPH )
+	if ( pEvent->Event() == AE_HEADCRAB_JUMP_TELEGRAPH )
 	{
 		TelegraphSound();
 
@@ -657,7 +657,7 @@ void CBaseHeadcrab::HandleAnimEvent( animevent_t *pEvent )
 		return;
 	}
 
-	if ( pEvent->event == AE_HEADCRAB_BURROW_IN )
+	if ( pEvent->Event() == AE_HEADCRAB_BURROW_IN )
 	{
 		EmitSound( "NPC_Headcrab.BurrowIn" );
 		CreateDust();
@@ -665,13 +665,13 @@ void CBaseHeadcrab::HandleAnimEvent( animevent_t *pEvent )
 		return;
 	}
 
-	if ( pEvent->event == AE_HEADCRAB_BURROW_IN_FINISH )
+	if ( pEvent->Event() == AE_HEADCRAB_BURROW_IN_FINISH )
 	{
 		SetBurrowed( true );
 		return;
 	}
 
-	if ( pEvent->event == AE_HEADCRAB_BURROW_OUT )
+	if ( pEvent->Event() == AE_HEADCRAB_BURROW_OUT )
 	{
 		Assert( m_bBurrowed );
 		if ( m_bBurrowed )
@@ -1067,15 +1067,15 @@ void CBaseHeadcrab::PrescheduleThink( void )
 	// Are we fading in after being hidden?
 	if ( !m_bHidden && (m_nRenderMode != kRenderNormal) )
 	{
-		int iNewAlpha = MIN( 255, GetRenderColor().a + 120 );
+		int iNewAlpha = MIN( 255, 120 );
 		if ( iNewAlpha >= 255 )
 		{
 			m_nRenderMode = kRenderNormal;
-			SetRenderColorA( 0 );
+			SetRenderColor( 0, 0, 0 );
 		}
 		else
 		{
-			SetRenderColorA( iNewAlpha );
+			SetRenderColor( iNewAlpha, 0, 0 );
 		}
 	}
 
@@ -1258,7 +1258,7 @@ void CBaseHeadcrab::JumpFromCanister()
 	StudioFrameAdvanceManual( 0.0 );
 	SetParent( NULL );
 	RemoveFlag( FL_FLY );
-	IncrementInterpolationFrame();
+	AddEffects(EF_NOINTERP);
 
 	GetMotor()->SetIdealYaw( headCrabAngles.y );
 	
@@ -2013,7 +2013,7 @@ int CBaseHeadcrab::SelectFailSchedule( int failedSchedule, int failedTask, AI_Ta
 //			&vecDir - 
 //			*ptr - 
 //-----------------------------------------------------------------------------
-void CBaseHeadcrab::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr, CDmgAccumulator *pAccumulator )
+void CBaseHeadcrab::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr )
 {
 	CTakeDamageInfo	newInfo = info;
 
@@ -2037,7 +2037,7 @@ void CBaseHeadcrab::TraceAttack( const CTakeDamageInfo &info, const Vector &vecD
 		ApplyAbsVelocityImpulse( puntDir );
 	}
 
-	BaseClass::TraceAttack( newInfo, vecDir, ptr, pAccumulator );
+	BaseClass::TraceAttack( newInfo, vecDir, ptr );
 }
 
 
@@ -3420,7 +3420,7 @@ void CBlackHeadcrab::JumpFlinch( const Vector *pvecDir )
 //-----------------------------------------------------------------------------
 void CBlackHeadcrab::HandleAnimEvent( animevent_t *pEvent )
 {
-	if ( pEvent->event == AE_POISONHEADCRAB_FOOTSTEP )
+	if ( pEvent->Event() == AE_POISONHEADCRAB_FOOTSTEP)
 	{
 		bool walk = ( GetActivity() == ACT_WALK );   // ? 1.0 : 0.6; !!cgreen! old code had bug
 
@@ -3436,7 +3436,7 @@ void CBlackHeadcrab::HandleAnimEvent( animevent_t *pEvent )
 		return;
 	}
 
-	if ( pEvent->event == AE_HEADCRAB_JUMP_TELEGRAPH )
+	if ( pEvent->Event() == AE_HEADCRAB_JUMP_TELEGRAPH)
 	{
 		EmitSound( "NPC_BlackHeadcrab.Telegraph" );
 
@@ -3453,7 +3453,7 @@ void CBlackHeadcrab::HandleAnimEvent( animevent_t *pEvent )
 		return;
 	}
 
-	if ( pEvent->event == AE_POISONHEADCRAB_THREAT_SOUND )
+	if ( pEvent->Event() == AE_POISONHEADCRAB_THREAT_SOUND)
 	{
 		EmitSound( "NPC_BlackHeadcrab.Threat" );
 		EmitSound( "NPC_BlackHeadcrab.Alert" );
@@ -3461,7 +3461,7 @@ void CBlackHeadcrab::HandleAnimEvent( animevent_t *pEvent )
 		return;
 	}
 
-	if ( pEvent->event == AE_POISONHEADCRAB_FLINCH_HOP )
+	if ( pEvent->Event() == AE_POISONHEADCRAB_FLINCH_HOP)
 	{
 		//
 		// Hop in a random direction, then run and hide. If we're already running

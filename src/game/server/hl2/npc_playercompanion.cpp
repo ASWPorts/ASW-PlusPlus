@@ -1444,7 +1444,7 @@ void CNPC_PlayerCompanion::HandleAnimEvent( animevent_t *pEvent )
 	}
 #endif // HL2_EPISODIC
 
-	switch( pEvent->event )
+	switch( pEvent->Event() )
 	{
 	case EVENT_WEAPON_RELOAD:
 		if ( GetActiveWeapon() )

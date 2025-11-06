@@ -153,7 +153,7 @@ CGrenadeBeam* CGrenadeBeam::Create( CBaseEntity* pOwner, const Vector &vStart)
 	CGrenadeBeam *pEnergy = (CGrenadeBeam *)CreateEntityByName( "grenade_beam" );
 	pEnergy->Spawn();
 	pEnergy->SetOwnerEntity( pOwner );
-	pEnergy->SetRenderColor( 255, 0, 0, 0 );
+	pEnergy->SetRenderColor( 255, 0, 0 );
 	pEnergy->m_flBeamWidth		= GRENADEBEAM_DEFAULTWIDTH;
 	UTIL_SetOrigin( pEnergy, vStart );
 
@@ -253,7 +253,7 @@ void CGrenadeBeam::GrenadeBeamTouch( CBaseEntity *pOther )
 	// --------------------------------------
 	//  Smoke or bubbles effect
 	// --------------------------------------
-	if (UTIL_PointContents ( GetAbsOrigin() ) & MASK_WATER)
+	if (UTIL_PointContents ( GetAbsOrigin(), 0 ) & MASK_WATER)
 	{
 		UTIL_Bubbles(GetAbsOrigin()-Vector(3,3,3),GetAbsOrigin()+Vector(3,3,3),10);
 	}

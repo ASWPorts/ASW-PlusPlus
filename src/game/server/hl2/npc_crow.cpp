@@ -217,7 +217,7 @@ void CNPC_Crow::StopLoopingSounds( void )
 //-----------------------------------------------------------------------------
 void CNPC_Crow::HandleAnimEvent( animevent_t *pEvent )
 {
-	if ( pEvent->event == AE_CROW_TAKEOFF )
+	if ( pEvent->Event() == AE_CROW_TAKEOFF)
 	{
 		if ( GetNavigator()->GetPath()->GetCurWaypoint() )
 		{
@@ -226,7 +226,7 @@ void CNPC_Crow::HandleAnimEvent( animevent_t *pEvent )
 		return;
 	}
 
-	if( pEvent->event == AE_CROW_HOP )
+	if( pEvent->Event() == AE_CROW_HOP )
 	{
 		SetGroundEntity( NULL );
 
@@ -239,7 +239,7 @@ void CNPC_Crow::HandleAnimEvent( animevent_t *pEvent )
 		// How fast does the crow need to travel to reach the hop goal given gravity?
 		//
 		float flHopDistance = ( m_vSavePosition - GetLocalOrigin() ).Length();
-		float gravity = GetCurrentGravity();
+		float gravity = sv_gravity.GetFloat();
 		if ( gravity <= 1 )
 		{
 			gravity = 1;
@@ -282,7 +282,7 @@ void CNPC_Crow::HandleAnimEvent( animevent_t *pEvent )
 		return;
 	}
 
-	if( pEvent->event == AE_CROW_FLY )
+	if( pEvent->Event() == AE_CROW_FLY)
 	{
 		//
 		// Start flying.
@@ -738,7 +738,7 @@ void CNPC_Crow::Takeoff( const Vector &vGoal )
 	}
 }
 
-void CNPC_Crow::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr, CDmgAccumulator *pAccumulator )
+void CNPC_Crow::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr )
 {
 	CTakeDamageInfo	newInfo = info;
 
@@ -752,7 +752,7 @@ void CNPC_Crow::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, 
 		newInfo.SetDamageForce( puntDir );
 	}
 
-	BaseClass::TraceAttack( newInfo, vecDir, ptr, pAccumulator );
+	BaseClass::TraceAttack( newInfo, vecDir, ptr );
 }
 
 

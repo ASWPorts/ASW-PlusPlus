@@ -364,9 +364,9 @@ ConVar  alyx_darkness_force( "alyx_darkness_force", "0", FCVAR_CHEAT | FCVAR_REP
 		// --------------------------------------------------------------
 		// First initialize table so we can report missing relationships
 		// --------------------------------------------------------------
-		for (i=0;i<NUM_AI_CLASSES;i++)
+		for (i=0;i< LAST_SHARED_ENTITY_CLASS;i++)
 		{
-			for (j=0;j<NUM_AI_CLASSES;j++)
+			for (j=0;j< LAST_SHARED_ENTITY_CLASS;j++)
 			{
 				// By default all relationships are neutral of priority zero
 				CBaseCombatCharacter::SetDefaultRelationship( (Class_T)i, (Class_T)j, D_NU, 0 );
@@ -1449,17 +1449,17 @@ ConVar  alyx_darkness_force( "alyx_darkness_force", "0", FCVAR_CHEAT | FCVAR_REP
 	// Purpose: Whether or not the NPC should drop a health vial
 	// Output : Returns true on success, false on failure.
 	//-----------------------------------------------------------------------------
-	bool CHalfLife2::NPC_ShouldDropGrenade( CBasePlayer *pRecipient )
+	bool CHalfLife2::NPC_ShouldDropGrenade(CBasePlayer* pRecipient)
 	{
 		// Can only do this every so often
-		if ( m_flLastGrenadeDropTime > gpGlobals->curtime )
+		if (m_flLastGrenadeDropTime > gpGlobals->curtime)
 			return false;
-		
-		int grenadeIndex = GetAmmoDef()->Index( "grenade" );
-		int numGrenades = pRecipient->GetAmmoCount( grenadeIndex );
+
+		int grenadeIndex = GetAmmoDef()->Index("grenade");
+		int numGrenades = pRecipient->GetAmmoCount(grenadeIndex);
 
 		// If we're not maxed out on grenades and we've randomly okay'd it
-		if ( ( numGrenades < GetAmmoDef()->MaxCarry( grenadeIndex ) ) && ( random->RandomInt( 0, 2 ) == 0 ) )
+		if ((numGrenades < GetAmmoDef()->MaxCarry(grenadeIndex, pRecipient)) && (random->RandomInt(0, 2) == 0))
 			return true;
 
 		return false;
