@@ -30,7 +30,6 @@
 #include "tier0/memdbgon.h"
 
 //Precahce the effects
-
 PRECACHE_REGISTER_BEGIN( GLOBAL, PrecacheMuzzleFlash )
 PRECACHE( MATERIAL, "effects/muzzleflash1" )
 PRECACHE( MATERIAL, "effects/muzzleflash2" )
@@ -45,7 +44,6 @@ PRECACHE( MATERIAL, "effects/combinemuzzle1" )
 PRECACHE( MATERIAL, "effects/combinemuzzle2" )
 PRECACHE( MATERIAL, "effects/combinemuzzle2_nocull" )
 PRECACHE_REGISTER_END()
-
 
 //Whether or not we should emit a dynamic light
 ConVar muzzleflash_light( "muzzleflash_light", "1", FCVAR_ARCHIVE );

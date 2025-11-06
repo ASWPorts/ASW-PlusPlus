@@ -1,6 +1,6 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
-// Purpose: 
+// Purpose: Why did i disabled it?! [str]
 //
 // $NoKeywords: $
 //
@@ -73,5 +73,5 @@ void CHLModeManager::LevelShutdown( void )
 
 
 static CHLModeManager g_HLModeManager;
-IVModeManager *gmodemanager = &g_HLModeManager;
+IVModeManager *modemanager = &g_HLModeManager;
 

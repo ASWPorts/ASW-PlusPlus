@@ -14,31 +14,31 @@
 #include <vgui_controls/AnimationController.h>
 #include <vgui/ISurface.h>
 #include <vgui/ILocalize.h>
-
+ 
 using namespace vgui;
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-DECLARE_HUDELEMENT(CHudSuitPower);
+DECLARE_HUDELEMENT( CHudSuitPower );
 
 #define SUITPOWER_INIT -1
 
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
-CHudSuitPower::CHudSuitPower(const char* pElementName) : CHudElement(pElementName), BaseClass(NULL, "HudSuitPower")
+CHudSuitPower::CHudSuitPower( const char *pElementName ) : CHudElement( pElementName ), BaseClass( NULL, "HudSuitPower" )
 {
-	vgui::Panel* pParent = GetClientMode()->GetViewport();
-	SetParent(pParent);
+	vgui::Panel *pParent = GetClientMode()->GetViewport();
+	SetParent( pParent );
 
-	SetHiddenBits(HIDEHUD_HEALTH | HIDEHUD_PLAYERDEAD | HIDEHUD_NEEDSUIT);
+	SetHiddenBits( HIDEHUD_HEALTH | HIDEHUD_PLAYERDEAD | HIDEHUD_NEEDSUIT );
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudSuitPower::Init(void)
+void CHudSuitPower::Init( void )
 {
 	m_flSuitPower = SUITPOWER_INIT;
 	m_nSuitPowerLow = -1;
@@ -48,7 +48,7 @@ void CHudSuitPower::Init(void)
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudSuitPower::Reset(void)
+void CHudSuitPower::Reset( void )
 {
 	Init();
 }
@@ -62,38 +62,38 @@ bool CHudSuitPower::ShouldDraw()
 {
 	bool bNeedsDraw = false;
 
-	C_BaseHLPlayer* pPlayer = (C_BaseHLPlayer*)C_BasePlayer::GetLocalPlayer();
-	if (!pPlayer)
+	C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
+	if ( !pPlayer )
 		return false;
 
 	// needs draw if suit power changed or animation in progress
-	bNeedsDraw = ((pPlayer->m_HL2Local.m_flSuitPower != m_flSuitPower) || (m_AuxPowerColor[3] > 0));
+	bNeedsDraw = ( ( pPlayer->m_HL2Local.m_flSuitPower != m_flSuitPower ) || ( m_AuxPowerColor[3] > 0 ) );
 
-	return (bNeedsDraw && CHudElement::ShouldDraw());
+	return ( bNeedsDraw && CHudElement::ShouldDraw() );
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudSuitPower::OnThink(void)
+void CHudSuitPower::OnThink( void )
 {
 	float flCurrentPower = 0;
-	C_BaseHLPlayer* pPlayer = (C_BaseHLPlayer*)C_BasePlayer::GetLocalPlayer();
-	if (!pPlayer)
+	C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
+	if ( !pPlayer )
 		return;
 
 	flCurrentPower = pPlayer->m_HL2Local.m_flSuitPower;
 
 	// Only update if we've changed suit power
-	if (flCurrentPower == m_flSuitPower)
+	if ( flCurrentPower == m_flSuitPower )
 		return;
 
-	if (flCurrentPower >= 100.0f && m_flSuitPower < 100.0f)
+	if ( flCurrentPower >= 100.0f && m_flSuitPower < 100.0f )
 	{
 		// we've reached max power
 		GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("SuitAuxPowerMax");
 	}
-	else if (flCurrentPower < 100.0f && (m_flSuitPower >= 100.0f || m_flSuitPower == SUITPOWER_INIT))
+	else if ( flCurrentPower < 100.0f && (m_flSuitPower >= 100.0f || m_flSuitPower == SUITPOWER_INIT) )
 	{
 		// we've lost power
 		GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("SuitAuxPowerNotMax");
@@ -108,7 +108,7 @@ void CHudSuitPower::OnThink(void)
 	{
 		m_iActiveSuitDevices = activeDevices;
 
-		switch (m_iActiveSuitDevices)
+		switch ( m_iActiveSuitDevices )
 		{
 		default:
 		case 3:
@@ -134,13 +134,13 @@ void CHudSuitPower::OnThink(void)
 //-----------------------------------------------------------------------------
 void CHudSuitPower::Paint()
 {
-	C_BaseHLPlayer* pPlayer = (C_BaseHLPlayer*)C_BasePlayer::GetLocalPlayer();
-	if (!pPlayer)
+	C_BaseHLPlayer *pPlayer = (C_BaseHLPlayer *)C_BasePlayer::GetLocalPlayer();
+	if ( !pPlayer )
 		return;
 
 	// get bar chunks
 	int chunkCount = m_flBarWidth / (m_flBarChunkWidth + m_flBarChunkGap);
-	int enabledChunks = (int)((float)chunkCount * (m_flSuitPower * 1.0f / 100.0f) + 0.5f);
+	int enabledChunks = (int)((float)chunkCount * (m_flSuitPower * 1.0f/100.0f) + 0.5f );
 
 	// see if we've changed power state
 	int lowPower = 0;
@@ -165,18 +165,18 @@ void CHudSuitPower::Paint()
 	}
 
 	// draw the suit power bar
-	surface()->DrawSetColor(m_AuxPowerColor);
+	surface()->DrawSetColor( m_AuxPowerColor );
 	int xpos = m_flBarInsetX, ypos = m_flBarInsetY;
 	for (int i = 0; i < enabledChunks; i++)
 	{
-		surface()->DrawFilledRect(xpos, ypos, xpos + m_flBarChunkWidth, ypos + m_flBarHeight);
+		surface()->DrawFilledRect( xpos, ypos, xpos + m_flBarChunkWidth, ypos + m_flBarHeight );
 		xpos += (m_flBarChunkWidth + m_flBarChunkGap);
 	}
 	// draw the exhausted portion of the bar.
-	surface()->DrawSetColor(Color(m_AuxPowerColor[0], m_AuxPowerColor[1], m_AuxPowerColor[2], m_iAuxPowerDisabledAlpha));
+	surface()->DrawSetColor( Color( m_AuxPowerColor[0], m_AuxPowerColor[1], m_AuxPowerColor[2], m_iAuxPowerDisabledAlpha ) );
 	for (int i = enabledChunks; i < chunkCount; i++)
 	{
-		surface()->DrawFilledRect(xpos, ypos, xpos + m_flBarChunkWidth, ypos + m_flBarHeight);
+		surface()->DrawFilledRect( xpos, ypos, xpos + m_flBarChunkWidth, ypos + m_flBarHeight );
 		xpos += (m_flBarChunkWidth + m_flBarChunkGap);
 	}
 
@@ -185,7 +185,7 @@ void CHudSuitPower::Paint()
 	surface()->DrawSetTextColor(m_AuxPowerColor);
 	surface()->DrawSetTextPos(text_xpos, text_ypos);
 
-	wchar_t* tempString = g_pVGuiLocalize->Find("#Valve_Hud_AUX_POWER");
+	wchar_t *tempString = g_pVGuiLocalize->Find("#Valve_Hud_AUX_POWER");
 
 	if (tempString)
 	{
@@ -196,7 +196,7 @@ void CHudSuitPower::Paint()
 		surface()->DrawPrintText(L"AUX POWER", wcslen(L"AUX POWER"));
 	}
 
-	if (m_iActiveSuitDevices)
+	if ( m_iActiveSuitDevices )
 	{
 		// draw the additional text
 		int ypos = text2_ypos;
@@ -253,3 +253,5 @@ void CHudSuitPower::Paint()
 		}
 	}
 }
+
+

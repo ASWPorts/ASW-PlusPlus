@@ -1,11 +1,11 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
 //=============================================================================//
 
 #include "cbase.h"
-#include "clienteffectprecachesystem.h"
+#include "ClientEffectPrecacheSystem.h"
 #include "c_te_effect_dispatch.h"
 #include "hud.h"
 
@@ -31,4 +31,4 @@ void BloodSplatCallback( const CEffectData & data )
 */
 }
 
-DECLARE_CLIENT_EFFECT( HudBloodSplat, BloodSplatCallback );
+DECLARE_CLIENT_EFFECT( "HudBloodSplat", BloodSplatCallback );

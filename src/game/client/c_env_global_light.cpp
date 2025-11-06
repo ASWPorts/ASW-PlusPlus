@@ -5,7 +5,7 @@
 // $NoKeywords: $
 //=============================================================================//
 #include "cbase.h"
-
+ 
 #include "c_baseplayer.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -15,9 +15,15 @@
 extern ConVar cl_sunlight_ortho_size;
 extern ConVar cl_sunlight_depthbias;
 
+ConVar cl_globallight_enabled( "cl_globallight_enabled", "0", FCVAR_ARCHIVE);
 ConVar cl_globallight_freeze( "cl_globallight_freeze", "0" );
-ConVar cl_globallight_xoffset( "cl_globallight_xoffset", "-800" );
-ConVar cl_globallight_yoffset( "cl_globallight_yoffset", "1600" );
+ConVar cl_globallight_xoffset( "cl_globallight_xoffset", "0" );
+ConVar cl_globallight_yoffset( "cl_globallight_yoffset", "0" );
+ConVar cl_globallight_drawfrustum( "cl_globallight_drawfrustum", "0" );
+ConVar cl_globallight_orthosize( "cl_globallight_orthosize", "1000" );
+ConVar cl_globallight_showpos( "cl_globallight_showpos", "0" );
+ConVar cl_globallight_xpos( "cl_globallight_xpos", "0" );
+ConVar cl_globallight_ypos( "cl_globallight_ypos", "0" );
 
 //------------------------------------------------------------------------------
 // Purpose : Sunlights shadow control entity
@@ -116,10 +122,12 @@ void C_GlobalLight::ClientThink()
 
 	bool bSupressWorldLights = false;
 
-	if ( cl_globallight_freeze.GetBool() == true )
+	if ( cl_globallight_freeze.GetBool() == true )	
 	{
-		return;
+			return;
 	}
+	//let us turn this shit on and off ingame
+	m_bEnabled = cl_globallight_enabled.GetBool();
 
 	if ( m_bEnabled )
 	{
@@ -160,7 +168,18 @@ void C_GlobalLight::ClientThink()
 //		vPos = Vector( 0.0f, 0.0f, 500.0f );
 		vPos = ( vPos + vSunDirection2D * m_flNorthOffset ) - vDirection * m_flSunDistance;
 		vPos += Vector( cl_globallight_xoffset.GetFloat(), cl_globallight_yoffset.GetFloat(), 0.0f );
-
+		
+		if (cl_globallight_showpos.GetBool() == true){	//ËÀË ß ÒÓÒÀ ÍÅÌÍÎÃÎ ÍÀØÊÎÄÈË, ÍÅ ÐÓÃÀÉÒÈÑ ÏËÇ ËÀÍÑÏÑ
+			if (cl_globallight_xpos.GetFloat() !=0 &&  cl_globallight_ypos.GetFloat() !=0) {
+			DevMsg("X = %3.0f\n Y = %3.0f\n", cl_globallight_xpos.GetFloat(), cl_globallight_ypos.GetFloat());
+			}
+			else 
+			DevMsg("X = %3.0f\n Y = %3.0f\n", vPos.x, vPos.y);
+		}
+		if (cl_globallight_xpos.GetFloat() !=0 &&  cl_globallight_ypos.GetFloat() !=0) {
+			vPos.x = cl_globallight_xpos.GetFloat();
+			vPos.y = cl_globallight_ypos.GetFloat();
+		}
 		QAngle angAngles;
 		VectorAngles( vDirection, angAngles );
 
@@ -183,10 +202,10 @@ void C_GlobalLight::ClientThink()
 		state.m_Color[3] = 0.0f; // fixme: need to make ambient work m_flAmbient;
 		state.m_NearZ = 4.0f;
 		state.m_FarZ = m_flSunDistance * 2.0f;
-		state.m_fBrightnessScale = 2.0f;
+		state.m_fBrightnessScale = 1.0f;
 		state.m_bGlobalLight = true;
 
-		float flOrthoSize = 1000.0f;
+		float flOrthoSize = cl_globallight_orthosize.GetFloat();
 
 		if ( flOrthoSize > 0 )
 		{
@@ -201,16 +220,16 @@ void C_GlobalLight::ClientThink()
 			state.m_bOrtho = false;
 		}
 
-		state.m_bDrawShadowFrustum = true;
-		state.m_flShadowSlopeScaleDepthBias = g_pMaterialSystemHardwareConfig->GetShadowSlopeScaleDepthBias();;
+		state.m_bDrawShadowFrustum = cl_globallight_drawfrustum.GetBool();
+		state.m_flShadowSlopeScaleDepthBias =  1.0f;
 		state.m_flShadowDepthBias = g_pMaterialSystemHardwareConfig->GetShadowDepthBias();
 		state.m_bEnableShadows = m_bEnableShadows;
 		state.m_pSpotlightTexture = m_SpotlightTexture;
 		state.m_pProjectedMaterial = NULL; // don't complain cause we aren't using simple projection in this class
 		state.m_nSpotlightTextureFrame = 0;
-
-		state.m_nShadowQuality = 1; // Allow entity to affect shadow quality
-//		state.m_bShadowHighRes = true;
+		state.m_flShadowFilterSize = 0.2f;
+		//state.m_nShadowQuality = 1; // Allow entity to affect shadow quality
+		state.m_bShadowHighRes = true;
 
 		if ( m_bOldEnableShadows != m_bEnableShadows )
 		{
@@ -241,8 +260,6 @@ void C_GlobalLight::ClientThink()
 		g_pClientShadowMgr->DestroyFlashlight( m_LocalFlashlightHandle );
 		m_LocalFlashlightHandle = CLIENTSHADOW_INVALID_HANDLE;
 	}
-
-	g_pClientShadowMgr->SetShadowFromWorldLightsEnabled( !bSupressWorldLights );
 
 	BaseClass::ClientThink();
 }

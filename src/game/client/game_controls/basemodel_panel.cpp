@@ -484,7 +484,7 @@ void CBaseModelPanel::LookAtBounds( const Vector &vecBoundsMin, const Vector &ve
 		aScreenPoints[iPoint].y = ( aScreenPoints[iPoint].y * 0.5f + 0.5f ) * flH;
 	}
 
-	// Find the min/max and center of the 2D bounding box of the object.
+	// Find the MIN/max and center of the 2D bounding box of the object.
 	Vector2D vecScreenMin( 99999.0f, 99999.0f ), vecScreenMax( -99999.0f, -99999.0f );
 	for ( int iPoint = 0; iPoint < 8; ++iPoint )
 	{

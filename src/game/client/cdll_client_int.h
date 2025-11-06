@@ -18,7 +18,7 @@
 #include "eiface.h"
 #include "tier3/tier3.h"
 #include "tier2/tier2_logging.h"
-
+#include "filesystem_passthru.h"
 class IVModelRender;
 class IVEngineClient;
 class IVModelRender;
@@ -72,6 +72,7 @@ extern IEngineVGui *enginevgui;
 extern ISpatialPartition* partition;
 extern IBaseClientDLL *clientdll;
 extern IFileSystem *filesystem;
+//extern CFileSystemPassThru *filesystem;
 extern IStaticPropMgrClient *staticpropmgr;
 extern IShadowMgr *shadowmgr;
 extern IEngineSound *enginesound;

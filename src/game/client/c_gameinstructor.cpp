@@ -197,7 +197,7 @@ void C_GameInstructor::Shutdown( void )
 
 void C_GameInstructor::UpdateHiddenByOtherElements( void )
 {
-	bool bHidden = Mod_HiddenByOtherElements();
+	bool bHidden = false;//Mod_HiddenByOtherElements();
 
 	if ( bHidden && !m_bHiddenDueToOtherElements )
 	{

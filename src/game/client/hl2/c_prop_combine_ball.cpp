@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -6,13 +6,13 @@
 
 #include "cbase.h"
 #include "c_prop_combine_ball.h"
-#include "materialsystem/imaterial.h"
+#include "materialsystem/IMaterial.h"
 #include "model_types.h"
 #include "c_physicsprop.h"
 #include "c_te_effect_dispatch.h"
 #include "fx_quad.h"
 #include "fx.h"
-#include "clienteffectprecachesystem.h"
+#include "ClientEffectPrecacheSystem.h"
 #include "view.h"
 #include "view_scene.h"
 #include "beamdraw.h"
@@ -228,7 +228,7 @@ void DrawHaloOriented( const Vector& source, float scale, float const *color, fl
 // Input  : flags - 
 // Output : int
 //-----------------------------------------------------------------------------
-int C_PropCombineBall::DrawModel( int flags )
+int C_PropCombineBall::DrawModel( int flags, const RenderableInstance_t &instance )
 {
 	if ( !m_bEmit )
 		return 0;

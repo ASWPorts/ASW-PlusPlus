@@ -206,7 +206,7 @@ struct ImpactEffect_t
 
 static ImpactEffect_t s_pImpactEffect[26] = 
 {
-	{ NULL,					NULL },							// CHAR_TEX_ANTLION
+	{ "impact_antlion",		NULL },							// CHAR_TEX_ANTLION
 	{ NULL,					NULL },							// CHAR_TEX_BLOODYFLESH	
 	{ "impact_concrete",	"impact_concrete_cheap" },		// CHAR_TEX_CONCRETE		
 	{ "impact_dirt",		"impact_dirt_cheap" },			// CHAR_TEX_DIRT			
@@ -219,19 +219,19 @@ static ImpactEffect_t s_pImpactEffect[26] =
 	{ "impact_mud",			"impact_mud_cheap" },			// CHAR_TEX_MUD		
 	{ "impact_plastic",		"impact_plastic_cheap" },		// CHAR_TEX_PLASTIC		
 	{ "impact_metal",		"impact_metal_cheap" },			// CHAR_TEX_METAL			
-	{ "impact_sand",		"impact_sand_cheap" },			// CHAR_TEX_SAND			
+	{ "impact_dirt",		"impact_sand_cheap" },			// CHAR_TEX_SAND			
 	{ "impact_leaves",		"impact_leaves_cheap" },		// CHAR_TEX_LEAVES		
 	{ "impact_computer",	"impact_computer_cheap" },		// CHAR_TEX_COMPUTER		
 	{ "impact_asphalt",		"impact_asphalt_cheap" },		// CHAR_TEX_ASPHALT		
 	{ "impact_brick",		"impact_brick_cheap" },			// CHAR_TEX_BRICK		
 	{ "impact_wet",			"impact_wet_cheap" },			// CHAR_TEX_SLOSH			
-	{ "impact_tile",		"impact_tile_cheap" },			// CHAR_TEX_TILE			
+	{ "impact_concrete",	"impact_concrete_noflecks" },	// CHAR_TEX_TILE	//{ "impact_tile",		"impact_tile_cheap" },			// CHAR_TEX_TILE			
 	{ "impact_cardboard",	"impact_cardboard_cheap" },		// CHAR_TEX_CARDBOARD		
 	{ "impact_metal",		"impact_metal_cheap" },			// CHAR_TEX_VENT			
 	{ "impact_wood",		"impact_wood_cheap" },			// CHAR_TEX_WOOD			
 	{ NULL,					NULL },							// CHAR_TEX_FAKE		
 	{ "impact_glass",		"impact_glass_cheap" },			// CHAR_TEX_GLASS			
-	{ NULL,					NULL },							// CHAR_TEX_WARPSHIELD	
+	{ "warp_shield_impact", NULL },							// CHAR_TEX_WARPSHIELD	
 };
 
 static ImpactEffect_t s_pImpactEffect2[11] = 
@@ -370,7 +370,18 @@ void PerformCustomEffects( const Vector &vecOrigin, trace_t &tr, const Vector &s
 	if ( tr.surface.flags & noEffectsFlags )
 		return;
 
-	PerformNewCustomEffects( vecOrigin, tr, shotDir, iMaterial, iScale, nFlags );
+	if ( iMaterial == CHAR_TEX_ANTLION )
+	{
+		FX_AntlionImpact( vecOrigin, &tr );
+	}
+	else if ( iMaterial == CHAR_TEX_WARPSHIELD )
+	{
+		QAngle vecAngles;
+		VectorAngles( -shotDir, vecAngles );
+		DispatchParticleEffect( "warp_shield_impact", vecOrigin, vecAngles );
+	}
+	else {
+		PerformNewCustomEffects( vecOrigin, tr, shotDir, iMaterial, iScale, nFlags );}
 }
 
 //-----------------------------------------------------------------------------

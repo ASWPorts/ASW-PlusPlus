@@ -25,16 +25,16 @@
 #include "tier0/memdbgon.h"
 
 extern bool g_bRollingCredits;
-ConVar default_fov("default_fov", "75", FCVAR_CHEAT);
-ConVar fov_desired("fov_desired", "75", FCVAR_ARCHIVE | FCVAR_USERINFO, "Sets the base field-of-view.", true, 75.0, true, 90.0);
+ConVar default_fov( "default_fov", "75", FCVAR_CHEAT );
+ConVar fov_desired( "fov_desired", "75", FCVAR_ARCHIVE | FCVAR_USERINFO, "Sets the base field-of-view.", true, 75.0, true, 90.0 );
 
 vgui::HScheme g_hVGuiCombineScheme = 0;
 
-static IClientMode* g_pClientMode[MAX_SPLITSCREEN_PLAYERS];
-IClientMode* GetClientMode()
+static IClientMode *g_pClientMode[ MAX_SPLITSCREEN_PLAYERS ];
+IClientMode *GetClientMode()
 {
 	ASSERT_LOCAL_PLAYER_RESOLVABLE();
-	return g_pClientMode[GET_ACTIVE_SPLITSCREEN_SLOT()];
+	return g_pClientMode[ GET_ACTIVE_SPLITSCREEN_SLOT() ];
 }
 
 // --------------------------------------------------------------------------------- //
@@ -45,15 +45,15 @@ class CSDKModeManager : public IVModeManager
 {
 public:
 	virtual void	Init();
-	virtual void	SwitchMode(bool commander, bool force) {}
-	virtual void	LevelInit(const char* newmap);
-	virtual void	LevelShutdown(void);
-	virtual void	ActivateMouse(bool isactive) {}
+	virtual void	SwitchMode( bool commander, bool force ) {}
+	virtual void	LevelInit( const char *newmap );
+	virtual void	LevelShutdown( void );
+	virtual void	ActivateMouse( bool isactive ) {}
 };
 
 
 static CSDKModeManager g_ModeManager;
-IVModeManager* modemanager = (IVModeManager*)&g_ModeManager;
+IVModeManager *modemanager = ( IVModeManager * )&g_ModeManager;
 // --------------------------------------------------------------------------------- //
 // CASWModeManager implementation.
 // --------------------------------------------------------------------------------- //
@@ -62,48 +62,48 @@ IVModeManager* modemanager = (IVModeManager*)&g_ModeManager;
 
 void CSDKModeManager::Init()
 {
-	for (int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i)
+	for( int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i )
 	{
-		ACTIVE_SPLITSCREEN_PLAYER_GUARD(i);
-		g_pClientMode[i] = GetClientModeNormal();
+		ACTIVE_SPLITSCREEN_PLAYER_GUARD( i );
+		g_pClientMode[ i ] = GetClientModeNormal();
 	}
 
-	PanelMetaClassMgr()->LoadMetaClassDefinitionFile(SCREEN_FILE);
+	PanelMetaClassMgr()->LoadMetaClassDefinitionFile( SCREEN_FILE );
 }
 
-void CSDKModeManager::LevelInit(const char* newmap)
+void CSDKModeManager::LevelInit( const char *newmap )
 {
-	for (int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i)
+	for( int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i )
 	{
-		ACTIVE_SPLITSCREEN_PLAYER_GUARD(i);
-		GetClientMode()->LevelInit(newmap);
+		ACTIVE_SPLITSCREEN_PLAYER_GUARD( i );
+		GetClientMode()->LevelInit( newmap );
 	}
 }
 
-void CSDKModeManager::LevelShutdown(void)
+void CSDKModeManager::LevelShutdown( void )
 {
-	for (int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i)
+	for( int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i )
 	{
-		ACTIVE_SPLITSCREEN_PLAYER_GUARD(i);
+		ACTIVE_SPLITSCREEN_PLAYER_GUARD( i );
 		GetClientMode()->LevelShutdown();
 	}
 }
 
-ClientModeHLNormal g_ClientModeNormal[MAX_SPLITSCREEN_PLAYERS];
-IClientMode* GetClientModeNormal()
+ClientModeHLNormal g_ClientModeNormal[ MAX_SPLITSCREEN_PLAYERS ];
+IClientMode *GetClientModeNormal()
 {
-	Assert(engine->IsLocalPlayerResolvable());
-	return &g_ClientModeNormal[engine->GetActiveSplitScreenPlayerSlot()];
+	Assert( engine->IsLocalPlayerResolvable() );
+	return &g_ClientModeNormal[ engine->GetActiveSplitScreenPlayerSlot() ];
 }
 
 ClientModeHLNormal* GetClientModeSDK()
 {
-	Assert(engine->IsLocalPlayerResolvable());
-	return &g_ClientModeNormal[engine->GetActiveSplitScreenPlayerSlot()];
+	Assert( engine->IsLocalPlayerResolvable() );
+	return &g_ClientModeNormal[ engine->GetActiveSplitScreenPlayerSlot() ];
 }
 
 
-static char const* s_CloseWindowNames[] = {
+static char const *s_CloseWindowNames[]={
 	"InfoMessageWindow",
 	"SkipIntro",
 };
@@ -114,25 +114,25 @@ static char const* s_CloseWindowNames[] = {
 class CHudViewport : public CBaseViewport
 {
 private:
-	DECLARE_CLASS_SIMPLE(CHudViewport, CBaseViewport);
+	DECLARE_CLASS_SIMPLE( CHudViewport, CBaseViewport );
 
 protected:
-	virtual void ApplySchemeSettings(vgui::IScheme* pScheme)
+	virtual void ApplySchemeSettings( vgui::IScheme *pScheme )
 	{
-		BaseClass::ApplySchemeSettings(pScheme);
+		BaseClass::ApplySchemeSettings( pScheme );
 
-		GetHud().InitColors(pScheme);
+		GetHud().InitColors( pScheme );
 
-		SetPaintBackgroundEnabled(false);
+		SetPaintBackgroundEnabled( false );
 	}
 
-	virtual void CreateDefaultPanels(void) { /* don't create any panels yet*/ };
+	virtual void CreateDefaultPanels( void ) { /* don't create any panels yet*/ };
 };
 
 
-bool ClientModeHLNormal::ShouldDrawCrosshair(void)
+bool ClientModeHLNormal::ShouldDrawCrosshair( void )
 {
-	return (g_bRollingCredits == false);
+	return ( g_bRollingCredits == false );
 }
 
 
@@ -140,15 +140,15 @@ bool ClientModeHLNormal::ShouldDrawCrosshair(void)
 
 // See interface.h/.cpp for specifics:  basically this ensures that we actually Sys_UnloadModule the dll and that we don't call Sys_LoadModule 
 //  over and over again.
-static CDllDemandLoader g_GameUI("gameui");
+static CDllDemandLoader g_GameUI( "gameui" );
 
 class FullscreenSDKViewport : public CHudViewport
 {
 private:
-	DECLARE_CLASS_SIMPLE(FullscreenSDKViewport, CHudViewport);
+	DECLARE_CLASS_SIMPLE( FullscreenSDKViewport, CHudViewport );
 
 private:
-	virtual void InitViewportSingletons(void)
+	virtual void InitViewportSingletons( void )
 	{
 		SetAsFullscreenViewportInterface();
 	}
@@ -156,14 +156,14 @@ private:
 
 class ClientModeHLNormalFullscreen : public	ClientModeHLNormal
 {
-	DECLARE_CLASS_SIMPLE(ClientModeHLNormalFullscreen, ClientModeHLNormal);
+	DECLARE_CLASS_SIMPLE( ClientModeHLNormalFullscreen, ClientModeHLNormal );
 public:
 	virtual void InitViewport()
 	{
 		// Skip over BaseClass!!!
 		BaseClass::BaseClass::InitViewport();
 		m_pViewport = new FullscreenSDKViewport();
-		m_pViewport->Start(gameuifuncs, gameeventmanager);
+		m_pViewport->Start( gameuifuncs, gameeventmanager );
 	}
 	virtual void Init()
 	{
@@ -175,12 +175,12 @@ public:
 		BaseClass::BaseClass::Init();
 
 		// Load up the combine control panel scheme
-		if (!g_hVGuiCombineScheme)
+		if ( !g_hVGuiCombineScheme )
 		{
-			g_hVGuiCombineScheme = vgui::scheme()->LoadSchemeFromFileEx(enginevgui->GetPanel(PANEL_CLIENTDLL), IsXbox() ? "resource/ClientScheme.res" : "resource/CombinePanelScheme.res", "CombineScheme");
+			g_hVGuiCombineScheme = vgui::scheme()->LoadSchemeFromFileEx( enginevgui->GetPanel( PANEL_CLIENTDLL ), IsXbox() ? "resource/ClientScheme.res" : "resource/CombinePanelScheme.res", "CombineScheme" );
 			if (!g_hVGuiCombineScheme)
 			{
-				Warning("Couldn't load combine panel scheme!\n");
+				Warning( "Couldn't load combine panel scheme!\n" );
 			}
 		}
 	}
@@ -191,7 +191,7 @@ public:
 
 //--------------------------------------------------------------------------------------------------------
 static ClientModeHLNormalFullscreen g_FullscreenClientMode;
-IClientMode* GetFullscreenClientMode(void)
+IClientMode *GetFullscreenClientMode( void )
 {
 	return &g_FullscreenClientMode;
 }
@@ -201,12 +201,12 @@ void ClientModeHLNormal::Init()
 {
 	BaseClass::Init();
 
-	gameeventmanager->AddListener(this, "game_newmap", false);
+	gameeventmanager->AddListener( this, "game_newmap", false );
 	// Load up the combine control panel scheme
-	g_hVGuiCombineScheme = vgui::scheme()->LoadSchemeFromFileEx(enginevgui->GetPanel(PANEL_CLIENTDLL), IsXbox() ? "resource/ClientScheme.res" : "resource/CombinePanelScheme.res", "CombineScheme");
+	g_hVGuiCombineScheme = vgui::scheme()->LoadSchemeFromFileEx( enginevgui->GetPanel( PANEL_CLIENTDLL ), IsXbox() ? "resource/ClientScheme.res" : "resource/CombinePanelScheme.res", "CombineScheme" );
 	if (!g_hVGuiCombineScheme)
 	{
-		Warning("Couldn't load combine panel scheme!\n");
+		Warning( "Couldn't load combine panel scheme!\n" );
 	}
 }
 void ClientModeHLNormal::Shutdown()
@@ -216,29 +216,29 @@ void ClientModeHLNormal::Shutdown()
 void ClientModeHLNormal::InitViewport()
 {
 	m_pViewport = new CHudViewport();
-	m_pViewport->Start(gameuifuncs, gameeventmanager);
+	m_pViewport->Start( gameuifuncs, gameeventmanager );
 }
 
-void ClientModeHLNormal::LevelInit(const char* newmap)
+void ClientModeHLNormal::LevelInit( const char *newmap )
 {
 	// reset ambient light
-	static ConVarRef mat_ambient_light_r("mat_ambient_light_r");
-	static ConVarRef mat_ambient_light_g("mat_ambient_light_g");
-	static ConVarRef mat_ambient_light_b("mat_ambient_light_b");
+	static ConVarRef mat_ambient_light_r( "mat_ambient_light_r" );
+	static ConVarRef mat_ambient_light_g( "mat_ambient_light_g" );
+	static ConVarRef mat_ambient_light_b( "mat_ambient_light_b" );
 
-	if (mat_ambient_light_r.IsValid())
+	if ( mat_ambient_light_r.IsValid() )
 	{
-		mat_ambient_light_r.SetValue("0");
+		mat_ambient_light_r.SetValue( "0" );
 	}
 
-	if (mat_ambient_light_g.IsValid())
+	if ( mat_ambient_light_g.IsValid() )
 	{
-		mat_ambient_light_g.SetValue("0");
+		mat_ambient_light_g.SetValue( "0" );
 	}
 
-	if (mat_ambient_light_b.IsValid())
+	if ( mat_ambient_light_b.IsValid() )
 	{
-		mat_ambient_light_b.SetValue("0");
+		mat_ambient_light_b.SetValue( "0" );
 	}
 
 	BaseClass::LevelInit(newmap);
@@ -248,26 +248,26 @@ void ClientModeHLNormal::LevelInit(const char* newmap)
 
 	// clear any DSP effects
 	CLocalPlayerFilter filter;
-	enginesound->SetRoomType(filter, 0);
-	enginesound->SetPlayerDSP(filter, 0, true);
+	enginesound->SetRoomType( filter, 0 );
+	enginesound->SetPlayerDSP( filter, 0, true );
 }
 
-void ClientModeHLNormal::LevelShutdown(void)
+void ClientModeHLNormal::LevelShutdown( void )
 {
 	BaseClass::LevelShutdown();
 
 	// sdk:shutdown all vgui windows
 	SDK_CloseAllWindows();
 }
-void ClientModeHLNormal::FireGameEvent(IGameEvent* event)
+void ClientModeHLNormal::FireGameEvent( IGameEvent *event )
 {
-	const char* eventname = event->GetName();
+	const char *eventname = event->GetName();
 
-	if (Q_strcmp("asw_mission_restart", eventname) == 0)
+	if ( Q_strcmp( "asw_mission_restart", eventname ) == 0 )
 	{
 		SDK_CloseAllWindows();
 	}
-	else if (Q_strcmp("game_newmap", eventname) == 0)
+	else if ( Q_strcmp( "game_newmap", eventname ) == 0 )
 	{
 		engine->ClientCmd("exec newmapsettings\n");
 	}
@@ -291,9 +291,9 @@ void ClientModeHLNormal::SDK_CloseAllWindowsFrom(vgui::Panel* pPanel)
 
 	int num_names = NELEMS(s_CloseWindowNames);
 
-	for (int k = 0;k < pPanel->GetChildCount();k++)
+	for (int k=0;k<pPanel->GetChildCount();k++)
 	{
-		Panel* pChild = pPanel->GetChild(k);
+		Panel *pChild = pPanel->GetChild(k);
 		if (pChild)
 		{
 			SDK_CloseAllWindowsFrom(pChild);
@@ -301,12 +301,12 @@ void ClientModeHLNormal::SDK_CloseAllWindowsFrom(vgui::Panel* pPanel)
 	}
 
 	// When VGUI is shutting down (i.e. if the player closes the window), GetName() can return NULL
-	const char* pPanelName = pPanel->GetName();
-	if (pPanelName != NULL)
+	const char *pPanelName = pPanel->GetName();
+	if ( pPanelName != NULL )
 	{
-		for (int i = 0;i < num_names;i++)
+		for (int i=0;i<num_names;i++)
 		{
-			if (!strcmp(pPanelName, s_CloseWindowNames[i]))
+			if ( !strcmp( pPanelName, s_CloseWindowNames[i] ) )
 			{
 				pPanel->SetVisible(false);
 				pPanel->MarkForDeletion();
@@ -314,7 +314,7 @@ void ClientModeHLNormal::SDK_CloseAllWindowsFrom(vgui::Panel* pPanel)
 		}
 	}
 }
-void ClientModeHLNormal::DoPostScreenSpaceEffects(const CViewSetup* pSetup)
+void ClientModeHLNormal::DoPostScreenSpaceEffects( const CViewSetup *pSetup )
 {
 
 }

@@ -31,23 +31,23 @@ namespace vgui
 class ClientModeHLNormal : public ClientModeShared
 {
 public:
-	DECLARE_CLASS(ClientModeHLNormal, ClientModeShared);
+	DECLARE_CLASS( ClientModeHLNormal, ClientModeShared );
 
 	virtual void	Init();
-	virtual bool	ShouldDrawCrosshair(void);
+	virtual bool	ShouldDrawCrosshair( void );
 	virtual void	InitWeaponSelectionHudElement() { return; }
 	virtual void	InitViewport();
 	virtual void	Shutdown();
 
-	virtual void	LevelInit(const char* newmap);
-	virtual void	LevelShutdown(void);
-	virtual void	FireGameEvent(IGameEvent* event);
-	virtual void	DoPostScreenSpaceEffects(const CViewSetup* pSetup);
+	virtual void	LevelInit( const char *newmap );
+	virtual void	LevelShutdown( void );
+	virtual void	FireGameEvent( IGameEvent *event );
+	virtual void	DoPostScreenSpaceEffects( const CViewSetup *pSetup );
 	virtual void SDK_CloseAllWindows();
-	virtual void SDK_CloseAllWindowsFrom(vgui::Panel* pPanel);
+	virtual void SDK_CloseAllWindowsFrom(vgui::Panel* pPanel);	
 };
 
-extern IClientMode* GetClientModeNormal();
+extern IClientMode *GetClientModeNormal();
 extern vgui::HScheme g_hVGuiCombineScheme;
 
 extern ClientModeHLNormal* GetClientModeSDK();

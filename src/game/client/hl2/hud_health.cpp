@@ -14,7 +14,7 @@
 #include "hud.h"
 #include "hud_macros.h"
 #include "view.h"
-
+ 
 #include "iclientmode.h"
 
 #include <KeyValues.h>
@@ -41,32 +41,32 @@ using namespace vgui;
 //-----------------------------------------------------------------------------
 class CHudHealth : public CHudElement, public CHudNumericDisplay
 {
-	DECLARE_CLASS_SIMPLE(CHudHealth, CHudNumericDisplay);
+	DECLARE_CLASS_SIMPLE( CHudHealth, CHudNumericDisplay );
 
 public:
-	CHudHealth(const char* pElementName);
-	virtual void Init(void);
-	virtual void VidInit(void);
-	virtual void Reset(void);
+	CHudHealth( const char *pElementName );
+	virtual void Init( void );
+	virtual void VidInit( void );
+	virtual void Reset( void );
 	virtual void OnThink();
-	void MsgFunc_Damage(bf_read& msg);
+			void MsgFunc_Damage( bf_read &msg );
 
 private:
 	// old variables
 	int		m_iHealth;
-
+	
 	int		m_bitsDamage;
-};
+};	
 
-DECLARE_HUDELEMENT(CHudHealth);
-DECLARE_HUD_MESSAGE(CHudHealth, Damage);
+DECLARE_HUDELEMENT( CHudHealth );
+DECLARE_HUD_MESSAGE( CHudHealth, Damage );
 
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
-CHudHealth::CHudHealth(const char* pElementName) : CHudElement(pElementName), CHudNumericDisplay(NULL, "HudHealth")
+CHudHealth::CHudHealth( const char *pElementName ) : CHudElement( pElementName ), CHudNumericDisplay(NULL, "HudHealth")
 {
-	SetHiddenBits(HIDEHUD_HEALTH | HIDEHUD_PLAYERDEAD | HIDEHUD_NEEDSUIT);
+	SetHiddenBits( HIDEHUD_HEALTH | HIDEHUD_PLAYERDEAD | HIDEHUD_NEEDSUIT );
 }
 
 //-----------------------------------------------------------------------------
@@ -74,7 +74,7 @@ CHudHealth::CHudHealth(const char* pElementName) : CHudElement(pElementName), CH
 //-----------------------------------------------------------------------------
 void CHudHealth::Init()
 {
-	HOOK_HUD_MESSAGE(CHudHealth, Damage);
+	HOOK_HUD_MESSAGE( CHudHealth, Damage );
 	Reset();
 }
 
@@ -83,10 +83,10 @@ void CHudHealth::Init()
 //-----------------------------------------------------------------------------
 void CHudHealth::Reset()
 {
-	m_iHealth = INIT_HEALTH;
-	m_bitsDamage = 0;
+	m_iHealth		= INIT_HEALTH;
+	m_bitsDamage	= 0;
 
-	wchar_t* tempString = g_pVGuiLocalize->Find("#Valve_Hud_HEALTH");
+	wchar_t *tempString = g_pVGuiLocalize->Find("#Valve_Hud_HEALTH");
 
 	if (tempString)
 	{
@@ -113,26 +113,26 @@ void CHudHealth::VidInit()
 void CHudHealth::OnThink()
 {
 	int newHealth = 0;
-	C_BasePlayer* local = C_BasePlayer::GetLocalPlayer();
-	if (local)
+	C_BasePlayer *local = C_BasePlayer::GetLocalPlayer();
+	if ( local )
 	{
 		// Never below zero
-		newHealth = MAX(local->GetHealth(), 0);
+		newHealth = MAX( local->GetHealth(), 0 );
 	}
 
 	// Only update the fade if we've changed health
-	if (newHealth == m_iHealth)
+	if ( newHealth == m_iHealth )
 	{
 		return;
 	}
 
 	m_iHealth = newHealth;
 
-	if (m_iHealth >= 20)
+	if ( m_iHealth >= 20 )
 	{
 		GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("HealthIncreasedAbove20");
 	}
-	else if (m_iHealth > 0)
+	else if ( m_iHealth > 0 )
 	{
 		GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("HealthIncreasedBelow20");
 		GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("HealthLow");
@@ -144,7 +144,7 @@ void CHudHealth::OnThink()
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudHealth::MsgFunc_Damage(bf_read& msg)
+void CHudHealth::MsgFunc_Damage( bf_read &msg )
 {
 
 	int armor = msg.ReadByte();	// armor
@@ -159,9 +159,9 @@ void CHudHealth::MsgFunc_Damage(bf_read& msg)
 	vecFrom.z = msg.ReadBitCoord();
 
 	// Actually took damage?
-	if (damageTaken > 0 || armor > 0)
+	if ( damageTaken > 0 || armor > 0 )
 	{
-		if (damageTaken > 0)
+		if ( damageTaken > 0 )
 		{
 			// start the animation
 			GetClientMode()->GetViewportAnimationController()->StartAnimationSequence("HealthDamageTaken");

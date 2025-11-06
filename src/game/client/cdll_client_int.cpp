@@ -106,10 +106,10 @@
 #ifdef GAMEUI_UISYSTEM2_ENABLED
 #include "gameui.h"
 #endif
+// UI
 #ifdef GAMEUI_EMBEDDED
-
-#if defined( SWARM_DLL )
-#include "swarm/gameui/swarm/basemodpanel.h"
+#if defined( HL2_CLIENT_DLL )
+#include "hl2/gameui/hl2/basemodpanel.h"
 #else
 #error "GAMEUI_EMBEDDED"
 #endif
@@ -1084,10 +1084,6 @@ int CHLClient::Connect( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGl
 #ifndef _X360
 	SteamAPI_InitSafe();
 	g_SteamAPIContext.Init();
-
-#ifdef INFESTED_DLL
-	
-#endif
 #endif
 
 	// Initialize the console variables.
@@ -1098,7 +1094,6 @@ int CHLClient::Connect( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGl
 
 int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals )
 {
-
 	COM_TimestampedLog( "ClientDLL factories - Start" );
 	// We aren't happy unless we get all of our interfaces.
 	// please don't collapse this into one monolithic boolean expression (impossible to debug)
@@ -1174,7 +1169,6 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 		return false;
 #endif
 
-
 	if ( !CommandLine()->CheckParm( "-noscripting") )
 	{
 		scriptmanager = (IScriptManager *)appSystemFactory( VSCRIPT_INTERFACE_VERSION, NULL );
@@ -1210,8 +1204,6 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 	s_GaussianRandomStream.AttachToStream( random );
 
 	g_pcv_ThreadMode = g_pCVar->FindVar( "host_thread_mode" );
-
-
 
 
 	COM_TimestampedLog( "InitGameSystems" );
@@ -1265,8 +1257,6 @@ void CHLClient::PostInit()
 //-----------------------------------------------------------------------------
 void CHLClient::Shutdown( void )
 {
-
-
 	ActivityList_Free();
 	EventList_Free();
 
@@ -1326,9 +1316,6 @@ void CHLClient::Shutdown( void )
 #ifndef NO_STEAM
 	g_SteamAPIContext.Clear();
 	// SteamAPI_Shutdown(); << Steam shutdown is controlled by engine
-#ifdef INFESTED_DLL
-	
-#endif
 #endif
 	
 	DisconnectTier3Libraries( );
@@ -1760,17 +1747,16 @@ void ConfigureCurrentSystemLevel()
 	{
 		nGPUMemLevel = 360;
 	}
-
+	char szModName[32] = "swarm"; // forced to being able to load ASW's config files; thx to Ken for pointing that out [str]
+	/*
 #if defined( SWARM_DLL )
 	char szModName[32] = "swarm";
-#elif defined ( HL2_CLIENT_DLL )
-	char szModName[32] = "hl2";
 #elif defined ( HL2_EPISODIC )
 	char szModName[32] = "ep2";
 #elif defined ( SDK_CLIENT_DLL )
 	char szModName[32] = "sdk";
 #endif
-
+	*/
 	UpdateSystemLevel( nCPULevel, nGPULevel, nMemLevel, nGPUMemLevel, VGui_IsSplitScreen(), szModName );
 
 	if ( engine )

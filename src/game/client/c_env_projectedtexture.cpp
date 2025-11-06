@@ -355,6 +355,9 @@ void C_EnvProjectedTexture::UpdateLight( void )
 		state.m_flProjectionSize = m_flProjectionSize;
 		state.m_flProjectionRotation = m_flRotation;
 
+		state.m_bUberlight = true;
+		state.m_bVolumetric = true;
+
 		state.m_nShadowQuality = m_nShadowQuality; // Allow entity to affect shadow quality
 
 		if ( m_bSimpleProjection == true )
