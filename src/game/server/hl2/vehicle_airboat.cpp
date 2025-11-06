@@ -24,7 +24,7 @@
 #include "world.h"
 #include "rumble_shared.h"
 // NVNT for airboat weapon fire
-#include "haptics/haptic_utils.h"
+//#include "haptics/haptic_utils.h"
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -112,7 +112,7 @@ public:
 	void			DampenForwardMotion( Vector &vecVehicleEyePos, QAngle &vecVehicleEyeAngles, float flFrameTime );
 	void			DampenUpMotion( Vector &vecVehicleEyePos, QAngle &vecVehicleEyeAngles, float flFrameTime );
 
-	virtual void	TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr, CDmgAccumulator *pAccumulator );
+	virtual void	TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr );
 	virtual int		OnTakeDamage( const CTakeDamageInfo &info );
 
 	void VPhysicsUpdate( IPhysicsObject *pPhysics );
@@ -819,7 +819,7 @@ Vector CPropAirboat::GetSmoothedVelocity( void )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CPropAirboat::TraceAttack( const CTakeDamageInfo &inputInfo, const Vector &vecDir, trace_t *ptr, CDmgAccumulator *pAccumulator )
+void CPropAirboat::TraceAttack( const CTakeDamageInfo &inputInfo, const Vector &vecDir, trace_t *ptr )
 {
 	CTakeDamageInfo info = inputInfo;
 	if ( ptr->hitbox != VEHICLE_HITBOX_DRIVER )
@@ -830,7 +830,7 @@ void CPropAirboat::TraceAttack( const CTakeDamageInfo &inputInfo, const Vector &
 		}
 	}
 
-	BaseClass::TraceAttack( info, vecDir, ptr, pAccumulator );
+	BaseClass::TraceAttack( info, vecDir, ptr );
 }
 
 //-----------------------------------------------------------------------------
@@ -1600,7 +1600,7 @@ void CPropAirboat::FireGun( )
 	CAmmoDef *pAmmoDef = GetAmmoDef();
 	int ammoType = pAmmoDef->Index( "AirboatGun" );
 
-#if defined( WIN32 ) && !defined( _X360 ) 
+#if defined( WIN32 ) && !defined( _X360 ) && defined(HAPTICS_ENABLED_ASW)
 	// NVNT punch the players haptics by the magnitude cvar each round fired
 	HapticPunch(m_hPlayer,0,0,hap_airboat_gun_mag.GetFloat());
 #endif
@@ -2093,7 +2093,7 @@ void CPropAirboat::ApplyStressDamage( IPhysicsObject *pPhysics )
 	if ( ( damage > 0 ) &&  ( m_hPlayer != NULL ) )
 	{
 		CTakeDamageInfo dmgInfo( GetWorldEntity(), GetWorldEntity(), vec3_origin, vec3_origin, damage, DMG_CRUSH );
-		dmgInfo.SetDamageForce( Vector( 0, 0, -stressOut.receivedStress * GetCurrentGravity() * gpGlobals->frametime ) );
+		dmgInfo.SetDamageForce( Vector( 0, 0, -stressOut.receivedStress * sv_gravity.GetFloat() * gpGlobals->frametime ) );
 		dmgInfo.SetDamagePosition( GetAbsOrigin() );
 		m_hPlayer->TakeDamage( dmgInfo );
 	}

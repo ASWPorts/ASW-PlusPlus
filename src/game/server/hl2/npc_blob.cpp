@@ -615,7 +615,7 @@ void CNPC_Blob::RunAI()
 
 	if (npc_blob_use_threading.GetBool())
 	{
-		IterRangeParallel(this, &CNPC_Blob::DoBlobBatchedAI, 0, m_Elements.Count());
+		//IterRangeParallel(this, &CNPC_Blob::DoBlobBatchedAI, 0, m_Elements.Count());
 	}
 	else
 	{

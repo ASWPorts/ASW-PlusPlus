@@ -766,7 +766,7 @@ FUNC_GENERATE_ALL(DEFINE_NON_MEMBER_ITER_RANGE_PARALLEL);
 		\
 	}
 
-FUNC_GENERATE_ALL(DEFINE_MEMBER_ITER_RANGE_PARALLEL);
+//FUNC_GENERATE_ALL(DEFINE_MEMBER_ITER_RANGE_PARALLEL);
 
 
 //-----------------------------------------------------------------------------
