@@ -37,7 +37,7 @@ class CNPC_Combine :
 {
 	DECLARE_DATADESC();
 	DEFINE_CUSTOM_AI;
-	DECLARE_CLASS( CNPC_Combine, CAI_BaseActor );
+	DECLARE_CLASS(CNPC_Combine, CAI_BaseActor);
 
 public:
 	CNPC_Combine();
@@ -45,70 +45,70 @@ public:
 	// Create components
 	virtual bool	CreateComponents();
 
-	bool			CanThrowGrenade( const Vector &vecTarget );
-	bool			CheckCanThrowGrenade( const Vector &vecTarget );
-	virtual	bool	CanGrenadeEnemy( bool bUseFreeKnowledge = true );
-	virtual bool	CanAltFireEnemy( bool bUseFreeKnowledge );
-	virtual bool	CanTeleportFromEnemy( bool bUseFreeKnowledge = true );
-	virtual bool	CanTeleportToLOF( bool bUseFreeKnowledge = true );
-	virtual bool	CanTossTeleportGrenade( Vector const &posTarget );
-	int				GetGrenadeConditions( float flDot, float flDist );
-	int				RangeAttack2Conditions( float flDot, float flDist ); // For innate grenade attack
-	int				MeleeAttack1Conditions( float flDot, float flDist ); // For kick/punch
-	bool			FVisible( CBaseEntity *pEntity, int traceMask = MASK_BLOCKLOS, CBaseEntity **ppBlocker = NULL );
+	bool			CanThrowGrenade(const Vector& vecTarget);
+	bool			CheckCanThrowGrenade(const Vector& vecTarget);
+	virtual	bool	CanGrenadeEnemy(bool bUseFreeKnowledge = true);
+	virtual bool	CanAltFireEnemy(bool bUseFreeKnowledge);
+	//virtual bool	CanTeleportFromEnemy( bool bUseFreeKnowledge = true );
+	//virtual bool	CanTeleportToLOF( bool bUseFreeKnowledge = true );
+	//virtual bool	CanTossTeleportGrenade( Vector const &posTarget );
+	int				GetGrenadeConditions(float flDot, float flDist);
+	int				RangeAttack2Conditions(float flDot, float flDist); // For innate grenade attack
+	int				MeleeAttack1Conditions(float flDot, float flDist); // For kick/punch
+	bool			FVisible(CBaseEntity* pEntity, int traceMask = MASK_BLOCKLOS, CBaseEntity** ppBlocker = NULL);
 	virtual bool	IsCurTaskContinuousMove();
 
-	virtual float	GetDefaultJumpGravity() const		{ return 1.8f; }
+	virtual float	GetDefaultJumpGravity() const { return 1.8f; }
 
-	virtual Vector  GetCrouchEyeOffset( void );
+	virtual Vector  GetCrouchEyeOffset(void);
 
-	void Event_Killed( const CTakeDamageInfo &info );
+	void Event_Killed(const CTakeDamageInfo& info);
 
 
-	void SetActivity( Activity NewActivity );
-	NPC_STATE		SelectIdealState ( void );
+	void SetActivity(Activity NewActivity);
+	NPC_STATE		SelectIdealState(void);
 
 	// Input handlers.
-	void InputLookOn( inputdata_t &inputdata );
-	void InputLookOff( inputdata_t &inputdata );
-	void InputStartPatrolling( inputdata_t &inputdata );
-	void InputStopPatrolling( inputdata_t &inputdata );
-	void InputAssault( inputdata_t &inputdata );
-	void InputHitByBugbait( inputdata_t &inputdata );
-	void InputThrowGrenadeAtTarget( inputdata_t &inputdata );
-	void InputThrowTeleportGrenadeAtTarget( inputdata_t &inputdata );
+	void InputLookOn(inputdata_t& inputdata);
+	void InputLookOff(inputdata_t& inputdata);
+	void InputStartPatrolling(inputdata_t& inputdata);
+	void InputStopPatrolling(inputdata_t& inputdata);
+	//	void InputAssault( inputdata_t &inputdata );
+	void InputHitByBugbait(inputdata_t& inputdata);
+	void InputThrowGrenadeAtTarget(inputdata_t& inputdata);
+	void InputThrowTeleportGrenadeAtTarget(inputdata_t& inputdata);
 
-	bool			UpdateEnemyMemory( CBaseEntity *pEnemy, const Vector &position, CBaseEntity *pInformer = NULL );
+	bool			UpdateEnemyMemory(CBaseEntity* pEnemy, const Vector& position, CBaseEntity* pInformer = NULL);
 
-	void			Spawn( void );
-	void			Precache( void );
+	void			Spawn(void);
+	void			Precache(void);
 	void			Activate();
 
-	Class_T			Classify( void );
+	Class_T			Classify(void);
 	bool			IsElite() { return m_fIsElite; }
-	void			DelayAltFireAttack( float flDelay );
-	void			DelaySquadAltFireAttack( float flDelay );
-	float			MaxYawSpeed( void );
+	void			DelayAltFireAttack(float flDelay);
+	void			DelaySquadAltFireAttack(float flDelay);
+	float			MaxYawSpeed(void);
 	bool			ShouldMoveAndShoot();
-	bool			OverrideMoveFacing( const AILocalMoveGoal_t &move, float flInterval );;
-	void			HandleAnimEvent( animevent_t *pEvent );
-	Vector			Weapon_ShootPosition( );
+	bool			OverrideMoveFacing(const AILocalMoveGoal_t& move, float flInterval);;
+	void			HandleAnimEvent(animevent_t* pEvent);
+	Vector			Weapon_ShootPosition();
 
-	Vector			EyeOffset( Activity nActivity );
-	Vector			EyePosition( void );
-	Vector			BodyTarget( const Vector &posSrc, bool bNoisy = true );
+	Vector			EyeOffset(Activity nActivity);
+	Vector			EyePosition(void);
+	Vector			BodyTarget(const Vector& posSrc, bool bNoisy = true);
 	Vector			GetAltFireTarget();
 
-	void			StartTask( const Task_t *pTask );
-	void			RunTask( const Task_t *pTask );
+	void			StartTask(const Task_t* pTask);
+	void			RunTask(const Task_t* pTask);
 	void			PostNPCInit();
 	void			GatherConditions();
 	virtual void	PrescheduleThink();
 
-	Activity		NPC_TranslateActivity( Activity eNewActivity );
-	void			BuildScheduleTestBits( void );
-	virtual int		SelectSchedule( void );
-	virtual int		SelectFailSchedule( int failedSchedule, int failedTask, AI_TaskFailureCode_t taskFailCode );
+	Activity		NPC_TranslateActivity(Activity eNewActivity);
+	void			BuildScheduleTestBits(void);
+	virtual int		SelectSchedule(void);
+	virtual int		SelectFailSchedule(int failedSchedule, int failedTask, AI_TaskFailureCode_t taskFailCode);
 	int				SelectScheduleAttack();
 
 	bool			CreateBehaviors();
@@ -117,62 +117,62 @@ public:
 	void			OnEndMoveAndShoot();
 
 	// Combat
-	WeaponProficiency_t CalcWeaponProficiency( CBaseCombatWeapon *pWeapon );
+	WeaponProficiency_t CalcWeaponProficiency(CBaseCombatWeapon* pWeapon);
 	bool			HasShotgun();
 	bool			ActiveWeaponIsFullyLoaded();
 
-	bool			HandleInteraction(int interactionType, void *data, CBaseCombatCharacter *sourceEnt);
-	const char*		GetSquadSlotDebugName( int iSquadSlot );
+	bool			HandleInteraction(int interactionType, void* data, CBaseCombatCharacter* sourceEnt);
+	const char* GetSquadSlotDebugName(int iSquadSlot);
 
-	bool			IsUsingTacticalVariant( int variant );
-	bool			IsUsingPathfindingVariant( int variant ) { return m_iPathfindingVariant == variant; }
+	bool			IsUsingTacticalVariant(int variant);
+	bool			IsUsingPathfindingVariant(int variant) { return m_iPathfindingVariant == variant; }
 
 	bool			IsRunningApproachEnemySchedule();
 
 	// -------------
 	// Sounds
 	// -------------
-	void			DeathSound( void );
-	void			PainSound( void );
-	void			IdleSound( void );
-	void			AlertSound( void );
-	void			LostEnemySound( void );
-	void			FoundEnemySound( void );
-	void			AnnounceAssault( void );
-	void			AnnounceEnemyType( CBaseEntity *pEnemy );
-	void			AnnounceEnemyKill( CBaseEntity *pEnemy );
+	void			DeathSound(void);
+	void			PainSound(void);
+	void			IdleSound(void);
+	void			AlertSound(void);
+	void			LostEnemySound(void);
+	void			FoundEnemySound(void);
+	void			AnnounceAssault(void);
+	void			AnnounceEnemyType(CBaseEntity* pEnemy);
+	void			AnnounceEnemyKill(CBaseEntity* pEnemy);
 
-	void			NotifyDeadFriend( CBaseEntity* pFriend );
+	void			NotifyDeadFriend(CBaseEntity* pFriend);
 
-	virtual float	HearingSensitivity( void ) { return 1.0; };
-	int				GetSoundInterests( void );
-	virtual bool	QueryHearSound( CSound *pSound );
+	virtual float	HearingSensitivity(void) { return 1.0; };
+	int				GetSoundInterests(void);
+	virtual bool	QueryHearSound(CSound* pSound);
 
 	// Speaking
-	void			SpeakSentence( int sentType );
+	void			SpeakSentence(int sentType);
 
-	virtual int		TranslateSchedule( int scheduleType );
-	void			OnStartSchedule( int scheduleType );
+	virtual int		TranslateSchedule(int scheduleType);
+	void			OnStartSchedule(int scheduleType);
 
-	virtual bool	ShouldPickADeathPose( void );
+	virtual bool	ShouldPickADeathPose(void);
 
-	virtual bool	PassesDamageFilter( const CTakeDamageInfo &info );
+	//	virtual bool	PassesDamageFilter( const CTakeDamageInfo &info );
+
+	//protected:
+		/*virtual bool	ComputeTeleportToss(
+			bool bUseFreeKnowledge, bool bPreferCoverPos,
+			float flAngMin, float flAngMax, float flAngPreference,
+			float flDistMin, float flDistMax, float flDistPreference,
+			float flTravelMinDist, float flTravelMaxDist, float flTravelDistPreference );*/
+
+			//virtual void Advisor_OnStartedLevitating();
+			//virtual void Advisor_OnFinishedLevitating();
+			//virtual void VPhysicsUpdate( IPhysicsObject *pPhysics );
+			//virtual void UpdateOnRemove();
 
 protected:
-	virtual bool	ComputeTeleportToss(
-		bool bUseFreeKnowledge, bool bPreferCoverPos,
-		float flAngMin, float flAngMax, float flAngPreference,
-		float flDistMin, float flDistMax, float flDistPreference,
-		float flTravelMinDist, float flTravelMaxDist, float flTravelDistPreference );
-
-	virtual void Advisor_OnStartedLevitating();
-	virtual void Advisor_OnFinishedLevitating();
-	virtual void VPhysicsUpdate( IPhysicsObject *pPhysics );
-	virtual void UpdateOnRemove();
-
-protected:
-	void			SetKickDamage( int nDamage ) { m_nKickDamage = nDamage; }
-	CAI_Sentence< CNPC_Combine > *GetSentences() { return &m_Sentences; }
+	void			SetKickDamage(int nDamage) { m_nKickDamage = nDamage; }
+	CAI_Sentence< CNPC_Combine >* GetSentences() { return &m_Sentences; }
 
 private:
 	//=========================================================
@@ -223,7 +223,7 @@ private:
 	//=========================================================
 	// Combine Tasks
 	//=========================================================
-	enum 
+	enum
 	{
 		TASK_COMBINE_FACE_TOSS_DIR = BaseClass::NEXT_TASK,
 		TASK_COMBINE_IGNORE_ATTACKS,
@@ -262,8 +262,8 @@ private:
 	bool ShouldChargePlayer();
 
 	// Chase the enemy, updating the target position as the player moves
-	void StartTaskChaseEnemyContinuously( const Task_t *pTask );
-	void RunTaskChaseEnemyContinuously( const Task_t *pTask );
+	void StartTaskChaseEnemyContinuously(const Task_t* pTask);
+	void RunTaskChaseEnemyContinuously(const Task_t* pTask);
 
 	class CCombineStandoffBehavior : public CAI_ComponentWithOuter<CNPC_Combine, CAI_StandoffBehavior>
 	{
@@ -272,19 +272,19 @@ private:
 		virtual int SelectScheduleAttack()
 		{
 			int result = GetOuter()->SelectScheduleAttack();
-			if ( result == SCHED_NONE )
+			if (result == SCHED_NONE)
 				result = BaseClass::SelectScheduleAttack();
 			return result;
 		}
 	};
 
 	// Rappel
-	virtual bool IsWaitingToRappel( void ) { return m_RappelBehavior.IsWaitingToRappel(); }
+	virtual bool IsWaitingToRappel(void) { return m_RappelBehavior.IsWaitingToRappel(); }
 	void BeginRappel() { m_RappelBehavior.BeginRappel(); }
 
 private:
-	void OnTossedTeleportProjectile( CBaseEntity *pProjectile );
-	void OnTeleportProjectileAction( CBaseEntity *pProjectile, bool bTeleport );
+	void OnTossedTeleportProjectile(CBaseEntity* pProjectile);
+	void OnTeleportProjectileAction(CBaseEntity* pProjectile, bool bTeleport);
 
 	void FullyLoadWeaponClips();
 
@@ -298,7 +298,7 @@ private:
 	// Time Variables
 	float			m_flNextPainSoundTime;
 	float			m_flNextAlertSoundTime;
-	float			m_flNextGrenadeCheck;	
+	float			m_flNextGrenadeCheck;
 	float			m_flNextLostSoundTime;
 	float			m_flAlertPatrolTime;		// When to stop doing alert patrol
 	float			m_flNextAltFireTime;		// Elites only. Next time to begin considering alt-fire attack.
@@ -310,13 +310,13 @@ private:
 	CAI_Sentence< CNPC_Combine > m_Sentences;
 
 	int			m_iNumGrenades;
-	
+
 	int			m_iTeleportGrenades;
 	float		m_flLastTeleportGrenadeTime;
 	float		m_flNextTeleportGrenadeTime;
 	EHANDLE		m_hTeleportProjectile;
 	EHANDLE		m_hTeleportProjectileForcedTarget;
-	
+
 	CAI_AssaultBehavior			m_AssaultBehavior;
 	CCombineStandoffBehavior	m_StandoffBehavior;
 	CAI_FollowBehavior			m_FollowBehavior;

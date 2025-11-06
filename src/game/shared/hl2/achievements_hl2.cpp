@@ -13,6 +13,8 @@
 
 #include "achievementmgr.h"
 #include "baseachievement.h"
+#include <basehlcombatweapon_shared.h>
+#include <ammodef.h>
 
 CAchievementMgr g_AchievementMgrHL2;	// global achievement mgr for HL2
 
@@ -270,4 +272,33 @@ DECLARE_MAP_EVENT_ACHIEVEMENT( ACHIEVEMENT_HL2_BEAT_SUPRESSIONDEVICE, "HL2_BEAT_
 DECLARE_MAP_EVENT_ACHIEVEMENT( ACHIEVEMENT_HL2_BEAT_C1713STRIDERSTANDOFF, "HL2_BEAT_C1713STRIDERSTANDOFF", 10, 310 );
 DECLARE_MAP_EVENT_ACHIEVEMENT_HIDDEN( ACHIEVEMENT_HL2_BEAT_GAME, "HL2_BEAT_GAME", 25, 320 );
 */
+
+int CalcPlayerAttacks(bool bBulletOnly)
+{
+	CBasePlayer* pPlayer = UTIL_GetLocalPlayer();
+	CAmmoDef* pAmmoDef = GetAmmoDef();
+	if (!pPlayer || !pAmmoDef)
+		return 0;
+
+	int iTotalAttacks = 0;
+	int iWeapons = pPlayer->WeaponCount();
+	for (int i = 0; i < iWeapons; i++)
+	{
+		CBaseHLCombatWeapon* pWeapon = dynamic_cast<CBaseHLCombatWeapon*>(pPlayer->GetWeapon(i));
+		if (pWeapon)
+		{
+			// add primary attacks if we were asked for all attacks, or only if it uses bullet ammo if we were asked to count bullet attacks
+			if (!bBulletOnly || (pAmmoDef->m_AmmoType[pWeapon->GetPrimaryAmmoType()].nDamageType == DMG_BULLET))
+			{
+				iTotalAttacks += pWeapon->m_iPrimaryAttacks;
+			}
+			// add secondary attacks if we were asked for all attacks, or only if it uses bullet ammo if we were asked to count bullet attacks
+			if (!bBulletOnly || (pAmmoDef->m_AmmoType[pWeapon->GetSecondaryAmmoType()].nDamageType == DMG_BULLET))
+			{
+				iTotalAttacks += pWeapon->m_iSecondaryAttacks;
+			}
+		}
+	}
+	return iTotalAttacks;
+}
 #endif // GAME_DLL

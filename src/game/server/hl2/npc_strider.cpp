@@ -54,6 +54,7 @@
 #include "filters.h"
 #include "saverestore_utlvector.h"
 #include "eventqueue.h"
+#include "movevars_shared.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -110,8 +111,6 @@ ConVar strider_missile_suppress_time( "strider_missile_suppress_time", "3" );
 
 
 //-----------------------------------------------------------------------------
-
-float GetCurrentGravity( void );
 
 extern void CreateConcussiveBlast( const Vector &origin, const Vector &surfaceNormal, CBaseEntity *pOwner, float magnitude );
 
@@ -1715,7 +1714,7 @@ void CNPC_Strider::RunTask( const Task_t *pTask )
 			// This doesn't work right now. (sjb)
 			Vector vecVelocity = GetAbsVelocity();
 
-			vecVelocity.z -= (GetCurrentGravity() * 0.1);
+			vecVelocity.z -= (sv_gravity.GetFloat() * 0.1);
 
 			SetAbsVelocity( vecVelocity );
 

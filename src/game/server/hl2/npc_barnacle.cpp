@@ -27,6 +27,7 @@
 #include "explode.h"
 #include "npc_BaseZombie.h"
 #include "modelentities.h"
+#include "movevars_shared.h"
 
 #if HL2_EPISODIC
 #include "npc_antlion.h"
@@ -35,7 +36,6 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-float GetCurrentGravity( void );
 ConVar	sk_barnacle_health( "sk_barnacle_health","0");
 
 static ConVar npc_barnacle_swallow( "npc_barnacle_swallow", "0", 0, "Use prototype swallow code." );
@@ -1975,7 +1975,7 @@ void CNPC_Barnacle::UpdateTongue( void )
 
 	// Compute the rest length of the tongue based on the spring. 
 	// This occurs when mg == kx or x = mg/k
-	float flRestStretch = (BARNACLE_TONGUE_TIP_MASS * GetCurrentGravity()) / BARNACLE_TONGUE_SPRING_CONSTANT_HANGING;
+	float flRestStretch = (BARNACLE_TONGUE_TIP_MASS * sv_gravity.GetFloat()) / BARNACLE_TONGUE_SPRING_CONSTANT_HANGING;
 
 	// FIXME: HACK!!!! The code above doesn't quite make the tip end up in the right place.
 	// but it should. So, we're gonna hack it the rest of the way.
