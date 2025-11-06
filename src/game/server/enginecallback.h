@@ -18,7 +18,7 @@
 
 #include "tier3/tier3.h"
 #include "tier2/tier2_logging.h"
-
+#include "filesystem_passthru.h"
 class IFileSystem;				// include FileSystem.h
 class IUniformRandomStream;		// include vstdlib/random.h
 class IEngineSound;				// include engine/IEngineSound.h
@@ -41,7 +41,8 @@ class CSteamGameServerAPIContext;
 
 extern IVEngineServer			*engine;
 extern IVoiceServer				*g_pVoiceServer;
-extern IFileSystem				*filesystem;
+extern IFileSystem				*filesystem;//*filesystem;
+//extern CFileSystemPassThru				*filesystem;
 extern IStaticPropMgrServer		*staticpropmgr;
 extern ISpatialPartition		*partition;
 extern IEngineSound				*enginesound;

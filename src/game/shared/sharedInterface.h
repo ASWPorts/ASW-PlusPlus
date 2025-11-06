@@ -11,14 +11,16 @@
 #ifdef POSIX
 #define random random_valve// stdlib.h defined random() and our class defn conflicts so under POSIX rename it using the preprocessor
 #endif
-
+#include "filesystem.h"
 class IFileSystem;
+class CFileSystemPassThru;
 class IUniformRandomStream;
 class CGaussianRandomStream;
 class IEngineSound;
 class IMapData;
 
-extern IFileSystem				*filesystem;
+
+extern IFileSystem *filesystem;
 #if defined(_STATIC_LINKED) && defined(_SUBSYSTEM) && (defined(CLIENT_DLL) || defined(GAME_DLL))
 namespace _SUBSYSTEM
 {

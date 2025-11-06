@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Alyx, the female sidekick and love interest that's taking the world by storm!
 //
@@ -153,7 +153,7 @@ void CNPC_Alyx::SelectModel()
 	const char *szModel = STRING( GetModelName() );
 	if (!szModel || !*szModel)
 	{
-		SetModelName( AllocPooledString("models/alyx.mdl") );
+		SetModelName( AllocPooledString("models/alyx.mdl") ); //alyx.mdl
 	}
 }
 

@@ -555,7 +555,7 @@ CBasePlayer* UTIL_PlayerByUserId( int userID )
 // 
 CBasePlayer *UTIL_GetLocalPlayer( void )
 {
-	if ( gpGlobals->maxClients > 1 )
+	/*if ( gpGlobals->maxClients > 1 )
 	{
 		if ( developer.GetBool() )
 		{
@@ -567,7 +567,7 @@ CBasePlayer *UTIL_GetLocalPlayer( void )
 		}
 
 		return NULL;
-	}
+	}*/
 
 	return UTIL_PlayerByIndex( 1 );
 }

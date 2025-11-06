@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright (c) 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -23,8 +23,7 @@
 #include "vphysics/constraints.h"
 #include "world.h"
 #include "rumble_shared.h"
-// NVNT for airboat weapon fire
-//#include "haptics/haptic_utils.h"
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -365,6 +364,10 @@ void CPropAirboat::Precache( void )
 
 	PrecacheMaterial( "effects/splashwake1" );
 	PrecacheMaterial( "effects/splashwake4" );
+
+	PrecacheEffect( "AirboatGunImpact" );
+	PrecacheEffect( "AirboatMuzzleFlash" );
+	PrecacheEffect( "watersplash" );
 }
 
 
@@ -1563,9 +1566,6 @@ void CPropAirboat::DoMuzzleFlash( void )
 //-----------------------------------------------------------------------------
 #define GUN_WINDUP_TIME 1.5f
 
-// NVNT Convar for airboat gun magnitude
-ConVar hap_airboat_gun_mag("hap_airboat_gun_mag", "3", 0);
-
 void CPropAirboat::FireGun( )
 {
 	// Get the gun position.
@@ -1599,11 +1599,6 @@ void CPropAirboat::FireGun( )
 	
 	CAmmoDef *pAmmoDef = GetAmmoDef();
 	int ammoType = pAmmoDef->Index( "AirboatGun" );
-
-#if defined( WIN32 ) && !defined( _X360 ) && defined(HAPTICS_ENABLED_ASW)
-	// NVNT punch the players haptics by the magnitude cvar each round fired
-	HapticPunch(m_hPlayer,0,0,hap_airboat_gun_mag.GetFloat());
-#endif
 
 	FireBulletsInfo_t info;
 	info.m_vecSrc = vecGunPosition;

@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -527,7 +527,7 @@ void CWateryDeathLeech::Spawn( void )
 	SetAbsAngles( vAngle );
 
 	m_iFadeState = 1;
-	SetRenderColor( 1, 1, 1 );
+	SetRenderAlpha( 1 );
 }
 
 void CWateryDeathLeech::LeechThink( void )
@@ -549,9 +549,9 @@ void CWateryDeathLeech::LeechThink( void )
 		int speed = MAX(1,256*dt); // fade out over 1 second
 
 		if ( m_iFadeState == -1 )
-			 SetRenderColor( UTIL_Approach( 0, m_clrRender->a, speed ), 1, 1 );
+			 SetRenderAlpha( UTIL_Approach( 0, m_clrRender->a, speed ) );
 		else
-			 SetRenderColor( UTIL_Approach( 255, m_clrRender->a, speed ), 1, 1 );
+			 SetRenderAlpha( UTIL_Approach( 255, m_clrRender->a, speed ) );
 
 		if ( m_clrRender->a == 0 )
 		{

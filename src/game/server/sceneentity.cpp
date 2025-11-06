@@ -40,7 +40,7 @@
 #include "triggers.h"
 
 #ifdef HL2_EPISODIC
-#include "npc_alyx_episodic.h"
+//#include "npc_alyx_episodic.h"
 #endif // HL2_EPISODIC
 
 
@@ -2368,7 +2368,7 @@ bool CSceneEntity::CheckActors()
 					}
 					
 #ifdef HL2_EPISODIC
-					// HACK: Alyx cannot play scenes when she's in the middle of transitioning					
+/*					// HACK: Alyx cannot play scenes when she's in the middle of transitioning					
 					if ( pActor->IsInAVehicle() )
 					{
 						CNPC_Alyx *pAlyx = dynamic_cast<CNPC_Alyx *>(pActor);
@@ -2376,7 +2376,7 @@ bool CSceneEntity::CheckActors()
 						{
 							bShouldWait = true;
 						}
-					}
+					}*/
 #endif // HL2_EPISODIC
 				}
 

@@ -1,11 +1,11 @@
 "GameInfo"
 {
-	"game"		"HL2 ASW Engine"			// Game title in Steam
-	"title"		"Title In Gameinfo.txt"			// Change me!
+	"game"		"Alien Swarm++"
+	"title"		""
 	"type"		"singleplayer_only"
-	"icon"		"icon"					// Icon in Steam
+	"icon"		"icon"
 
-	"developer"	"Strider[RUS] with help of AndreaZzZ, Aluminum Ken, Levan, Hopeless CatE and many others..."
+	"developer"	"hl2-asw-port Contributors"
 	"developer_url"	"https://github.com/stanriders/hl2-asw-port"
 
 	GameData	"halflife2.fgd"

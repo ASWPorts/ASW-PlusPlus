@@ -12,13 +12,13 @@
 #define FILE_BEGIN SEEK_SET
 #define FILE_END SEEK_END
 #endif
-#include "utlbuffer.h"
-#include "utllinkedlist.h"
+#include "tier1/utlbuffer.h"
+#include "tier1/utllinkedlist.h"
 #include "zip_utils.h"
 #include "zip_uncompressed.h"
-#include "checksum_crc.h"
-#include "byteswap.h"
-#include "utlstring.h"
+#include "tier1/checksum_crc.h"
+#include "tier1/byteswap.h"
+#include "tier1/utlstring.h"
 
 // NOTE: This has to be the last file included!
 #include "tier0/memdbgon.h"

@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -10,7 +10,7 @@
 #include "ai_basenpc.h"
 #include "game.h"
 #include "in_buttons.h"
-#include "gamestats.h"
+#include "GameStats.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -192,7 +192,7 @@ void CHLMachineGun::DoMachineGunKick( CBasePlayer *pPlayer, float dampEasy, floa
 		}
 	}
 
-	//Clip this to our desired min/max
+	//Clip this to our desired MIN/max
 	UTIL_ClipPunchAngleOffset( vecScratch, pPlayer->m_Local.m_vecPunchAngle, QAngle( 24.0f, 3.0f, 1.0f ) );
 
 	//Add it to the view punch
@@ -519,18 +519,4 @@ CHLSelectFireMachineGun::CHLSelectFireMachineGun( void )
 	m_fMaxRange1	= 1024;
 	m_fMaxRange2	= 1024;
 	m_iFireMode		= FIREMODE_FULLAUTO;
-}
-
-// stubs till we get full definitions
-bool CBaseHLCombatWeapon::SendWeaponAnim(int iActivity)
-{
-	CBasePlayer* pOwner = ToBasePlayer(GetOwner());
-	if (pOwner)
-		pOwner->SetAnimation(PLAYER_ATTACK1);
-	return BaseClass::SendWeaponAnim(iActivity);
-}
-
-bool CBaseHLCombatWeapon::IsSpecialSuitAbility(void)
-{
-	return false;
 }

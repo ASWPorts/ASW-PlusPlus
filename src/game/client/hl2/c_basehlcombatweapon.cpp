@@ -19,15 +19,3 @@ END_RECV_TABLE()
 
 IMPLEMENT_CLIENTCLASS_DT( C_BaseHLBludgeonWeapon, DT_BaseHLBludgeonWeapon, CBaseHLBludgeonWeapon )
 END_RECV_TABLE()
-
-
-// STUB TILL WE FIND AN IMPLEMENTATION
-bool CBaseHLCombatWeapon::SendWeaponAnim(int iActivity)
-{
-    return true;
-}
-
-bool CBaseHLCombatWeapon::IsSpecialSuitAbility(void)
-{
-    return false;
-}

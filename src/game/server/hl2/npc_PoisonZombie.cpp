@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: A hideous, putrescent, pus-filled undead carcass atop which a vile
 //			nest of filthy poisonous headcrabs lurks.
@@ -32,13 +32,13 @@
 //
 // Controls how soon he throws the first headcrab after seeing his enemy (also when the first headcrab leaps off)
 //
-#define ZOMBIE_THROW_FIRST_MIN_DELAY	1	// min seconds before first crab throw
+#define ZOMBIE_THROW_FIRST_MIN_DELAY	1	// MIN seconds before first crab throw
 #define ZOMBIE_THROW_FIRST_MAX_DELAY	2	// max seconds before first crab throw
 
 //
 // Controls how often he throws headcrabs (also how often headcrabs leap off)
 //
-#define ZOMBIE_THROW_MIN_DELAY	4			// min seconds between crab throws
+#define ZOMBIE_THROW_MIN_DELAY	4			// MIN seconds between crab throws
 #define ZOMBIE_THROW_MAX_DELAY	10			// max seconds between crab throws
 
 //

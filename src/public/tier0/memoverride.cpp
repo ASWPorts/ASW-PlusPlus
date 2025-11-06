@@ -714,13 +714,13 @@ int __cdecl _CrtDbgReport( int nRptType, const char * szFile,
 
 #if defined( _DEBUG )
  
+#if 0
 // wrapper which passes no debug info; not available in debug
-#ifndef	SUPPRESS_INVALID_PARAMETER_NO_INFO
 void __cdecl _invalid_parameter_noinfo(void)
 {
     Assert(0);
 }
-#endif
+#endif // 0
 
 #endif /* defined( _DEBUG ) */
 
@@ -1181,9 +1181,7 @@ typedef struct setloc_struct {
     LCID lcidLanguage;
     LCID lcidCountry;
     /* expand_locale static variables */
-#if _MSC_VER < 1700
-    LC_ID       _cacheid;
-#endif
+    LCID        _cacheid;
     UINT        _cachecp;
     char        _cachein[MAX_LC_LEN];
     char        _cacheout[MAX_LC_LEN];

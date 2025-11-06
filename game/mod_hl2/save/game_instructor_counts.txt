@@ -1,0 +1,7 @@
+"Game Instructor Counts"
+{
+	"version number"
+	{
+		"success"		"7"
+	}
+}

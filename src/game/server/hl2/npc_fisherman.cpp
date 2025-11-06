@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -170,7 +170,7 @@ Class_T	CNPC_Fisherman::Classify( void )
 //---------------------------------------------------------
 void CNPC_Fisherman::HandleAnimEvent( animevent_t *pEvent )
 {
-	if ( pEvent->Event() == NPC_EVENT_LEFTFOOT)
+	if ( pEvent->Event() == NPC_EVENT_LEFTFOOT )
 	{
 		EmitSound( "NPC_Fisherman.FootstepLeft", pEvent->eventtime );
 	}

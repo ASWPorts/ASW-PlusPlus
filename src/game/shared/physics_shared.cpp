@@ -6,6 +6,8 @@
 #include "cbase.h"
 #include "vcollide_parse.h"
 #include "filesystem.h"
+//#include "filesystem_passthru.h"
+extern IFileSystem *filesystem;
 #include "movevars_shared.h"
 #include "engine/ivmodelinfo.h"
 #include "physics_shared.h"

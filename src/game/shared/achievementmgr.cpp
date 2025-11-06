@@ -1739,7 +1739,7 @@ void MsgFunc_AchievementEvent( bf_read &msg )
 	pAchievementMgr->OnAchievementEvent( iAchievementID, STEAM_PLAYER_SLOT );
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 CON_COMMAND_F( achievement_reset_all, "Clears all achievements", FCVAR_CHEAT )
 {
 	CAchievementMgr *pAchievementMgr = dynamic_cast<CAchievementMgr *>( engine->GetAchievementMgr() );
@@ -1878,7 +1878,7 @@ CON_COMMAND_F( achievement_mark_dirty, "Mark achievement data as dirty", FCVAR_C
 		return;
 	pAchievementMgr->SetDirty( true, STEAM_PLAYER_SLOT );
 }
-#endif // _DEBUG
+//#endif // _DEBUG
 
 #endif // CLIENT_DLL
 

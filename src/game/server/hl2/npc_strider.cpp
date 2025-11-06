@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Giant walking strider thing!
 //
@@ -54,7 +54,6 @@
 #include "filters.h"
 #include "saverestore_utlvector.h"
 #include "eventqueue.h"
-#include "movevars_shared.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -111,6 +110,8 @@ ConVar strider_missile_suppress_time( "strider_missile_suppress_time", "3" );
 
 
 //-----------------------------------------------------------------------------
+
+extern ConVar sv_gravity;
 
 extern void CreateConcussiveBlast( const Vector &origin, const Vector &surfaceNormal, CBaseEntity *pOwner, float magnitude );
 
@@ -469,8 +470,15 @@ void CNPC_Strider::Precache()
 	PrecacheMaterial( "effects/strider_muzzle" );
 
 	PrecacheModel( "models/chefhat.mdl" );
+	CRopeKeyframe::PrecacheShakeRopes();
+
+	UTIL_BloodSprayPrecache();
 
 	UTIL_PrecacheOther( "sparktrail" );
+
+	PrecacheEffect( "StriderMuzzleFlash" );
+	PrecacheEffect( "watersplash" );
+	PrecacheEffect( "StriderTracer" );
 
 	BaseClass::Precache();
 }
@@ -504,6 +512,8 @@ void CNPC_Strider::Spawn()
 	
 	m_iHealth = sk_strider_health.GetFloat();
 	m_iMaxHealth = 500;
+
+	m_flFrozenMax = 0.0f;
 
 	m_flFieldOfView = 0.0; // 180 degrees
 
@@ -1129,7 +1139,7 @@ void CNPC_Strider::GatherConditions()
 					   !WeaponLOSCondition( GetAdjustedOrigin(), GetEnemy()->BodyTarget( GetAdjustedOrigin() ), false ) ) )
 				{
 #if 0
-					if ( !HasCondition( COND_STRIDER_SHOULD_CROUCH ) )
+					if ( !HasCondition( COND_STRIDER_SHOULD_CROUCH ) && !HasCondition( COND_STRIDER_SHOULD_CROUCH ) )
 						SetIdealHeight( MIN( GetMaxHeight(), GetHeight() + 75.0 * 0.1 ) ); // default to rising up
 #endif
 					GatherHeightConditions( GetAdjustedOrigin(), GetEnemy() );
@@ -1160,7 +1170,7 @@ void CNPC_Strider::GatherConditions()
 //---------------------------------------------------------
 void CNPC_Strider::GatherHeightConditions( const Vector &vTestPos, CBaseEntity *pEntity )
 {
-	if ( HasCondition( COND_STRIDER_SHOULD_CROUCH ) )
+	if ( HasCondition( COND_STRIDER_SHOULD_CROUCH ) && HasCondition( COND_STRIDER_SHOULD_CROUCH ) )
 		return;
 
 	float maxZ = (GetAbsOrigin().z - (GetMaxHeightModel() - GetMaxHeight()));
@@ -1291,7 +1301,7 @@ void CNPC_Strider::BuildScheduleTestBits()
 		SetCustomInterruptCondition( COND_STRIDER_HAS_CANNON_TARGET );
 	}
 
-	if( IsCurSchedule( SCHED_IDLE_WALK ) || ( IsCurSchedule( SCHED_IDLE_STAND ) && hl2_episodic.GetBool() ) )
+	if( IsCurSchedule( SCHED_IDLE_WALK ) || IsCurSchedule( SCHED_IDLE_STAND ) && hl2_episodic.GetBool() )
 	{
 		SetCustomInterruptCondition(COND_STRIDER_SHOULD_CROUCH);
 	}
@@ -2787,7 +2797,7 @@ void CNPC_Strider::DoImpactEffect( trace_t &tr, int nDamageType )
 
 		Vector vecReTrace = tr.endpos + vecDir * 12;
 
-		if( UTIL_PointContents( vecReTrace, 0 ) == CONTENTS_EMPTY )
+		if( UTIL_PointContents( vecReTrace, MASK_ALL ) == CONTENTS_EMPTY )
 		{
 			AI_TraceLine( vecReTrace, vecReTrace - vecDir * 24, MASK_SHOT, NULL, COLLISION_GROUP_NONE, &retrace );
 
@@ -3338,7 +3348,6 @@ bool CNPC_Strider::ShouldExplodeFromDamage( const CTakeDamageInfo &info )
 
 //---------------------------------------------------------
 //---------------------------------------------------------
-ConVarRef mat_dxlevel( "mat_dxlevel" );
 bool CNPC_Strider::BecomeRagdoll( const CTakeDamageInfo &info, const Vector &forceVector ) 
 { 
 	// Combine balls make us explode
@@ -3351,10 +3360,9 @@ bool CNPC_Strider::BecomeRagdoll( const CTakeDamageInfo &info, const Vector &for
 		// Otherwise just keel over
 		CRagdollProp *pRagdoll = NULL;
 		CBasePlayer *pPlayer = AI_GetSinglePlayer();
-		if ( pPlayer && mat_dxlevel.GetInt() > 0 )
+		if ( pPlayer )
 		{
-			int dxlevel = mat_dxlevel.GetInt();
-			int maxRagdolls = ( dxlevel >= 90 ) ? 2 : ( dxlevel >= 80 ) ? 1 : 0;
+			int maxRagdolls = 2;
 
 			if ( maxRagdolls > 0 )
 			{
@@ -4385,7 +4393,7 @@ void CNPC_Strider::FootFX( const Vector &origin )
 	AI_TraceLine( origin + Vector(0, 0, 48), origin - Vector(0,0,100), MASK_SOLID_BRUSHONLY, this, COLLISION_GROUP_NONE, &tr );
 	float yaw = random->RandomInt(0,120);
 	
-	if ( UTIL_PointContents( tr.endpos + Vector( 0, 0, 1 ), 0 ) & MASK_WATER )
+	if ( UTIL_PointContents( tr.endpos + Vector( 0, 0, 1 ), MASK_WATER ) & MASK_WATER )
 	{
 		float flWaterZ = UTIL_FindWaterSurface( tr.endpos, tr.endpos.z, tr.endpos.z + 100.0f );
 

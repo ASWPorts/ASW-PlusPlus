@@ -31,7 +31,7 @@
 
 #include "filesystem.h"
 #include <stdarg.h>
-
+//#include "filesystem_passthru.h"
 extern IFileSystem *filesystem;
 
 #ifndef CLIENT_DLL

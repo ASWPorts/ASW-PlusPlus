@@ -6,7 +6,7 @@
 //=============================================================================//
 
 #include "cbase.h"
-
+ 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -29,7 +29,7 @@ public:
 	bool KeyValue( const char *szKeyName, const char *szValue );
 	virtual bool GetKeyValue( const char *szKeyName, char *szValue, int iMaxLen );
 	int  UpdateTransmitState();
-
+	
 	// Inputs
 	void	InputSetAngles( inputdata_t &inputdata );
 	void	InputEnable( inputdata_t &inputdata );

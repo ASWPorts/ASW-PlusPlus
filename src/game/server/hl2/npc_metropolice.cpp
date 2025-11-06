@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -854,7 +854,7 @@ void CNPC_MetroPolice::SpeakSentence( int nSentenceType )
 
 	if ( nSentenceType >= SENTENCE_BASE_BEHAVIOR_INDEX )
 	{
-		/*if (GetRunningBehavior() == &m_FuncTankBehavior)
+		/*if ( GetRunningBehavior() == &m_FuncTankBehavior )
 		{
 			SpeakFuncTankSentence( nSentenceType );
 			return;
@@ -1148,7 +1148,7 @@ CBaseEntity *CNPC_MetroPolice::GetEnemyAirboat() const
 {
 	// Should this be a condition??
 	if ( !GetEnemy() || !GetEnemy()->IsPlayer() )
-		return NULL;
+		return false;
 
 	return static_cast<CBasePlayer*>( GetEnemy() )->GetVehicleEntity(); 
 }
@@ -2920,7 +2920,7 @@ void CNPC_MetroPolice::OnAnimEventBatonOff( void )
 void CNPC_MetroPolice::HandleAnimEvent( animevent_t *pEvent )
 {
 	// Shove!
-	if ( pEvent->Event() == AE_METROPOLICE_SHOVE)
+	if ( pEvent->Event() == AE_METROPOLICE_SHOVE )
 	{
 		OnAnimEventShove();
 		return;

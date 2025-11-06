@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Implements the zombie, a horrific once-human headcrab victim.
 //
@@ -840,7 +840,7 @@ int CNPC_BaseZombie::OnTakeDamage_Alive( const CTakeDamageInfo &inputInfo )
 		Ignite( 100.0f );
 	}
 
-	int tookDamage = BaseClass::OnTakeDamage_Alive( info );
+	int tookDamage=BaseClass::OnTakeDamage_Alive( info );
 
 	// flDamageThreshold is what percentage of the creature's max health
 	// this amount of damage represents. (clips at 1.0)
@@ -949,12 +949,10 @@ int CNPC_BaseZombie::OnTakeDamage_Alive( const CTakeDamageInfo &inputInfo )
 //-----------------------------------------------------------------------------
 void CNPC_BaseZombie::MakeAISpookySound( float volume, float duration )
 {
-#ifdef HL2_EPISODIC
 	if ( HL2GameRules()->IsAlyxInDarknessMode() )
 	{
 		CSoundEnt::InsertSound( SOUND_COMBAT, EyePosition(), volume, duration, this, SOUNDENT_CHANNEL_SPOOKY_NOISE );
 	}
-#endif // HL2_EPISODIC
 }
 
 //-----------------------------------------------------------------------------
@@ -1250,8 +1248,9 @@ void CNPC_BaseZombie::Ignite( float flFlameLifetime, bool bNPCOnly, float flSize
 //---------------------------------------------------------
 void CNPC_BaseZombie::CopyRenderColorTo( CBaseEntity *pOther )
 {
-	color32_s color{};
+	color24 color = GetRenderColor();
 	pOther->SetRenderColor( color.r, color.g, color.b );
+	pOther->SetRenderAlpha( GetRenderAlpha());
 }
 
 //-----------------------------------------------------------------------------
@@ -1438,7 +1437,7 @@ void CNPC_BaseZombie::PoundSound()
 //-----------------------------------------------------------------------------
 void CNPC_BaseZombie::HandleAnimEvent( animevent_t *pEvent )
 {
-	if ( pEvent->Event() == AE_NPC_ATTACK_BROADCAST)
+	if ( pEvent->Event() == AE_NPC_ATTACK_BROADCAST )
 	{
 		if( GetEnemy() && GetEnemy()->IsNPC() )
 		{
@@ -1453,13 +1452,13 @@ void CNPC_BaseZombie::HandleAnimEvent( animevent_t *pEvent )
 		return;
 	}
 
-	if ( pEvent->Event() == AE_ZOMBIE_POUND)
+	if ( pEvent->Event() == AE_ZOMBIE_POUND )
 	{
 		PoundSound();
 		return;
 	}
 
-	if ( pEvent->Event() == AE_ZOMBIE_ALERTSOUND)
+	if ( pEvent->Event() == AE_ZOMBIE_ALERTSOUND )
 	{
 		AlertSound();
 		return;
@@ -1579,9 +1578,7 @@ void CNPC_BaseZombie::HandleAnimEvent( animevent_t *pEvent )
 		right = right * 100;
 		forward = forward * 200;
 
-		QAngle qa( -15, -20, -10 );
-		Vector vec = right + forward;
-		ClawAttack( GetClawAttackRange(), sk_zombie_dmg_one_slash.GetFloat(), qa, vec, ZOMBIE_BLOOD_RIGHT_HAND );
+		ClawAttack( GetClawAttackRange(), sk_zombie_dmg_one_slash.GetFloat(), QAngle( -15, -20, -10 ), right + forward, ZOMBIE_BLOOD_RIGHT_HAND );
 		return;
 	}
 
@@ -1593,9 +1590,7 @@ void CNPC_BaseZombie::HandleAnimEvent( animevent_t *pEvent )
 		right = right * -100;
 		forward = forward * 200;
 
-		QAngle qa( -15, 20, -10 );
-		Vector vec = right + forward;
-		ClawAttack( GetClawAttackRange(), sk_zombie_dmg_one_slash.GetFloat(), qa, vec, ZOMBIE_BLOOD_LEFT_HAND );
+		ClawAttack( GetClawAttackRange(), sk_zombie_dmg_one_slash.GetFloat(), QAngle( -15, 20, -10 ), right + forward, ZOMBIE_BLOOD_LEFT_HAND );
 		return;
 	}
 
@@ -1911,7 +1906,7 @@ int CNPC_BaseZombie::SelectSchedule ( void )
 
 #ifdef DEBUG_ZOMBIES
 			DevMsg("Wandering\n");
-#endif
+#endif+
 
 			// Just lost track of our enemy. 
 			// Wander around a bit so we don't look like a dingus.
@@ -2318,7 +2313,7 @@ void CNPC_BaseZombie::StopLoopingSounds()
 void CNPC_BaseZombie::RemoveHead( void )
 {
 	m_fIsHeadless = true;
-	SetZombieModel();
+	SetHeadlessModel();
 }
 
 
@@ -2483,7 +2478,7 @@ void CNPC_BaseZombie::ReleaseHeadcrab( const Vector &vecOrigin, const Vector &ve
 		pCrab->SetNextThink( gpGlobals->curtime );
 		pCrab->PhysicsSimulate();
 		pCrab->SetAbsVelocity( vecVelocity );
-
+		
 		// if I have an enemy, stuff that to the headcrab.
 		CBaseEntity *pEnemy;
 		pEnemy = GetEnemy();
@@ -2508,7 +2503,7 @@ void CNPC_BaseZombie::ReleaseHeadcrab( const Vector &vecOrigin, const Vector &ve
 	{
 		RemoveHead();
 	}
-
+	
 	if( fRagdollBody )
 	{
 		BecomeRagdollOnClient( vec3_origin );

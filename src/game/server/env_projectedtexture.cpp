@@ -82,7 +82,7 @@ CEnvProjectedTexture::CEnvProjectedTexture( void )
 	m_bState = true;
 	m_bAlwaysUpdate = false;
 	m_flLightFOV = 45.0f;
-	m_bEnableShadows = false;
+	m_bEnableShadows = true;
 	m_bSimpleProjection = false;
 	m_bLightOnlyTarget = false;
 	m_bLightWorld = true;

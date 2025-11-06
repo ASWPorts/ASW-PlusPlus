@@ -1,4 +1,4 @@
-//========= Copyright Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose:		Pistol - hand gun
 //
@@ -6,10 +6,10 @@
 //=============================================================================//
 
 #include "cbase.h"
-#include "npcevent.h"
+#include "NPCEvent.h"
 #include "basehlcombatweapon.h"
 #include "basecombatcharacter.h"
-#include "ai_basenpc.h"
+#include "AI_BaseNPC.h"
 #include "player.h"
 #include "gamerules.h"
 #include "in_buttons.h"

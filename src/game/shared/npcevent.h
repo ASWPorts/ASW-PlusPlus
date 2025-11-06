@@ -47,7 +47,6 @@ struct animevent_t
 	// see mstudioevent_for_client_server_t comment below
 	int Event_OldSystem( void ) const { return *static_cast< const int* >( static_cast< const void* >( &_event_highword ) ); }
 	void Event_OldSystem( int nEvent ) { *static_cast< int* >( static_cast< void* >( &_event_highword ) ) = nEvent; }
-	// WHAT THE FUCK WAS THE POINT OF RENAMING event TO FUCKING Event()
 	int Event( void ) const
 	{
 		if ( type & AE_TYPE_NEWEVENTSYSTEM )
