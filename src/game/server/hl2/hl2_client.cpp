@@ -175,3 +175,8 @@ void InstallGameRules()
 	}
 }
 
+// [guest]: Shit from asw_client.cpp
+void ClientFullyConnect(edict_t* pEntity)
+{
+
+}

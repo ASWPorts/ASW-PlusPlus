@@ -520,3 +520,17 @@ CHLSelectFireMachineGun::CHLSelectFireMachineGun( void )
 	m_fMaxRange2	= 1024;
 	m_iFireMode		= FIREMODE_FULLAUTO;
 }
+
+// stubs till we get full definitions
+bool CBaseHLCombatWeapon::SendWeaponAnim(int iActivity)
+{
+	CBasePlayer* pOwner = ToBasePlayer(GetOwner());
+	if (pOwner)
+		pOwner->SetAnimation(PLAYER_ATTACK1);
+	return BaseClass::SendWeaponAnim(iActivity);
+}
+
+bool CBaseHLCombatWeapon::IsSpecialSuitAbility(void)
+{
+	return false;
+}
