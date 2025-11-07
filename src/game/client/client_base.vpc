@@ -1162,6 +1162,7 @@ $Project
 		$Lib		vgui_controls
 		$Lib		videocfg
 		$Lib		vtf
+		$Lib		"$LIBCOMMON\jpeglib"
 		$ImpLib		steam_api
  	}
 }
