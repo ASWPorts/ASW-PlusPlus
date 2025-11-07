@@ -15,8 +15,8 @@ $Configuration
 {
 	$Compiler
 	{
-		$AdditionalIncludeDirectories	".\hl2;.\hl2\elements;$SRCDIR\game\shared\hl2;$BASE"
-		$PreprocessorDefinitions		"$BASE;HL2_CLIENT_DLL"
+		$AdditionalIncludeDirectories	".\hl2;.\hl2\elements;$SRCDIR\game\client\hl2\gameui;$SRCDIR\game\shared\hl2;$BASE"
+		$PreprocessorDefinitions		"$BASE;HL2_CLIENT_DLL;GAMEUI_EMBEDDED;GAMEUI_EXPORTS"
 	}
 }
 
@@ -30,6 +30,217 @@ $Project "Client (HL2)"
 
 		$Folder	"HL2 DLL"
 		{
+			$Folder "GameUI - Embedded"
+			{
+				$Folder "Base GameUI"
+				{
+					$Folder "Headers"
+					{
+					$File	"hl2\gameui\backgroundmenubutton.h" \
+							"hl2\gameui\basepanel.h" \
+							"hl2\gameui\basesavegamedialog.h" \
+							"hl2\gameui\bitmapimagepanel.h" \
+							"hl2\gameui\commandcheckbutton.h" \
+							"hl2\gameui\contentcontroldialog.h" \
+							"hl2\gameui\createmultiplayergamebotpage.h" \
+							"hl2\gameui\createmultiplayergamedialog.h" \
+							"hl2\gameui\createmultiplayergamegameplaypage.h" \
+							"hl2\gameui\createmultiplayergameserverpage.h" \
+							"hl2\gameui\customtabexplanationdialog.h" \
+							"hl2\gameui\cvarnegatecheckbutton.h" \
+							"hl2\gameui\cvarslider.h" \
+							"hl2\gameui\cvartextentry.h" \
+							"hl2\gameui\cvartogglecheckbutton.h" \
+							"hl2\gameui\engineinterface.h" \
+							"hl2\gameui\gameconsole.h" \
+							"hl2\gameui\gameconsoledialog.h" \
+							"hl2\gameui\gameui_interface.h" \
+							"hl2\gameui\gameui_util.h" \
+							"hl2\gameui\keytogglecheckbutton.h" \
+							"hl2\gameui\labeledcommandcombobox.h" \
+							"hl2\gameui\loadingdialog.h" \
+							"hl2\gameui\loadingtippanel.h" \
+							"hl2\gameui\modinfo.h" \
+							"hl2\gameui\mousemessageforwardingpanel.h" \
+							"hl2\gameui\multiplayeradvanceddialog.h" \
+							"hl2\gameui\optionsdialog.h" \
+							"hl2\gameui\optionssubaudio.h" \
+							"hl2\gameui\optionssubdifficulty.h" \
+							"hl2\gameui\optionssubgame.h" \
+							"hl2\gameui\optionssubkeyboard.h" \
+							"hl2\gameui\optionssubmouse.h" \
+							"hl2\gameui\optionssubmultiplayer.h" \
+							"hl2\gameui\optionssubportal.h" \
+							"hl2\gameui\optionssubvideo.h" \
+							"hl2\gameui\optionssubvoice.h" \
+							"hl2\gameui\panellistpanel.h" \
+							"hl2\gameui\playerlistdialog.h" \
+							"hl2\gameui\rungameengine.h" \
+							"hl2\gameui\scriptobject.h" \
+							"hl2\gameui\sys_utils.h" \
+							"hl2\gameui\textentrybox.h" \
+							"hl2\gameui\urlbutton.h" \
+							"hl2\gameui\vcontrolslistpanel.h" \
+							"hl2\gameui\vguisystemmoduleloader.h"
+					}
+					$File	"hl2\gameui\backgroundmenubutton.cpp" \
+							"hl2\gameui\basesavegamedialog.cpp" \
+							"hl2\gameui\bitmapimagepanel.cpp" \
+							"hl2\gameui\commandcheckbutton.cpp" \
+							"hl2\gameui\contentcontroldialog.cpp" \
+							"hl2\gameui\createmultiplayergamebotpage.cpp" \
+							"hl2\gameui\createmultiplayergamedialog.cpp" \
+							"hl2\gameui\createmultiplayergamegameplaypage.cpp" \
+							"hl2\gameui\createmultiplayergameserverpage.cpp" \
+							"hl2\gameui\customtabexplanationdialog.cpp" \
+							"hl2\gameui\cvarnegatecheckbutton.cpp" \
+							"hl2\gameui\cvarslider.cpp" \
+							"hl2\gameui\cvartextentry.cpp" \
+							"hl2\gameui\cvartogglecheckbutton.cpp" \
+							"hl2\gameui\gameconsole.cpp" \
+							"hl2\gameui\gameconsoledialog.cpp" \
+							"hl2\gameui\gameui_interface.cpp" \
+							"hl2\gameui\gameui_util.cpp" \
+							"hl2\gameui\keytogglecheckbutton.cpp" \
+							"hl2\gameui\labeledcommandcombobox.cpp" \
+							"hl2\gameui\loadingdialog.cpp" \
+							"hl2\gameui\loadingtippanel.cpp" \
+							"hl2\gameui\logofile.cpp" \
+							"hl2\gameui\modinfo.cpp" \
+							"hl2\gameui\mousemessageforwardingpanel.cpp" \
+							"hl2\gameui\multiplayeradvanceddialog.cpp" \
+							"hl2\gameui\optionsdialog.cpp" \
+							"hl2\gameui\optionssubaudio.cpp" \
+							"hl2\gameui\optionssubdifficulty.cpp" \
+							"hl2\gameui\optionssubgame.cpp" \
+							"hl2\gameui\optionssubkeyboard.cpp" \
+							"hl2\gameui\optionssubmouse.cpp" \
+							"hl2\gameui\optionssubmultiplayer.cpp" \
+							"hl2\gameui\optionssubportal.cpp" \
+							"hl2\gameui\optionssubvideo.cpp" \
+							"hl2\gameui\optionssubvoice.cpp" \
+							"hl2\gameui\panellistpanel.cpp" \
+							"hl2\gameui\playerlistdialog.cpp" \
+							"hl2\gameui\rungameengine.cpp" \
+							"hl2\gameui\scriptobject.cpp" \
+							"hl2\gameui\sys_utils.cpp" \
+							"hl2\gameui\textentrybox.cpp" \
+							"hl2\gameui\urlbutton.cpp" \
+							"hl2\gameui\vcontrolslistpanel.cpp" \
+							"hl2\gameui\vguisystemmoduleloader.cpp"
+					{
+						$Configuration
+						{
+							$Compiler
+							{
+								$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+							}
+						}
+					}
+				}
+				
+				$Folder "External Stuff"
+				{
+					$File	"$SRCDIR\common\language.cpp"
+					{
+						$Configuration
+						{
+							$Compiler
+							{
+								$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+							}
+						}
+					}
+				}
+
+				$Folder "Swarm GameUI"
+				{
+					$Folder "Headers"
+					{
+					$File	"hl2\gameui\hl2\basemodframe.h" \
+							"hl2\gameui\hl2\basemodpanel.h" \
+							"hl2\gameui\hl2\basemodui.h" \
+							"hl2\gameui\hl2\gamemodes.h" \
+							"hl2\gameui\hl2\uiavatarimage.h" \
+							"hl2\gameui\hl2\uigamedata.h" \
+							"hl2\gameui\hl2\vachievements.h" \
+							"hl2\gameui\hl2\vattractscreen.h" \
+							"hl2\gameui\hl2\vaudio.h" \
+							"hl2\gameui\hl2\vcontrolleroptions.h" \
+							"hl2\gameui\hl2\vcontrolleroptionsbuttons.h" \
+							"hl2\gameui\hl2\vcontrolleroptionssticks.h" \
+							"hl2\gameui\hl2\vdropdownmenu.h" \
+							"hl2\gameui\hl2\vflyoutmenu.h" \
+							"hl2\gameui\hl2\vfooterpanel.h" \
+							"hl2\gameui\hl2\vgameoptions.h" \
+							"hl2\gameui\hl2\vgenericconfirmation.h" \
+							"hl2\gameui\hl2\vgenericpanellist.h" \
+							"hl2\gameui\hl2\vgenericwaitscreen.h" \
+							"hl2\gameui\hl2\vhybridbutton.h" \
+							"hl2\gameui\hl2\vingamemainmenu.h" \
+							"hl2\gameui\hl2\vkeyboard.h" \
+							"hl2\gameui\hl2\vkeyboardmouse.h" \
+							"hl2\gameui\hl2\vloadingprogress.h" \
+							"hl2\gameui\hl2\voptions.h" \
+							"hl2\gameui\hl2\vslidercontrol.h" \
+							"hl2\gameui\hl2\vspinnercontrol.h" \
+							"hl2\gameui\hl2\vtransitionscreen.h" \
+							"hl2\gameui\hl2\vvideo.h"
+					}
+					$Folder "Win32"
+					{
+					$File	"hl2\gameui\hl2\uiavatarimage.cpp" \
+							"hl2\gameui\hl2\vkeyboard.cpp" \
+							"hl2\gameui\hl2\vkeyboardmouse.cpp"
+					{
+						$Configuration
+						{
+							$Compiler
+							{
+								$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+							}
+						}
+					}
+					}
+					$File	"hl2\gameui\hl2\basemodframe.cpp" \
+							"hl2\gameui\hl2\basemodpanel.cpp" \
+							"hl2\gameui\hl2\gamemodes.cpp" \
+							"hl2\gameui\hl2\uigamedata.cpp" \
+							"hl2\gameui\hl2\uigamedata_storage.cpp" \
+							"hl2\gameui\hl2\vachievements.cpp" \
+							"hl2\gameui\hl2\vattractscreen.cpp" \
+							"hl2\gameui\hl2\vaudio.cpp" \
+							"hl2\gameui\hl2\vcontrolleroptions.cpp" \
+							"hl2\gameui\hl2\vcontrolleroptionsbuttons.cpp" \
+							"hl2\gameui\hl2\vcontrolleroptionssticks.cpp" \
+							"hl2\gameui\hl2\vdropdownmenu.cpp" \
+							"hl2\gameui\hl2\vflyoutmenu.cpp" \
+							"hl2\gameui\hl2\vfooterpanel.cpp" \
+							"hl2\gameui\hl2\vgameoptions.cpp" \
+							"hl2\gameui\hl2\vgenericconfirmation.cpp" \
+							"hl2\gameui\hl2\vgenericpanellist.cpp" \
+							"hl2\gameui\hl2\vgenericwaitscreen.cpp" \
+							"hl2\gameui\hl2\vhybridbutton.cpp" \
+							"hl2\gameui\hl2\vingamemainmenu.cpp" \
+							"hl2\gameui\hl2\vloadingprogress.cpp" \
+							"hl2\gameui\hl2\vmenubackground.cpp" \
+							"hl2\gameui\hl2\voptions.cpp" \
+							"hl2\gameui\hl2\vslidercontrol.cpp" \
+							"hl2\gameui\hl2\vspinnercontrol.cpp" \
+							"hl2\gameui\hl2\vtransitionscreen.cpp" \
+							"hl2\gameui\hl2\vvideo.cpp"
+					{
+						$Configuration
+						{
+							$Compiler
+							{
+								$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+							}
+						}
+					}
+				}
+			}
+
 			$File	"$SRCDIR\game\shared\hl2\basehlcombatweapon_shared.cpp"
 			$File	"$SRCDIR\game\shared\hl2\achievements_hl2.cpp"
 			$File	"hl2\c_antlion_dust.cpp"
