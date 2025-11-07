@@ -10,7 +10,7 @@
 #include "voice_gamemgr.h"
 
 // NVNT include to register in haptic user messages
-#include "haptics/haptic_msgs.h"
+//#include "haptics/haptic_msgs.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -60,5 +60,5 @@ void RegisterUserMessages()
 	usermessages->Register( "VoteSetup", -1 );  // Initiates client-side voting UI
 
 	// NVNT register haptic user messages
-	RegisterHapticMessages();
+	//RegisterHapticMessages();
 }

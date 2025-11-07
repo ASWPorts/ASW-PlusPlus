@@ -127,12 +127,14 @@ void CPortalGameMovement::ProcessMovement( CBasePlayer *pPlayer, CMoveData *pMov
 	//!!Blame Yahn for this one.
 	gpGlobals->frametime *= pPlayer->GetLaggedMovementValue();
 
+	// we aren't using ASW + PORTAL....
+#if defined(SWARM_DLL)
 	ResetGetPointContentsCache();
-
 	// Cropping movement speed scales mv->m_fForwardSpeed etc. globally
 	// Once we crop, we don't want to recursively crop again, so we set the crop
 	//  flag globally here once per usercmd cycle.
 	m_iSpeedCropped = SPEED_CROPPED_RESET;
+#endif
 
 	player = pPlayer;
 	mv = pMove;

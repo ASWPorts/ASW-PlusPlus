@@ -250,7 +250,7 @@ void C_Prop_Portal::ClientThink( void )
 	}
 }
 
-void C_Prop_Portal::Simulate()
+bool C_Prop_Portal::Simulate()
 {
 	BaseClass::Simulate();
 
@@ -408,9 +408,11 @@ void C_Prop_Portal::Simulate()
 			if ( pWeapon && ToPortalPlayer( pWeapon->GetOwner() ) )
 				bIsHeldWeapon = true;
 
+			RenderGroup_t sourceRenderGroup;
+
 			C_PortalGhostRenderable *pNewGhost = new C_PortalGhostRenderable( this,
 																				pRenderable, 
-																				pEntity->GetRenderGroup(), 
+																				sourceRenderGroup,
 																				m_matrixThisToLinked, 
 																				m_fGhostRenderablesClip,
 																				(pEntity == pLocalPlayer || bIsHeldWeapon) );
@@ -869,7 +871,9 @@ int C_Prop_Portal::DrawModel( int flags )
 	if( WillUseDepthDoublerThisDraw() )
 		m_fSecondaryStaticAmount = 0.0f;
 
-	iRetVal = BaseClass::DrawModel( flags );
+	RenderableInstance_t instance{};
+
+	iRetVal = BaseClass::DrawModel( flags, instance);
 
 	return iRetVal;
 }

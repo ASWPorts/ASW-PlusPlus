@@ -34,9 +34,9 @@
 #define CLEARBITS(iBitVector, bits)		((iBitVector) &= ~(bits))
 #define FBitSet(iBitVector, bits)		((iBitVector) & (bits))
 
-inline bool IsPowerOfTwo( int value )
+inline bool IsPowerOfTwo(int value)
 {
-	return (value & ( value - 1 )) == 0;
+    return (value & (value - 1)) == 0;
 }
 
 #ifndef REFERENCE
@@ -98,7 +98,7 @@ inline bool IsPowerOfTwo( int value )
 // That is the point.
 extern "C++" // templates cannot be declared to have 'C' linkage
 template <typename T, size_t N>
-char (*RtlpNumberOf( UNALIGNED T (&)[N] ))[N];
+char (*RtlpNumberOf(UNALIGNED T(&)[N]))[N];
 
 #define RTL_NUMBER_OF_V2(A) (sizeof(*RtlpNumberOf(A)))
 
@@ -146,4 +146,3 @@ char (*RtlpNumberOf( UNALIGNED T (&)[N] ))[N];
 #define _ARRAYSIZE(A)   RTL_NUMBER_OF_V1(A)
 
 #endif // COMMONMACROS_H
-

@@ -84,7 +84,7 @@ public:
 	CPortal_Player* GetPortalPlayerOwner() const;
 
 	// Get specific Portal weapon ID (ie: WEAPON_PORTALGUN, etc)
-	virtual PortalWeaponID GetWeaponID( void ) const { return WEAPON_NONE; }
+	virtual int GetWeaponID( void ) const { return WEAPON_NONE; }
 
 	void WeaponSound( WeaponSound_t sound_type, float soundtime = 0.0f );
 	

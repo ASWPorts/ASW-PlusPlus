@@ -142,10 +142,11 @@ void CStaticCollisionPolyhedronCache::Update( void )
 	{
 		int iBrush = 0;
 		CUtlVector<Vector4D> Planes;
+		CUtlVector<BrushSideInfo_t> BrushPlanes;
 
 		float fStackPlanes[4 * 400]; //400 is a crapload of planes in my opinion
 
-		while( enginetrace->GetBrushInfo( iBrush, &Planes, NULL ) )
+		while( enginetrace->GetBrushInfo( iBrush, &BrushPlanes, NULL ) )
 		{
 			int iPlaneCount = Planes.Count();
 			AssertMsg( iPlaneCount != 0, "A brush with no planes???????" );

@@ -44,3 +44,4 @@ config.cfg
 *.filters
 *.vpc_crc
 *.vs/
+*.sentinel

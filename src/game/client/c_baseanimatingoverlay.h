@@ -47,14 +47,13 @@ public:
 
 	void			CheckInterpChanges( void );
 	void			CheckForLayerPhysicsInvalidate( void );
+	float			m_flOverlayPrevEventCycle[MAX_OVERLAYS];
 
 private:
 	void CheckForLayerChanges( CStudioHdr *hdr, float currentTime );
 
 	CUtlVector < CAnimationLayer >	m_AnimOverlay;
 	CUtlVector < CInterpolatedVar< CAnimationLayer > >	m_iv_AnimOverlay;
-
-	float m_flOverlayPrevEventCycle[ MAX_OVERLAYS ];
 
 	C_BaseAnimatingOverlay( const C_BaseAnimatingOverlay & ); // not defined, not accessible
 

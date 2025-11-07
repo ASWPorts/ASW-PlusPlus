@@ -465,7 +465,7 @@ void CMultiPlayerAnimState::RunGestureSlotAnimEventsToCompletion( GestureSlot_t 
 	mstudioseqdesc_t &seqdesc = pStudioHdr->pSeqdesc( pGesture->m_pAnimLayer->m_nSequence );
 	if ( seqdesc.numevents > 0 )
 	{
-		mstudioevent_t *pevent = seqdesc.pEvent( 0 );
+		mstudioevent_t *pevent = reinterpret_cast<mstudioevent_for_client_server_t*>(seqdesc.pEvent( 0 ));
 
 		for (int i = 0; i < (int)seqdesc.numevents; i++)
 		{
@@ -474,13 +474,13 @@ void CMultiPlayerAnimState::RunGestureSlotAnimEventsToCompletion( GestureSlot_t 
 				if ( !( pevent[i].type & AE_TYPE_CLIENT ) )
 					continue;
 			}
-			else if ( pevent[i].event < 5000 ) //Adrian - Support the old event system
+			else if ( pevent[i].Event() < 5000 ) //Adrian - Support the old event system
 				continue;
 
 			if ( pevent[i].cycle > pGesture->m_pAnimLayer->m_flPrevCycle &&
 				pevent[i].cycle <= pGesture->m_pAnimLayer->m_flCycle )
 			{
-				pPlayer->FireEvent( pPlayer->GetAbsOrigin(), pPlayer->GetAbsAngles(), pevent[ i ].event, pevent[ i ].pszOptions() );
+				pPlayer->FireEvent( pPlayer->GetAbsOrigin(), pPlayer->GetAbsAngles(), pevent[ i ].Event(), pevent[i].pszOptions());
 			}
 		}
 	}
@@ -1152,7 +1152,7 @@ void CMultiPlayerAnimState::ResetGroundSpeed( void )
 {
 #ifdef CLIENT_DLL
 		m_flMaxGroundSpeed = GetCurrentMaxGroundSpeed();
-		m_iv_flMaxGroundSpeed.Reset();
+		m_iv_flMaxGroundSpeed.Reset( 0.0f );
 		m_iv_flMaxGroundSpeed.NoteChanged( gpGlobals->curtime, 0, false );
 #endif
 }
@@ -1304,7 +1304,8 @@ void CMultiPlayerAnimState::Update( float eyeYaw, float eyePitch )
 	}
 
 #ifdef CLIENT_DLL
-	if ( C_BasePlayer::ShouldDrawLocalPlayer() )
+	C_BasePlayer* baseplayer = NULL;
+	if ( baseplayer->ShouldDrawLocalPlayer() )
 	{
 		GetBasePlayer()->SetPlaybackRate( 1.0f );
 	}
@@ -1484,7 +1485,7 @@ void CMultiPlayerAnimState::GetMovementFlags( CStudioHdr *pStudioHdr )
 	m_nMovementSequence = GetBasePlayer()->GetSequence(); 
 	m_LegAnimType = LEGANIM_9WAY;
 
-	KeyValues *seqKeyValues = GetBasePlayer()->GetSequenceKeyValues( m_nMovementSequence );
+	KeyValues *seqKeyValues = NULL;
 	// Msg("sequence %d : %s (%d)\n", sequence,  GetOuter()->GetSequenceName( sequence ), seqKeyValues != NULL );
 	if (seqKeyValues)
 	{

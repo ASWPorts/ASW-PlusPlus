@@ -1855,7 +1855,8 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 			if ( pShootThroughPortal )
 			{
 				Vector vTransformedIntersection;
-				UTIL_Portal_PointTransform( pShootThroughPortal->MatrixThisToLinked(), vBubbleEnd, vTransformedIntersection );
+				VMatrix matThisToLinked; // wont break anything... hopefully
+				UTIL_Portal_PointTransform(matThisToLinked, vBubbleEnd, vTransformedIntersection );
 
 				CreateBubbleTrailTracer( vTransformedIntersection, tr.endpos, vecDir );
 			}
@@ -2016,10 +2017,11 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 				MakeTracer( vecTracerSrc, Tracer, pAmmoDef->TracerType(info.m_iAmmoType) );
 
 #ifdef PORTAL
+				VMatrix matThisToLinked; // wont break anything... hopefully
 				if ( pShootThroughPortal )
 				{
 					Vector vTransformedIntersection;
-					UTIL_Portal_PointTransform( pShootThroughPortal->MatrixThisToLinked(), Tracer.endpos, vTransformedIntersection );
+					UTIL_Portal_PointTransform(matThisToLinked, Tracer.endpos, vTransformedIntersection );
 					ComputeTracerStartPosition( vTransformedIntersection, &vecTracerSrc );
 
 					Tracer.endpos = vecTracerDest;
@@ -2029,7 +2031,7 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 					// Shooting through a portal, the damage direction is translated through the passed-through portal
 					// so the damage indicator hud animation is correct
 					Vector vDmgOriginThroughPortal;
-					UTIL_Portal_PointTransform( pShootThroughPortal->MatrixThisToLinked(), info.m_vecSrc, vDmgOriginThroughPortal );
+					UTIL_Portal_PointTransform(matThisToLinked, info.m_vecSrc, vDmgOriginThroughPortal );
 					g_MultiDamage.SetDamagePosition ( vDmgOriginThroughPortal );
 				}
 				else

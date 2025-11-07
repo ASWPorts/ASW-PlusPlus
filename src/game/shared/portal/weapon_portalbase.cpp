@@ -152,7 +152,9 @@ int CWeaponPortalBase::DrawModel( int flags )
 	if ( !m_bReadyToDraw )
 		return 0;
 
-	if ( GetOwner() && (GetOwner() == C_BasePlayer::GetLocalPlayer()) && !g_pPortalRender->IsRenderingPortal() && !C_BasePlayer::ShouldDrawLocalPlayer() )
+	CBasePlayer* baseplayer = NULL;
+
+	if ( GetOwner() && (GetOwner() == C_BasePlayer::GetLocalPlayer()) && !g_pPortalRender->IsRenderingPortal() && !baseplayer->ShouldDrawLocalPlayer() )
 		return 0;
 
 	//Sometimes the return value of ShouldDrawLocalPlayer() fluctuates too often to draw the correct model all the time, so this is a quick fix if it's changed too fast
@@ -166,7 +168,9 @@ int CWeaponPortalBase::DrawModel( int flags )
 		bChangeModelBack = true;
 	}
 
-	int iRetVal = BaseClass::DrawModel( flags );
+	RenderableInstance_t instance;
+
+	int iRetVal = BaseClass::DrawModel( flags, instance);
 
 	if( bChangeModelBack )
 		SetModelIndex( iOriginalIndex );
@@ -205,7 +209,7 @@ void CWeaponPortalBase::DrawCrosshair()
 	if ( !player )
 		return;
 
-	Color clr = gHUD.m_clrNormal;
+	Color clr;
 
 	CHudCrosshair *crosshair = GET_HUDELEMENT( CHudCrosshair );
 	if ( !crosshair )
@@ -214,14 +218,14 @@ void CWeaponPortalBase::DrawCrosshair()
 	// Check to see if the player is in VGUI mode...
 	if (player->IsInVGuiInputMode())
 	{
-		CHudTexture *pArrow	= gHUD.GetIcon( "arrow" );
+		CHudTexture *pArrow;
 
-		crosshair->SetCrosshair( pArrow, gHUD.m_clrNormal );
+		crosshair->SetCrosshair( pArrow, clr );
 		return;
 	}
 
 	// Find out if this weapon's auto-aimed onto a target
-	bool bOnTarget = ( m_iState == WEAPON_IS_ONTARGET );
+	bool bOnTarget = ( m_iState );
 
 	if ( player->GetFOV() >= 90 )
 	{ 
@@ -399,7 +403,7 @@ void CWeaponPortalBase::FireBullets( const FireBulletsInfo_t &info )
 {
 	FireBulletsInfo_t modinfo = info;
 
-	modinfo.m_iPlayerDamage = GetPortalWpnData().m_iPlayerDamage;
+	GetPortalWpnData().m_iPlayerDamage;
 
 	BaseClass::FireBullets( modinfo );
 }

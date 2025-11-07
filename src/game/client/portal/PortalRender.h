@@ -300,12 +300,12 @@ inline void CPortalRenderable::CopyToCurrentView( CViewRender *pViewRender, cons
 
 inline void CPortalRenderable::ViewDrawScene_PortalStencil( CViewRender *pViewRender, const CViewSetup &viewIn, ViewCustomVisibility_t *pCustomVisibility )
 {
-	pViewRender->ViewDrawScene_PortalStencil( viewIn, pCustomVisibility );
+	Msg("CPortalRenderable::ViewDrawScene_PortalStencil Not Implemented");
 }
 
 inline void CPortalRenderable::Draw3dSkyboxworld_Portal( CViewRender *pViewRender, const CViewSetup &viewIn, int &nClearFlags, bool &bDrew3dSkybox, SkyboxVisibility_t &nSkyboxVisible, ITexture *pRenderTarget )
 {
-	pViewRender->Draw3dSkyboxworld_Portal( viewIn, nClearFlags, bDrew3dSkybox, nSkyboxVisible, pRenderTarget );
+	Msg("CPortalRenderable::Draw3dSkyboxworld_Portal Not Implemented");
 }
 
 inline void CPortalRenderable::ViewDrawScene( CViewRender *pViewRender, bool bDrew3dSkybox, SkyboxVisibility_t nSkyboxVisible, const CViewSetup &viewIn, int nClearFlags, view_id_t viewID, bool bDrawViewModel, int baseDrawFlags, ViewCustomVisibility_t *pCustomVisibility )

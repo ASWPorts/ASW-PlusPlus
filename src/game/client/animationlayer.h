@@ -60,17 +60,15 @@ public:
 public:
 	float	m_flLayerAnimtime;
 	float	m_flLayerFadeOuttime;
-
-private:
-	int		m_nOrder;
+	CRangeCheckedVar<float, -50, 50, 1>		m_flPlaybackRate;
+	// used for automatic crossfades between sequence changes
+	CRangeCheckedVar<float, -2, 2, 0>		m_flCycle;
 	CRangeCheckedVar<int, -1, 65535, 0>		m_nSequence;
 	CRangeCheckedVar<float, -2, 2, 0>		m_flPrevCycle;
 	CRangeCheckedVar<float, -5, 5, 0>		m_flWeight;
+	int		m_nOrder;
 
-	// used for automatic crossfades between sequence changes
-	CRangeCheckedVar<float, -50, 50, 1>		m_flPlaybackRate;
-	CRangeCheckedVar<float, -2, 2, 0>		m_flCycle;
-
+private:
 #ifdef CLIENT_DLL
 	C_BaseAnimatingOverlay	*m_pOwner;
 	int					m_nInvalidatePhysicsBits;

@@ -433,7 +433,7 @@ public:
 	{
 		m_UnderWaterOverlayMaterial.Init( pMaterial );
 	}
-protected:
+
 	int				m_BuildWorldListsNumber;
 
 

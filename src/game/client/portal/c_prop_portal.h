@@ -45,7 +45,7 @@ public:
 	virtual void			Activate( void );
 	virtual void			ClientThink( void );
 
-	virtual void			Simulate();
+	virtual bool			Simulate();
 
 	virtual void			UpdateOnRemove( void );
 
