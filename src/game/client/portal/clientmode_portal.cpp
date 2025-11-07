@@ -203,11 +203,11 @@ void ClientModePortalNormal::InitViewport()
 	m_pViewport->Start( gameuifuncs, gameeventmanager );
 }
 
-//ClientModePortalNormal g_ClientModeNormal;
+ClientModePortalNormal& g_ClientModeNormal{};
 
 IClientMode *GetClientModeNormal()
 {
-	//return &g_ClientModeNormal;
+	return &g_ClientModeNormal;
 }
 
 
