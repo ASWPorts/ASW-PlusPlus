@@ -108,12 +108,8 @@
 #endif
 // UI
 #ifdef GAMEUI_EMBEDDED
-#if defined( HL2_CLIENT_DLL )
 #include "hl2/gameui/hl2/basemodpanel.h"
-#else
-#error "GAMEUI_EMBEDDED"
-#endif
-#endif
+#endif // GAMEUI_EMBEDDED
 
 #ifdef DEMOPOLISH_ENABLED
 #include "demo_polish/demo_polish.h"

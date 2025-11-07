@@ -285,7 +285,7 @@ CBaseModFrame* CBaseModPanel::OpenWindow(const WINDOW_TYPE & wt, CBaseModFrame *
 			break;
 			
 		case WT_MAINMENU:
-			m_Frames[wt] = new MainMenu(this, "MainMenu");
+			//m_Frames[wt] = new MainMenu(this, "MainMenu");
 			break;
 
 		case WT_OPTIONS:
@@ -305,23 +305,23 @@ CBaseModFrame* CBaseModPanel::OpenWindow(const WINDOW_TYPE & wt, CBaseModFrame *
 			break;
 			
 		case WT_LOADGAME:
-			m_Frames[wt] = new CLoadGameDialog(this, "LoadGame");
+			//m_Frames[wt] = new CLoadGameDialog(this, "LoadGame");
 			break;
 
 		case WT_SAVEGAME:
-			m_Frames[wt] = new CVBaseSaveGameDialog(this, "SaveGame");
+			//m_Frames[wt] = new CVBaseSaveGameDialog(this, "SaveGame");
 			break;
 
 		case WT_GAMEPLAYSETTINGS:
-			m_Frames[wt] = new Gameplay(this, "Gameplay");
+			//m_Frames[wt] = new Gameplay(this, "Gameplay");
 			break;
 
 		case WT_NEWGAME:
-			m_Frames[wt] = new CNewGameDialog(this, "NewGameDialog");
+			//m_Frames[wt] = new CNewGameDialog(this, "NewGameDialog");
 			break;
 
 		case WT_DEVELOPERCOMMENTARIES:
-			m_Frames[wt] = new CNewGameDialog(this, "NewGameDialog", true);
+			//m_Frames[wt] = new CNewGameDialog(this, "NewGameDialog", true);
 			break;
 
 		default:
