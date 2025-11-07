@@ -16,7 +16,7 @@
 #include "modes.h"
 #include "videocfg/videocfg.h"
 #include "VGenericConfirmation.h"
-#include "nb_header_footer.h"
+#include "hl2/vgui/nb_header_footer.h"
 #include "materialsystem/materialsystem_config.h"
 #include "cdll_util.h"
 

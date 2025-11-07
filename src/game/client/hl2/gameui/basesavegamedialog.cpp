@@ -20,8 +20,8 @@
 #include "FileSystem.h"
 #include "hl2/basemodui.h"
 #include "MouseMessageForwardingPanel.h"
-#include "nb_header_footer.h"
-#include "nb_button.h"
+#include "hl2/vgui/nb_header_footer.h"
+#include "hl2/vgui/nb_button.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"

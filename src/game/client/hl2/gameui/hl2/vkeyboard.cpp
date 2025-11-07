@@ -16,7 +16,7 @@
 #include "materialsystem/materialsystem_config.h"
 #include "ConfigManager.h"
 #include "cdll_util.h"
-#include "nb_header_footer.h"
+#include "hl2/vgui/nb_header_footer.h"
 #include "optionssubkeyboard.h"
 #include "vcontrolslistpanel.h"
 

@@ -34,6 +34,13 @@ $Project "Client (HL2)"
 			{
 				$Folder "Base GameUI"
 				{
+					$Folder "VGUI"
+					{
+						$File	"hl2/vgui/nb_header_footer.cpp"
+						$File	"hl2/vgui/nb_header_footer.h"
+						$File	"hl2/vgui/nb_button.cpp"
+						$File	"hl2/vgui/nb_button.h"
+					}
 					$Folder "Headers"
 					{
 					$File	"hl2\gameui\backgroundmenubutton.h" \

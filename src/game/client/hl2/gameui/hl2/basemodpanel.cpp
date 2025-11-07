@@ -57,7 +57,7 @@
 #include "tier0/icommandline.h"
 #include "fmtstr.h"
 #include "smartptr.h"
-#include "nb_header_footer.h"
+#include "hl2/vgui/nb_header_footer.h"
 
 // UI defines. Include if you want to implement some of them [str]
 #include "ui_defines.h"
@@ -71,8 +71,6 @@ using namespace vgui;
 //setup in GameUI_Interface.cpp
 //extern class IMatchSystem *matchsystem;
 extern const char *COM_GetModDirectory( void );
-extern IGameConsole *IGameConsole();
-
 
 CBaseModPanel* CBaseModPanel::m_CFactoryBasePanel = 0;
 
