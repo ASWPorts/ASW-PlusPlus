@@ -504,6 +504,10 @@ public:
 
 	CSequenceTransitioner			m_SequenceTransitioner;
 
+	int								m_nSkin;// Texture group to use
+	int								m_nBody;// Object bodygroup
+
+
 private:
 
 // BEGIN PREDICTION DATA COMPACTION (these fields are together to allow for faster copying in prediction system)
@@ -519,8 +523,6 @@ protected:
 	float							m_flPlaybackRate;// Animation playback framerate
 
 // FTYPEDESC_INSENDTABLE STUFF (end)
-	int								m_nSkin;// Texture group to use
-	int								m_nBody;// Object bodygroup
 	int								m_nNewSequenceParity;
 	int								m_nResetEventsParity;
 	int								m_nPrevNewSequenceParity;

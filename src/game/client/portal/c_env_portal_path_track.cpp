@@ -53,7 +53,7 @@ END_RECV_TABLE()
 //-----------------------------------------------------------------------------
 RenderGroup_t C_EnvPortalPathTrack::GetRenderGroup( void )
 {
-	return RENDER_GROUP_TRANSLUCENT_ENTITY;
+	return RENDER_GROUP_TRANSLUCENT;
 }
 
 //-----------------------------------------------------------------------------

@@ -20,8 +20,11 @@ C_PortalGhostRenderable::C_PortalGhostRenderable( C_Prop_Portal *pOwningPortal, 
 {
 	m_bSourceIsBaseAnimating = (dynamic_cast<C_BaseAnimating *>(pGhostSource) != NULL);
 
+	RenderableTranslucencyType_t nType;
+	RenderableModelType_t nModelType;
+
 	cl_entitylist->AddNonNetworkableEntity( GetIClientUnknown() );
-	g_pClientLeafSystem->AddRenderable( this, sourceRenderGroup );
+	g_pClientLeafSystem->AddRenderable( this, sourceRenderGroup, nType, nModelType);
 }
 
 C_PortalGhostRenderable::~C_PortalGhostRenderable( void )
@@ -62,8 +65,6 @@ void C_PortalGhostRenderable::PerFrameUpdate( void )
 
 	AddEffects( EF_NOINTERP );
 
-	RemoveFromInterpolationList();
-
 	g_pClientLeafSystem->RenderableChanged( RenderHandle() );
 }
 
@@ -85,7 +86,7 @@ QAngle const& C_PortalGhostRenderable::GetRenderAngles( void )
 	return m_ReferencedReturns.qRenderAngle;
 }
 
-bool C_PortalGhostRenderable::SetupBones( matrix3x4_t *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime )
+bool C_PortalGhostRenderable::SetupBones( matrix3x4a_t *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime )
 {
 	if( m_pGhostedRenderable == NULL )
 		return false;
@@ -260,22 +261,12 @@ int C_PortalGhostRenderable::DrawModel( int flags )
 			}
 		}
 
-		return C_BaseAnimating::DrawModel( flags );
+		RenderableInstance_t instance;
+
+		return C_BaseAnimating::DrawModel( flags, instance);
 	}
 	else
 	{
-		DrawBrushModelMode_t mode = DBM_DRAW_ALL;
-		if ( flags & STUDIO_TWOPASS )
-		{
-			mode = ( flags & STUDIO_TRANSPARENCY ) ? DBM_DRAW_TRANSLUCENT_ONLY : DBM_DRAW_OPAQUE_ONLY;
-		}
-
-		render->DrawBrushModelEx( m_pGhostedRenderable, 
-								(model_t *)m_pGhostedRenderable->GetModel(), 
-								GetRenderOrigin(), 
-								GetRenderAngles(), 
-								mode );
-		
 		return 1;
 	}
 
@@ -298,7 +289,7 @@ bool C_PortalGhostRenderable::IsTransparent( void )
 	if( m_pGhostedRenderable == NULL )
 		return false;
 
-	return m_pGhostedRenderable->IsTransparent();
+	return false; // ???
 }
 
 bool C_PortalGhostRenderable::UsesPowerOfTwoFrameBufferTexture()
@@ -306,7 +297,7 @@ bool C_PortalGhostRenderable::UsesPowerOfTwoFrameBufferTexture()
 	if( m_pGhostedRenderable == NULL )
 		return false;
 
-	return m_pGhostedRenderable->UsesPowerOfTwoFrameBufferTexture();
+	return false;
 }
 
 /*const model_t* C_PortalGhostRenderable::GetModel( ) const

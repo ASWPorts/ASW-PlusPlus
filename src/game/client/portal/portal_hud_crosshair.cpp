@@ -15,6 +15,7 @@
 #include "vgui_controls/Controls.h"
 #include "vgui/ISurface.h"
 #include "ivrenderview.h"
+#include <clientmode_shared.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -28,10 +29,12 @@ int ScreenTransform( const Vector& point, Vector& screen );
 
 DECLARE_HUDELEMENT( CHudPortalCrosshair );
 
+ClientModeShared* g_pClientModeShared;
+
 CHudPortalCrosshair::CHudPortalCrosshair( const char *pElementName ) :
 CHudElement( pElementName ), BaseClass( NULL, "HudPortalCrosshair" )
 {
-	vgui::Panel *pParent = g_pClientMode->GetViewport();
+	vgui::Panel *pParent = g_pClientModeShared->GetViewport();
 	SetParent( pParent );
 
 	m_pCrosshair = 0;
@@ -47,7 +50,6 @@ void CHudPortalCrosshair::ApplySchemeSettings( IScheme *scheme )
 {
 	BaseClass::ApplySchemeSettings( scheme );
 
-	m_pDefaultCrosshair = gHUD.GetIcon("crosshair_default");
 	SetPaintBackgroundEnabled( false );
 }
 
@@ -74,7 +76,7 @@ bool CHudPortalCrosshair::ShouldDraw()
 			crosshair.GetInt() &&
 			!engine->IsDrawingLoadingImage() &&
 			!engine->IsPaused() && 
-			g_pClientMode->ShouldDrawCrosshair() &&
+			g_pClientModeShared->ShouldDrawCrosshair() &&
 			!( pPlayer->GetFlags() & FL_FROZEN ) &&
 			( pPlayer->entindex() == render->GetViewEntity() ) &&
 			!pPlayer->IsInVGuiInputMode() &&

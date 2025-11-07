@@ -17,6 +17,7 @@
 #include <vgui/ILocalize.h>
 #include "KeyValues.h"
 #include "filesystem.h"
+#include <clientmode_portal.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -237,12 +238,14 @@ DECLARE_HUDELEMENT( CHudPortalCredits );
 DECLARE_HUD_MESSAGE( CHudPortalCredits, CreditsPortalMsg );
 DECLARE_HUD_MESSAGE( CHudPortalCredits, LogoTimeMsg );
 
+ClientModeShared* g_pClientModeShared;
+
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
 CHudPortalCredits::CHudPortalCredits( const char *pElementName ) : CHudElement( pElementName ), BaseClass( NULL, "HudCredits" )
 {
-	vgui::Panel *pParent = g_pClientMode->GetViewport();
+	vgui::Panel *pParent = g_pClientModeShared->GetViewport();
 	SetParent( pParent );
 }
 
@@ -287,8 +290,8 @@ void CHudPortalCredits::ReadNames( KeyValues *pKeyValue )
 	while ( pKVNames )
 	{
 		portalcreditname_t Credits;
-		V_strcpy_safe( Credits.szCreditName, pKVNames->GetName() );
-		V_strcpy_safe( Credits.szFontName, pKeyValue->GetString( Credits.szCreditName, "Default" ) );
+		V_strcpy( Credits.szCreditName, pKVNames->GetName() );
+		V_strcpy( Credits.szFontName, pKeyValue->GetString( Credits.szCreditName, "Default" ) );
 
 		Credits.flTimeInit = 0.00;
 
@@ -334,8 +337,8 @@ void CHudPortalCredits::ReadLyrics( KeyValues *pKeyValue )
 		portalcreditname_t Credits;
 		vgui::HScheme scheme = vgui::scheme()->GetScheme( "ClientScheme" );
 		vgui::HFont m_hTFont = vgui::scheme()->GetIScheme(scheme)->GetFont( "CreditsOutroText", true );
-		V_strcpy_safe( Credits.szCreditName, pKVNames->GetName());
-		V_strcpy_safe( Credits.szFontName, pKeyValue->GetString( Credits.szCreditName, "Default" ) );
+		V_strcpy( Credits.szCreditName, pKVNames->GetName());
+		V_strcpy( Credits.szFontName, pKeyValue->GetString( Credits.szCreditName, "Default" ) );
 
 		Credits.flTimeInit = 0.00;
 
@@ -450,8 +453,8 @@ void CHudPortalCredits::ReadAscii( KeyValues *pKeyValue )
 		//Q_strcpy( Credits.szCreditName, pKVNames->GetName());
 		//Q_strcpy( Credits.szFontName, pKeyValue->GetString( Credits.szCreditName, "Default" ) );
 
-		V_strcpy_safe( Credits.szFontName, pKVNames->GetName() );
-		V_strcpy_safe( Credits.szCreditName, pKeyValue->GetString( Credits.szFontName, "Default" ) );
+		V_strcpy( Credits.szFontName, pKVNames->GetName() );
+		V_strcpy( Credits.szCreditName, pKeyValue->GetString( Credits.szFontName, "Default" ) );
 
 		Credits.flTimeInit = 0.00;
 
@@ -499,7 +502,7 @@ void CHudPortalCredits::ReadParams( KeyValues *pKeyValue )
 	m_iScreenWidthAdjustment = pKeyValue->GetInt( "screenwidthadjustment", 0 );
 	m_iScreenHeightAdjustment = pKeyValue->GetInt( "screenheightadjustment", 0 );
 
-	V_strcpy_safe( m_szAsciiArtFont, pKeyValue->GetString( "asciiartfont", "Default" ) );
+	V_strcpy( m_szAsciiArtFont, pKeyValue->GetString( "asciiartfont", "Default" ) );
 
 	m_iAAScreenXOffset = pKeyValue->GetInt( "aascreenxoffset", 0 );
 	m_iAAScreenYOffset = pKeyValue->GetInt( "aascreenyoffset", 0 );

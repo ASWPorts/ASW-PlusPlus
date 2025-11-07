@@ -91,9 +91,6 @@ protected:
 	virtual void ApplySchemeSettings( vgui::IScheme *pScheme )
 	{
 		BaseClass::ApplySchemeSettings( pScheme );
-
-		gHUD.InitColors( pScheme );
-
 		SetPaintBackgroundEnabled( false );
 	}
 
@@ -206,7 +203,7 @@ void ClientModePortalNormal::InitViewport()
 	m_pViewport->Start( gameuifuncs, gameeventmanager );
 }
 
-ClientModePortalNormal g_ClientModeNormal;
+ClientModePortalNormal& g_ClientModeNormal{};
 
 IClientMode *GetClientModeNormal()
 {

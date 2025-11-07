@@ -283,7 +283,6 @@ void CPortalRender::WaterRenderingHandler_PreReflection() const
 	if( (m_iViewRecursionLevel > 0) && ShouldUseStencilsToRenderPortals() )
 	{
 		CMatRenderContextPtr pRenderContext( materials );
-		pRenderContext->SetStencilEnable( false );
 	}
 }
 
@@ -292,7 +291,6 @@ void CPortalRender::WaterRenderingHandler_PostReflection() const
 	if( (m_iViewRecursionLevel > 0) && ShouldUseStencilsToRenderPortals() )
 	{
 		CMatRenderContextPtr pRenderContext( materials );
-		pRenderContext->SetStencilEnable( true );
 	}
 }
 
@@ -301,7 +299,6 @@ void CPortalRender::WaterRenderingHandler_PreRefraction() const
 	if( (m_iViewRecursionLevel > 0) && ShouldUseStencilsToRenderPortals() )
 	{
 		CMatRenderContextPtr pRenderContext( materials );
-		pRenderContext->SetStencilEnable( false );
 	}
 }
 
@@ -310,7 +307,6 @@ void CPortalRender::WaterRenderingHandler_PostRefraction() const
 	if( (m_iViewRecursionLevel > 0) && ShouldUseStencilsToRenderPortals() )
 	{
 		CMatRenderContextPtr pRenderContext( materials );
-		pRenderContext->SetStencilEnable( true );
 	}
 }
 
@@ -408,8 +404,8 @@ void CPortalRender::EnteredPortal( CPortalRenderable *pEnteredPortal )
 			m_HeadPortalViewIDNode.ChildNodes[i] = NULL;
 		}
 
-		PixelVisibility_ShiftVisibilityViews( VIEW_MAIN, pExitPortalsNewNode->iPrimaryViewID );
-		PixelVisibility_ShiftVisibilityViews( VIEW_3DSKY, pExitPortalsNewNode->iPrimaryViewID + 1 );
+		PixelVisibility_ShiftVisibilityViews( VIEW_MAIN, pExitPortalsNewNode->iPrimaryViewID, 0 );
+		PixelVisibility_ShiftVisibilityViews( VIEW_3DSKY, pExitPortalsNewNode->iPrimaryViewID + 1, 0);
 	}
 
 	
@@ -426,8 +422,8 @@ void CPortalRender::EnteredPortal( CPortalRenderable *pEnteredPortal )
 		}
 
 		//Since the primary views will always be 0 and 1, we have to shift results instead of replacing the id's
-		PixelVisibility_ShiftVisibilityViews( pNewHead->iPrimaryViewID, VIEW_MAIN );
-		PixelVisibility_ShiftVisibilityViews( pNewHead->iPrimaryViewID + 1, VIEW_3DSKY );
+		PixelVisibility_ShiftVisibilityViews( pNewHead->iPrimaryViewID, VIEW_MAIN, 0 );
+		PixelVisibility_ShiftVisibilityViews( pNewHead->iPrimaryViewID + 1, VIEW_3DSKY, 0 );
 
 		FreePortalViewIDNode( pNewHead );
 	}
@@ -541,14 +537,14 @@ bool CPortalRender::DrawPortalsUsingStencils( CViewRender *pViewRender )
 	
 	if( m_iViewRecursionLevel == 0 ) //first entry into the stencil drawing
 	{
-		pRenderContext->SetStencilEnable( true );
-		pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_ALWAYS );
-		pRenderContext->SetStencilPassOperation( STENCILOPERATION_REPLACE );
-		pRenderContext->SetStencilFailOperation( STENCILOPERATION_KEEP );
-		pRenderContext->SetStencilZFailOperation( STENCILOPERATION_KEEP );
-		pRenderContext->SetStencilTestMask( 0xFF );
-		pRenderContext->SetStencilWriteMask( 0xFF );
-		pRenderContext->SetStencilReferenceValue( 0 );
+		//pRenderContext->SetStencilEnable( true );
+		//pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_ALWAYS );
+		//pRenderContext->SetStencilPassOperation( STENCILOPERATION_REPLACE );
+		//pRenderContext->SetStencilFailOperation( STENCILOPERATION_KEEP );
+		//pRenderContext->SetStencilZFailOperation( STENCILOPERATION_KEEP );
+		//pRenderContext->SetStencilTestMask( 0xFF );
+		//pRenderContext->SetStencilWriteMask( 0xFF );
+		//pRenderContext->SetStencilReferenceValue( 0 );
 
         m_RecursiveViewComplexFrustums[0].RemoveAll(); //clear any garbage leftover in the complex frustums from last frame
 	}
@@ -587,11 +583,11 @@ bool CPortalRender::DrawPortalsUsingStencils( CViewRender *pViewRender )
 		
 		// Step 0, Allow for special effects to happen before cutting a hole
 		{
-			pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL );
-			pRenderContext->SetStencilPassOperation( STENCILOPERATION_KEEP );
-			pRenderContext->SetStencilFailOperation( STENCILOPERATION_KEEP );
-			pRenderContext->SetStencilZFailOperation( STENCILOPERATION_KEEP );
-			pRenderContext->SetStencilReferenceValue( iParentLevelStencilReferenceValue );
+			//pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL );
+			//pRenderContext->SetStencilPassOperation( STENCILOPERATION_KEEP );
+			//pRenderContext->SetStencilFailOperation( STENCILOPERATION_KEEP );
+			//pRenderContext->SetStencilZFailOperation( STENCILOPERATION_KEEP );
+			//pRenderContext->SetStencilReferenceValue( iParentLevelStencilReferenceValue );
 
 			pCurrentPortal->DrawPreStencilMask();
 		}
@@ -599,7 +595,7 @@ bool CPortalRender::DrawPortalsUsingStencils( CViewRender *pViewRender )
 		//step 1, write out the stencil values (and colors if you want, but really not necessary)
 		{
 			//pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL );
-			pRenderContext->SetStencilPassOperation( STENCILOPERATION_INCR );
+			//pRenderContext->SetStencilPassOperation( STENCILOPERATION_INCR );
 			//pRenderContext->SetStencilFailOperation( STENCILOPERATION_KEEP );
 			//pRenderContext->SetStencilZFailOperation( STENCILOPERATION_KEEP );
 			//pRenderContext->SetStencilReferenceValue( iParentLevelStencilReferenceValue );
@@ -622,8 +618,8 @@ bool CPortalRender::DrawPortalsUsingStencils( CViewRender *pViewRender )
 		{
 			//step 2, clear the depth buffer in stencil areas so we can render a new scene to them
 			{
-				pRenderContext->SetStencilPassOperation( STENCILOPERATION_KEEP );
-				pRenderContext->SetStencilReferenceValue( iStencilReferenceValue );
+				//pRenderContext->SetStencilPassOperation( STENCILOPERATION_KEEP );
+				//pRenderContext->SetStencilReferenceValue( iStencilReferenceValue );
 				pRenderContext->ClearBuffersObeyStencil( false, true );
 			}
 
@@ -637,7 +633,7 @@ bool CPortalRender::DrawPortalsUsingStencils( CViewRender *pViewRender )
 				pRenderContext->GetFogColor( fogColorBackup );
 				float fFogStartBackup, fFogEndBackup, fFogZBackup;
 				pRenderContext->GetFogDistances( &fFogStartBackup, &fFogEndBackup, &fFogZBackup );
-				CGlowOverlay::BackupSkyOverlayData( m_iViewRecursionLevel );
+				//CGlowOverlay::BackupSkyOverlayData( m_iViewRecursionLevel );
 
 				Assert( m_PortalViewIDNodeChain[m_iViewRecursionLevel]->ChildNodes.Count() > pCurrentPortal->m_iPortalViewIDNodeIndex );
 
@@ -647,9 +643,11 @@ bool CPortalRender::DrawPortalsUsingStencils( CViewRender *pViewRender )
 				
 				m_PortalViewIDNodeChain[m_iViewRecursionLevel + 1] = NULL;
 
-				CGlowOverlay::RestoreSkyOverlayData( m_iViewRecursionLevel );
+				CRendering3dView* m_pActiveRenderer3D;
+
+				//CGlowOverlay::RestoreSkyOverlayData( m_iViewRecursionLevel );
 				memcpy( (void *)pViewSetup, &ViewBackup, sizeof( CViewSetup ) );
-				pViewRender->m_pActiveRenderer->EnableWorldFog();
+				m_pActiveRenderer3D->EnableWorldFog();
 
 				pRenderContext->FogMode( fogModeBackup );
 				pRenderContext->FogColor3ubv( fogColorBackup );
@@ -659,13 +657,13 @@ bool CPortalRender::DrawPortalsUsingStencils( CViewRender *pViewRender )
 
 				
 				//do a full reset of what we think the stencil operations are in case the recursive calls got weird
-				pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL );
-				pRenderContext->SetStencilPassOperation( STENCILOPERATION_KEEP );
-				pRenderContext->SetStencilFailOperation( STENCILOPERATION_KEEP );
-				pRenderContext->SetStencilZFailOperation( STENCILOPERATION_KEEP );
-				pRenderContext->SetStencilTestMask( 0xFF );
-				pRenderContext->SetStencilWriteMask( 0xFF );
-				pRenderContext->SetStencilReferenceValue( iStencilReferenceValue );
+				//pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL );
+				//pRenderContext->SetStencilPassOperation( STENCILOPERATION_KEEP );
+				//pRenderContext->SetStencilFailOperation( STENCILOPERATION_KEEP );
+				//pRenderContext->SetStencilZFailOperation( STENCILOPERATION_KEEP );
+				//pRenderContext->SetStencilTestMask( 0xFF );
+				//pRenderContext->SetStencilWriteMask( 0xFF );
+				//pRenderContext->SetStencilReferenceValue( iStencilReferenceValue );
 			}
 
 			//step 4, patch up the fact that we just made a hole in the wall because it's not *really* a hole at all
@@ -676,11 +674,11 @@ bool CPortalRender::DrawPortalsUsingStencils( CViewRender *pViewRender )
 
 		//step 5, restore the stencil mask to the parent level
 		{
-			pRenderContext->SetStencilReferenceValue( iStencilReferenceValue );
-			pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL );
-			pRenderContext->SetStencilPassOperation( STENCILOPERATION_DECR );
-			pRenderContext->SetStencilFailOperation( STENCILOPERATION_KEEP );
-			pRenderContext->SetStencilZFailOperation( STENCILOPERATION_KEEP );
+			//pRenderContext->SetStencilReferenceValue( iStencilReferenceValue );
+			//pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL );
+			//pRenderContext->SetStencilPassOperation( STENCILOPERATION_DECR );
+			//pRenderContext->SetStencilFailOperation( STENCILOPERATION_KEEP );
+			//pRenderContext->SetStencilZFailOperation( STENCILOPERATION_KEEP );
 
 			pRenderContext->PerformFullScreenStencilOperation();
 		}
@@ -694,22 +692,22 @@ bool CPortalRender::DrawPortalsUsingStencils( CViewRender *pViewRender )
 		m_pRenderingViewExitPortal = NULL;
 		m_pRenderingViewForPortal = NULL;
 
-		pRenderContext->SetStencilEnable( false );
-		pRenderContext->SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_NEVER);
-		pRenderContext->SetStencilPassOperation(STENCILOPERATION_KEEP);
-		pRenderContext->SetStencilFailOperation(STENCILOPERATION_KEEP);
-		pRenderContext->SetStencilZFailOperation(STENCILOPERATION_KEEP);
-		pRenderContext->SetStencilTestMask( 0xFF );
-		pRenderContext->SetStencilWriteMask( 0xFF );
-		pRenderContext->SetStencilReferenceValue( 0 );
+		//pRenderContext->SetStencilEnable( false );
+		//pRenderContext->SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_NEVER);
+		//pRenderContext->SetStencilPassOperation(STENCILOPERATION_KEEP);
+		//pRenderContext->SetStencilFailOperation(STENCILOPERATION_KEEP);
+		//pRenderContext->SetStencilZFailOperation(STENCILOPERATION_KEEP);
+		//pRenderContext->SetStencilTestMask( 0xFF );
+		//pRenderContext->SetStencilWriteMask( 0xFF );
+		//pRenderContext->SetStencilReferenceValue( 0 );
 
 		m_RecursiveViewComplexFrustums[0].RemoveAll();
 	}
 	else
 	{
-		pRenderContext->SetStencilReferenceValue( iParentLevelStencilReferenceValue );
-		pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL );
-		pRenderContext->SetStencilPassOperation( STENCILOPERATION_KEEP );
+		//pRenderContext->SetStencilReferenceValue( iParentLevelStencilReferenceValue );
+		//pRenderContext->SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL );
+		//pRenderContext->SetStencilPassOperation( STENCILOPERATION_KEEP );
 	}
 
 	if( bRebuildDrawListsWhenDone )

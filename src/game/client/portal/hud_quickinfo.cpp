@@ -17,6 +17,7 @@
 #include "c_portal_player.h"
 #include "c_weapon_portalgun.h"
 #include "IGameUIFuncs.h"
+#include <clientmode_shared.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -28,6 +29,8 @@ static ConVar	hud_quickinfo( "hud_quickinfo", "1", FCVAR_ARCHIVE );
 static ConVar	hud_quickinfo_swap( "hud_quickinfo_swap", "0", FCVAR_ARCHIVE );
 
 extern ConVar crosshair;
+
+ClientModeShared* g_pClientModeShared;
 
 #define QUICKINFO_EVENT_DURATION	1.0f
 #define	QUICKINFO_BRIGHTNESS_FULL	255
@@ -85,7 +88,7 @@ DECLARE_HUDELEMENT( CHUDQuickInfo );
 CHUDQuickInfo::CHUDQuickInfo( const char *pElementName ) :
 	CHudElement( pElementName ), BaseClass( NULL, "HUDQuickInfo" )
 {
-	vgui::Panel *pParent = g_pClientMode->GetViewport();
+	vgui::Panel *pParent = g_pClientModeShared->GetViewport();
 	SetParent( pParent );
 
 	SetHiddenBits( HIDEHUD_CROSSHAIR );
@@ -111,29 +114,6 @@ void CHUDQuickInfo::Init( void )
 void CHUDQuickInfo::VidInit( void )
 {
 	Init();
-
-	m_icon_c = gHUD.GetIcon( "crosshair" );
-
-	if ( IsX360() )
-	{
-		m_icon_rb = gHUD.GetIcon( "portal_crosshair_right_valid_x360" );
-		m_icon_lb = gHUD.GetIcon( "portal_crosshair_left_valid_x360" );
-		m_icon_rbe = gHUD.GetIcon( "portal_crosshair_last_placed_x360" );
-		m_icon_lbe = gHUD.GetIcon( "portal_crosshair_last_placed_x360" );
-		m_icon_rbn = gHUD.GetIcon( "portal_crosshair_right_invalid_x360" );
-		m_icon_lbn = gHUD.GetIcon( "portal_crosshair_left_invalid_x360" );
-	}
-	else
-	{
-		m_icon_rb = gHUD.GetIcon( "portal_crosshair_right_valid" );
-		m_icon_lb = gHUD.GetIcon( "portal_crosshair_left_valid" );
-		m_icon_rbe = gHUD.GetIcon( "portal_crosshair_last_placed" );
-		m_icon_lbe = gHUD.GetIcon( "portal_crosshair_last_placed" );
-		m_icon_rbn = gHUD.GetIcon( "portal_crosshair_right_invalid" );
-		m_icon_lbn = gHUD.GetIcon( "portal_crosshair_left_invalid" );
-		m_icon_rbnone = gHUD.GetIcon( "crosshair_right" );
-		m_icon_lbnone = gHUD.GetIcon( "crosshair_left" );
-	}
 }
 
 
@@ -158,7 +138,7 @@ void CHUDQuickInfo::DrawWarning( int x, int y, CHudTexture *icon, float &time )
 	
 	// Update our time
 	time -= (gpGlobals->frametime * 200.0f);
-	Color caution = gHUD.m_clrCaution;
+	Color caution;
 	caution[3] = scale * 255;
 
 	icon->DrawSelf( x, y, caution );
@@ -194,14 +174,14 @@ void CHUDQuickInfo::Paint()
 	if ( pPortalPlayer == NULL )
 		return;
 
-	C_BaseCombatWeapon *pWeapon = GetActiveWeapon();
+	C_BaseCombatWeapon *pWeapon;
 	if ( pWeapon == NULL )
 		return;
 
 	int		xCenter	= ( ScreenWidth() - m_icon_c->Width() ) / 2;
 	int		yCenter = ( ScreenHeight() - m_icon_c->Height() ) / 2;
 
-	Color clrNormal = gHUD.m_clrNormal;
+	Color clrNormal;
 	clrNormal[3] = 255;
 
 	SetActive( true );

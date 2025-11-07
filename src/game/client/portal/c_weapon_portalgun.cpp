@@ -111,20 +111,12 @@ void CPortalgunEffectBeam::Init( int startAttachment, int endAttachment, CBaseEn
 	beamInfo.m_nFlags = FBEAM_FOREVER;
 
 	m_pBeam = beams->CreateBeamEntPoint( beamInfo );
-
-	if ( m_pBeam )
-	{
-		m_pBeam->m_bDrawInMainRender = false;
-		m_pBeam->m_bDrawInPortalRender = false;
-	}
 }
 
 void CPortalgunEffectBeam::SetVisibleViewModel( bool visible /*= true*/ )
 {
 	if ( m_pBeam == NULL )
 		return;
-
-	m_pBeam->m_bDrawInMainRender = visible;
 }
 
 int CPortalgunEffectBeam::IsVisibleViewModel( void ) const
@@ -132,15 +124,13 @@ int CPortalgunEffectBeam::IsVisibleViewModel( void ) const
 	if ( m_pBeam == NULL )
 		return false;
 
-	return m_pBeam->m_bDrawInMainRender;
+	return 0;
 }
 
 void CPortalgunEffectBeam::SetVisible3rdPerson( bool visible /*= true*/ )
 {
 	if ( m_pBeam == NULL )
 		return;
-
-	m_pBeam->m_bDrawInPortalRender = visible;
 }
 
 int CPortalgunEffectBeam::SetVisible3rdPerson( void ) const
@@ -148,7 +138,7 @@ int CPortalgunEffectBeam::SetVisible3rdPerson( void ) const
 	if ( m_pBeam == NULL )
 		return false;
 
-	return m_pBeam->m_bDrawInPortalRender;
+	return 0;
 }
 
 void CPortalgunEffectBeam::SetBrightness( float fBrightness )
@@ -158,8 +148,9 @@ void CPortalgunEffectBeam::SetBrightness( float fBrightness )
 
 void CPortalgunEffectBeam::DrawBeam( void )
 {
+	RenderableInstance_t instance;
 	if ( m_pBeam )
-	m_pBeam->DrawModel( 0 );
+		m_pBeam->DrawModel( 0, instance);
 }
 
 
@@ -598,9 +589,10 @@ void C_WeaponPortalgun::DoEffectReady( void )
 	}
 
 	CPortal_Player* pPlayer = (CPortal_Player*)GetOwner();
+	unsigned char rumbleFlags;
 	if ( pPlayer )
 	{
-		RumbleEffect( RUMBLE_PHYSCANNON_OPEN, 0, RUMBLE_FLAG_STOP );
+		RumbleEffect( RUMBLE_PHYSCANNON_OPEN, 0, RUMBLE_FLAG_STOP, rumbleFlags);
 	}
 }
 

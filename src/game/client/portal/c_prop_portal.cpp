@@ -275,7 +275,7 @@ bool C_Prop_Portal::Simulate()
 		
 		m_GhostRenderables.RemoveAll();
 
-		return;
+		return false;
 	}
 
 

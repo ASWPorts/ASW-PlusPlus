@@ -58,7 +58,7 @@ void C_PortalBlast::Init( bool bIsPortal2, PortalPlacedByType ePlacedBy, const V
 	ClientEntityList().AddNonNetworkableEntity( this );
 	ClientThinkList()->SetNextClientThink( GetClientHandle(), CLIENT_THINK_ALWAYS );
 
-	AddToLeafSystem( RENDER_GROUP_OPAQUE_ENTITY );
+	AddToLeafSystem( RENDER_GROUP_OPAQUE );
 
 	SetThink( &C_PortalBlast::ClientThink );
 	SetNextClientThink( CLIENT_THINK_ALWAYS );
@@ -120,4 +120,4 @@ void PortalBlastCallback( const CEffectData & data )
 	C_PortalBlast::Create( ( data.m_nColor == 1 ) ? ( false ) : ( true ), (PortalPlacedByType)data.m_nDamageType, data.m_vOrigin, data.m_vStart, data.m_vAngles, data.m_flScale );
 }
 
-DECLARE_CLIENT_EFFECT( "PortalBlast", PortalBlastCallback );
+DECLARE_CLIENT_EFFECT( PortalBlast, PortalBlastCallback );

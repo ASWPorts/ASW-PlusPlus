@@ -210,11 +210,11 @@ public:
 	virtual int		GetDrawFlags();
 
 	virtual void	Draw() {};
+	void			EnableWorldFog(void);
 
 protected:
 
 	// Fog setup
-	void			EnableWorldFog( void );
 	void			SetFogVolumeState( const VisibleFogVolumeInfo_t &fogInfo, bool bUseHeightFog );
 
 	// Draw setup

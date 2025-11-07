@@ -117,11 +117,6 @@ void CPortalPickAlphaMaskProxy::OnBind( void *pBind )
 		m_AlphaMaskTextureOutput->SetTextureValue( m_pOpeningTexture );
 		m_AlphaMaskTextureFrame->SetIntValue( pFlatBasic->m_fOpenAmount * m_pOpeningTexture->GetNumAnimationFrames() );
 	}
-
-	if ( ToolsEnabled() )
-	{
-		ToolFramework_RecordMaterialParams( GetMaterial() );
-	}
 }
 
 EXPOSE_INTERFACE( CPortalPickAlphaMaskProxy, IMaterialProxy, "PortalPickAlphaMask" IMATERIAL_PROXY_INTERFACE_VERSION );

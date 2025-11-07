@@ -94,11 +94,6 @@ void CPortalStaticProxy::OnBind( void *pBind )
 	}
 
 	m_StaticOutput->SetFloatValue( flStaticAmount );
-
-	if ( ToolsEnabled() )
-	{
-		ToolFramework_RecordMaterialParams( GetMaterial() );
-	}
 }
 
 EXPOSE_INTERFACE( CPortalStaticProxy, IMaterialProxy, "PortalStaticModel" IMATERIAL_PROXY_INTERFACE_VERSION );
